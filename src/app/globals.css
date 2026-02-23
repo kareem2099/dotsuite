@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --card-bg: #f5f5f5;
+  --card-border: #e5e5e5;
+  --text-muted: #737373;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --card-bg: #171717;
+  --card-border: #262626;
+  --text-muted: #a3a3a3;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Prose / GitHub-style Markdown ─── */
+
+.prose {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+  color: var(--foreground);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.prose h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--card-border);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--card-border);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--foreground);
+}
+
+.prose h4, .prose h5, .prose h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+
+.prose p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+  color: var(--foreground);
+}
+
+.prose ul {
+  list-style-type: disc;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose li {
+  margin-bottom: 0.25rem;
+  line-height: 1.75;
+}
+
+.prose li > ul, .prose li > ol {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.prose code {
+  background: var(--card-border);
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  font-size: 85%;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace;
+  white-space: nowrap;
+  color: var(--foreground);
+}
+
+.prose pre {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  line-height: 1.45;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: 85%;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  color: var(--foreground);
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--card-border);
+  padding: 0 1rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+}
+
+.prose blockquote p {
+  margin-bottom: 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.prose thead {
+  background: var(--card-bg);
+}
+
+.prose th {
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--card-border);
+  text-align: left;
+  color: var(--foreground);
+}
+
+.prose td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+}
+
+.prose tr:nth-child(even) {
+  background: var(--card-bg);
+}
+
+.prose a {
+  color: #10b981;
+  text-decoration: none;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+
+.prose img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 1rem auto;
+  display: block;
+}
+
+.prose p > img {
+  display: inline;
+  margin: 0 0.25rem;
+  vertical-align: middle;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--card-border);
+  margin: 1.5rem 0;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
