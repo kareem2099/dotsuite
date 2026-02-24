@@ -84,7 +84,7 @@ export async function PUT(req: Request) {
     const user = await User.findOneAndUpdate(
       { email: session.user.email },
       { $set: updateData },
-      { new: true, runValidators: true } // new بترجع الداتا بعد التحديث، runValidators بتتأكد من شروط الموديل
+      { returnDocument: 'after', runValidators: true } // new بترجع الداتا بعد التحديث، runValidators بتتأكد من شروط الموديل
     ).select("-__v -resetPasswordToken -resetPasswordExpire -verificationToken -verificationTokenExpire");
 
     return NextResponse.json(user);

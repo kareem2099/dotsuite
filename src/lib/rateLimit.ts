@@ -22,7 +22,7 @@ export async function checkRateLimit(
   let record = await RateLimit.findOneAndUpdate(
     { identifier, action, expiresAt: { $gt: now } },
     { $inc: { count: 1 } },
-    { new: true }
+    { returnDocument: 'after' }
   );
 
   // create new record if none found 
@@ -30,7 +30,7 @@ export async function checkRateLimit(
     record = await RateLimit.findOneAndUpdate(
       { identifier, action },
       { $set: { count: 1, expiresAt } },
-      { upsert: true, new: true, setDefaultsOnInsert: true }
+      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
     );
   }
 

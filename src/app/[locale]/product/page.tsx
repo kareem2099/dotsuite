@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import ProductCardSkeleton from "@/components/skeletons/ProductCardSkeleton";
+import useDebounce from "@/hooks/useDebounce";
 
 interface Product {
   _id: string;
@@ -31,19 +32,35 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  
+  // Use debounce hook
+  const debouncedSearch = useDebounce(search, 500);
 
+  // Fetch products when category or debounced search changes
   useEffect(() => {
-    const params = new URLSearchParams();
-    if (category !== "all") params.set("category", category);
-    if (search) params.set("search", search);
+    const fetchProducts = async () => {
+      const searchParams = new URLSearchParams();
+      if (category !== "all") searchParams.set("category", category);
+      if (debouncedSearch) searchParams.set("search", debouncedSearch);
 
-    fetch(`/api/products?${params}`)
-      .then((r) => r.json())
-      .then((data) => {
-        setProducts(data);
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/products?${searchParams}`);
+        const data = await res.json();
+        
+        // Handle both array and { products: [] } response formats
+        const productsArray = Array.isArray(data) ? data : (data.products || []);
+        setProducts(productsArray);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setProducts([]);
+      } finally {
         setLoading(false);
-      });
-  }, [search, category]);
+      }
+    };
+
+    fetchProducts();
+  }, [debouncedSearch, category]);
 
   const getTitle = (product: Product) => {
     return product.translations[locale]?.title || product.translations.en?.title;

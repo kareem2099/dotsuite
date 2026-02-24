@@ -35,13 +35,14 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🔐 **Full Auth System** — Register, Login, Email Verification, Forgot/Reset Password
 - 🌍 **Multi-language** — English, Arabic, French, Russian, German
 - 🌙 **Dark / Light Theme** — System-aware with manual toggle
-- 📦 **Product Catalog** — VS Code extensions with live GitHub data
+- 📦 **Product Catalog** — VS Code, Next.js, Python tools with live GitHub data
 - 📖 **Live README & Changelog** — Fetched directly from GitHub repos
 - 🔄 **GitHub Webhooks** — Auto cache revalidation on push/release
-- 🛡️ **Rate Limiting** — MongoDB-backed atomic rate limiting
+- 🛡️ **Rate Limiting** — MongoDB-backed atomic rate limiting (60 req/min)
 - 📧 **HTML Emails** — Professional transactional emails via Nodemailer
-- 👤 **User Profiles** — Avatar, bio, social links, settings
-- 📱 **Responsive** — Mobile-first design
+- 👤 **User Dashboard** — Stats, profile, settings, activity
+- 📱 **Responsive** — Mobile-first design with ultra-wide support
+- ⚡ **Debounced Search** — Optimized search with useDebounce hook
 
 ---
 

@@ -8,7 +8,8 @@
     "register": "إنشاء حساب",
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "dashboard": "لوحة التحكم"
   },
   "Product": {
     "title": "منتجاتنا",
@@ -309,6 +310,20 @@
     "medium": "متوسط",
     "strong": "قوي",
     "veryStrong": "قوي جداً"
+  },
+  "Dashboard": {
+    "logout": "تسجيل الخروج",
+    "profile": "الملف الشخصي",
+    "manageProfile": "إدارة معلومات ملفك الشخصي",
+    "settings": "الإعدادات",
+    "accountSettings": "تفضيلات الحساب",
+    "browseProducts": "تصفح المنتجات",
+    "discoverTools": "اكتشف أدوات المطورين",
+    "totalProducts": "إجمالي المنتجات",
+    "downloads": "التنزيلات",
+    "reviews": "التقييمات",
+    "recentActivity": "النشاط الأخير",
+    "noActivity": "لا يوجد نشاط حديث"
   },
   "Contact": {
     "title": "تواصل معنا",

@@ -8,7 +8,8 @@
     "register": "Inscription",
     "profile": "Profil",
     "settings": "Paramètres",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "dashboard": "Tableau de bord"
   },
   "Product": {
     "title": "Nos produits",
@@ -308,6 +309,20 @@
     "medium": "Moyen",
     "strong": "Fort",
     "veryStrong": "Très fort"
+  },
+  "Dashboard": {
+    "logout": "Se déconnecter",
+    "profile": "Profil",
+    "manageProfile": "Gérez les informations de votre profil",
+    "settings": "Paramètres",
+    "accountSettings": "Préférences du compte",
+    "browseProducts": "Parcourir les produits",
+    "discoverTools": "Découvrez nos outils de développement",
+    "totalProducts": "Total des produits",
+    "downloads": "Téléchargements",
+    "reviews": "Avis",
+    "recentActivity": "Activité récente",
+    "noActivity": "Aucune activité récente"
   },
   "Contact": {
     "title": "Contactez-nous",

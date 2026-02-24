@@ -82,13 +82,6 @@ export default function UserMenu({ isMobile = false, onClose }: UserMenuProps) {
 
       {dropdownOpen && (
         <>
-          {/* Backdrop */}
-          {!isMobile && (
-            <div
-              className="fixed inset-0 z-10"
-              onClick={() => setDropdownOpen(false)}
-            />
-          )}
           {/* Dropdown */}
           <div className={`${isMobile ? "relative" : "absolute right-0"} mt-3 w-56 bg-(--card-bg) border border-(--card-border) rounded-xl shadow-xl z-20 overflow-hidden`}>
             {/* User Info */}

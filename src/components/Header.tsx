@@ -55,7 +55,15 @@ export default function Header() {
 
             {/* User Menu or Login/Register */}
             {status === "authenticated" ? (
-              <UserMenu />
+              <div className="flex items-center gap-4">
+                <Link
+                  href={`/${locale}/dashboard`}
+                  className="text-sm font-semibold text-[#10b981] bg-[#10b981]/10 border border-[#10b981]/20 px-4 py-2 rounded-lg hover:bg-[#10b981] hover:text-(--background) transition-all duration-300"
+                >
+                  {tNav("dashboard") || "Dashboard"}
+                </Link>
+                <UserMenu />
+              </div>
             ) : (
               <div className="flex items-center gap-3">
                 <Link

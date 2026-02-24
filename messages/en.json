@@ -8,7 +8,8 @@
     "register": "Register",
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Sign Out"
+    "logout": "Sign Out",
+    "dashboard": "Dashboard"
   },
   "Product": {
     "title": "Our Products",
@@ -308,6 +309,20 @@
     "medium": "Medium",
     "strong": "Strong",
     "veryStrong": "Very Strong"
+  },
+  "Dashboard": {
+    "logout": "Sign Out",
+    "profile": "Profile",
+    "manageProfile": "Manage your profile information",
+    "settings": "Settings",
+    "accountSettings": "Account preferences",
+    "browseProducts": "Browse Products",
+    "discoverTools": "Discover our developer tools",
+    "totalProducts": "Total Products",
+    "downloads": "Downloads",
+    "reviews": "Reviews",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity"
   },
   "Contact": {
     "title": "Get in Touch",

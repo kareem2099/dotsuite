@@ -18,6 +18,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0] — 2026-02-24
+
+### Added
+- Dashboard with stats from MongoDB
+- Dashboard link in Header for authenticated users
+- Translations for dashboard (EN, AR, FR, DE, RU)
+- Middleware protection for dashboard routes
+- Ultra-wide screen support for dashboard
+- Rate limiting (60 req/min) on products API
+- useDebounce hook for search optimization
+
+### Fixed
+- Middleware regex bug for protected routes
+- products.map error in ProductsPage
+- Variable naming conflict in ProductsPage
+- Duplicate click outside handler in UserMenu
+
+---
+
 ## [0.1.0] — 2026-02-23
 
 ### Added

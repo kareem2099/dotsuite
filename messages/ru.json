@@ -8,7 +8,8 @@
     "register": "Регистрация",
     "profile": "Профиль",
     "settings": "Настройки",
-    "logout": "Выход"
+    "logout": "Выход",
+    "dashboard": "Панель управления"
   },
   "Product": {
     "title": "Наши продукты",
@@ -308,6 +309,20 @@
     "medium": "Средний",
     "strong": "Сильный",
     "veryStrong": "Очень сильный"
+  },
+  "Dashboard": {
+    "logout": "Выход",
+    "profile": "Профиль",
+    "manageProfile": "Управление информацией профиля",
+    "settings": "Настройки",
+    "accountSettings": "Настройки аккаунта",
+    "browseProducts": "Просмотр продуктов",
+    "discoverTools": "Откройте наши инструменты для разработчиков",
+    "totalProducts": "Всего продуктов",
+    "downloads": "Загрузки",
+    "reviews": "Отзывы",
+    "recentActivity": "Недавняя активность",
+    "noActivity": "Нет недавней активности"
   },
   "Contact": {
     "title": "Связаться с нами",

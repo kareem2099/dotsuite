@@ -8,7 +8,8 @@
     "register": "Registrieren",
     "profile": "Profil",
     "settings": "Einstellungen",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "dashboard": "Dashboard"
   },
   "Product": {
     "title": "Unsere Produkte",
@@ -308,6 +309,20 @@
     "medium": "Mittel",
     "strong": "Stark",
     "veryStrong": "Sehr stark"
+  },
+  "Dashboard": {
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "manageProfile": "Verwalten Sie Ihre Profilinformationen",
+    "settings": "Einstellungen",
+    "accountSettings": "Kontoeinstellungen",
+    "browseProducts": "Produkte durchsuchen",
+    "discoverTools": "Entdecken Sie unsere Entwickler-Tools",
+    "totalProducts": "Gesamtprodukte",
+    "downloads": "Downloads",
+    "reviews": "Bewertungen",
+    "recentActivity": "Letzte Aktivität",
+    "noActivity": "Keine aktuelle Aktivität"
   },
   "Contact": {
     "title": "Kontaktieren Sie uns",
