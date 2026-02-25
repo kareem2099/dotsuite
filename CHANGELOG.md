@@ -18,6 +18,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.0] — 2026-02-25
+
+### Added
+- UserAvatar component with next/image optimization
+- DashboardSkeleton for better loading experience
+- UserAvatarSkeleton for avatar loading states
+
+### Fixed
+- CSS variables consistency (replaced hardcoded #10b981 with var(--primary))
+- Theme colors now configurable from single location (globals.css)
+
+---
+
+
 ## [0.2.0] — 2026-02-24
 
 ### Added

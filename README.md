@@ -43,6 +43,8 @@ It features a full authentication system, multi-language support, GitHub integra
 - 👤 **User Dashboard** — Stats, profile, settings, activity
 - 📱 **Responsive** — Mobile-first design with ultra-wide support
 - ⚡ **Debounced Search** — Optimized search with useDebounce hook
+- 🎭 **Loading Skeletons** — Smooth loading experience with skeleton components
+- 🖼️ **Image Optimization** — next/image for avatars with lazy loading
 
 ---
 
