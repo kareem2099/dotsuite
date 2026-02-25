@@ -76,7 +76,7 @@ export default function Login() {
       <section className="max-w-6xl mx-auto px-6 py-12 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           {t("welcomeBack").split(" ")[0]}{" "}
-          <span className="text-[#10b981]">
+          <span className="text-(--primary)">
             {t("welcomeBack").split(" ").slice(1).join(" ")}
           </span>
         </h1>
@@ -101,7 +101,7 @@ export default function Login() {
                 type="email"
                 id="email"
                 {...register("email")}
-                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
+                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
                   errors.email ? "border-red-500" : "border-(--card-border)"
                 }`}
                 placeholder="you@example.com"
@@ -120,7 +120,7 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   {...register("password")}
-                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
+                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
                     errors.password ? "border-red-500" : "border-(--card-border)"
                   }`}
                   placeholder="••••••••"
@@ -128,7 +128,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "left-3" : "right-3"} text-(--text-muted) hover:text-[#10b981] transition-colors`}
+                  className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "left-3" : "right-3"} text-(--text-muted) hover:text-(--primary) transition-colors`}
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,13 +151,13 @@ export default function Login() {
               <label className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 rounded border-(--card-border) bg-(--background) text-[#10b981] focus:ring-[#10b981]"
+                  className="w-4 h-4 rounded border-(--card-border) bg-(--background) text-(--primary) focus:ring-(--primary)"
                 />
                 <span className="text-(--text-muted)">{t("rememberMe")}</span>
               </label>
               <Link
                 href={`/${locale}/forgot-password`}
-                className="text-sm text-[#10b981] hover:text-[#059669] transition-colors"
+                className="text-sm text-(--primary) hover:text-(--primary-hover) transition-colors"
               >
                 {t("forgotPassword")}
               </Link>
@@ -166,7 +166,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full px-6 py-3 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? t("signingIn") : t("signIn")}
             </button>
@@ -207,7 +207,7 @@ export default function Login() {
         <div className="mt-6 text-center">
           <Link
             href={`/${locale}`}
-            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-[#10b981] transition-colors"
+            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-(--primary) transition-colors"
           >
             <span>←</span>
             <span>{t("backToHome")}</span>

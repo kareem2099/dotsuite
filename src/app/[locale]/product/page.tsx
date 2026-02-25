@@ -75,7 +75,7 @@ export default function ProductsPage() {
       {/* Header */}
       <section className="max-w-6xl mx-auto px-6 py-16 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          {t("title").split(" ")[0]} <span className="text-[#10b981]">{t("title").split(" ").slice(1).join(" ")}</span>
+          {t("title").split(" ")[0]} <span className="text-(--primary)">{t("title").split(" ").slice(1).join(" ")}</span>
         </h1>
         <p className="text-xl text-(--text-muted) max-w-2xl mx-auto">
           {t("subtitle")}
@@ -95,7 +95,7 @@ export default function ProductsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("search")}
-              className="w-full pl-11 pr-4 py-3 bg-(--card-bg) border border-(--card-border) rounded-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors"
+              className="w-full pl-11 pr-4 py-3 bg-(--card-bg) border border-(--card-border) rounded-lg text-sm focus:border-(--primary) focus:outline-none transition-colors"
             />
           </div>
 
@@ -107,8 +107,8 @@ export default function ProductsPage() {
                 onClick={() => setCategory(cat)}
                 className={`px-4 py-3 rounded-lg text-sm font-medium capitalize transition-colors ${
                   category === cat
-                    ? "bg-[#10b981] text-[#0a0a0a]"
-                    : "bg-(--card-bg) border border-(--card-border) text-(--text-muted) hover:border-[#10b981] hover:text-[#10b981]"
+                    ? "bg-(--primary) text-[#0a0a0a]"
+                    : "bg-(--card-bg) border border-(--card-border) text-(--text-muted) hover:border-(--primary) hover:text-(--primary)"
                 }`}
               >
                 {cat === "all" ? t("all") : `${categoryIcons[cat]} ${cat}`}
@@ -136,20 +136,20 @@ export default function ProductsPage() {
               <Link
                 key={product._id}
                 href={`/${locale}/product/${product.slug}`}
-                className="group p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-[#10b981] transition-all duration-300 hover:-translate-y-1"
+                className="group p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-(--primary) transition-all duration-300 hover:-translate-y-1"
               >
                 {/* Category Badge */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs px-2 py-1 bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/20 rounded-full capitalize">
+                  <span className="text-xs px-2 py-1 bg-(--primary)/10 text-(--primary) border border-(--primary)/20 rounded-full capitalize">
                     {categoryIcons[product.category]} {product.category}
                   </span>
-                  <svg className="w-4 h-4 text-(--text-muted) group-hover:text-[#10b981] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-(--text-muted) group-hover:text-(--primary) transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-lg font-bold mb-2 group-hover:text-[#10b981] transition-colors">
+                <h3 className="text-lg font-bold mb-2 group-hover:text-(--primary) transition-colors">
                   {getTitle(product)}
                 </h3>
 

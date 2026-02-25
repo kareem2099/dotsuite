@@ -31,12 +31,12 @@ export default async function Home({ params }: Props) {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-6 py-24 text-center">
-        <div className="inline-block px-4 py-2 mb-6 text-sm font-medium text-[#10b981] bg-[#10b981]/10 rounded-full border border-[#10b981]/20">
+        <div className="inline-block px-4 py-2 mb-6 text-sm font-medium text-(--primary) bg-(--primary)/10 rounded-full border border-(--primary)/20">
           {t("heroBadge")}
         </div>
         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
           {t("title")}{" "}
-          <span className="text-[#10b981]">dotsuite</span>
+          <span className="text-(--primary)">dotsuite</span>
         </h1>
         <p className="text-xl text-(--text-muted) max-w-2xl mx-auto mb-10">
           {t("subtitle")}
@@ -44,13 +44,13 @@ export default async function Home({ params }: Props) {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href={`/${locale}/product`}
-            className="px-8 py-4 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200"
+            className="px-8 py-4 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200"
           >
             {t("viewProducts")}
           </Link>
           <Link
             href={`/${locale}/about`}
-            className="px-8 py-4 border border-(--card-border) text-(--foreground) font-semibold rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors duration-200"
+            className="px-8 py-4 border border-(--card-border) text-(--foreground) font-semibold rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors duration-200"
           >
             {t("learnMore")}
           </Link>
@@ -66,7 +66,7 @@ export default async function Home({ params }: Props) {
           {products.map((product, index) => (
             <div
               key={index}
-              className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-[#10b981] transition-colors duration-300"
+              className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-(--primary) transition-colors duration-300"
             >
               <div className="text-4xl mb-4">{product.icon}</div>
               <h3 className="text-xl font-semibold mb-3">{product.title}</h3>
@@ -87,7 +87,7 @@ export default async function Home({ params }: Props) {
           </p>
           <Link
             href={`/${locale}/product`}
-            className="inline-block px-8 py-4 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200"
+            className="inline-block px-8 py-4 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200"
           >
             {t("getStarted")}
           </Link>

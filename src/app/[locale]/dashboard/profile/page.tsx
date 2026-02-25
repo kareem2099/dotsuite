@@ -8,6 +8,7 @@ import DeleteAccountModal from "@/components/DeleteAccountModal";
 import SocialLinks from "@/components/SocialLinks";
 import LocationPicker from "@/components/LocationPicker";
 import ProfileSkeleton from "@/components/skeletons/ProfileSkeleton";
+import UserAvatar from "@/components/UserAvatar";
 
 
 export default function Profile() {
@@ -101,7 +102,7 @@ export default function Profile() {
         {!isEditing ? (
           <button
             onClick={() => setIsEditing(true)}
-            className="flex items-center gap-2 px-4 py-2 border border-(--card-border) rounded-lg text-sm hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 border border-(--card-border) rounded-lg text-sm hover:border-(--primary) hover:text-(--primary) transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -119,7 +120,7 @@ export default function Profile() {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="flex items-center gap-2 px-4 py-2 bg-[#10b981] text-(--background) font-semibold rounded-lg text-sm hover:bg-[#059669] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-(--primary) text-(--background) font-semibold rounded-lg text-sm hover:bg-(--primary-hover) transition-colors disabled:opacity-50"
             >
               {isSaving ? (
                 <div className="w-4 h-4 border-2 border-(--background) border-t-transparent rounded-full animate-spin" />
@@ -136,7 +137,7 @@ export default function Profile() {
 
       {/* Success Toast */}
       {saved && (
-        <div className="mb-6 px-4 py-3 bg-[#10b981]/10 border border-[#10b981]/20 rounded-lg text-sm text-[#10b981] flex items-center gap-2">
+        <div className="mb-6 px-4 py-3 bg-(--primary)/10 border border-(--primary)/20 rounded-lg text-sm text-(--primary) flex items-center gap-2">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
@@ -157,21 +158,15 @@ export default function Profile() {
       {/* Avatar + Basic Info */}
       <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl mb-6">
         <div className="flex items-center gap-6">
-          {session?.user?.image ? (
-            <img
-              src={session.user.image}
-              alt="avatar"
-              className="w-20 h-20 rounded-full border-2 border-[#10b981]"
-            />
-          ) : (
-            <div className="w-20 h-20 rounded-full bg-[#10b981] flex items-center justify-center text-(--background) font-bold text-2xl">
-              {session?.user?.name?.charAt(0).toUpperCase()}
-            </div>
-          )}
+          <UserAvatar
+            src={session?.user?.image}
+            name={session?.user?.name}
+            size="lg"
+          />
           <div>
             <h2 className="text-2xl font-bold">{session?.user?.name}</h2>
             <p className="text-(--text-muted) mt-1">{session?.user?.email}</p>
-            <span className="inline-block mt-2 px-3 py-1 text-xs bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/20 rounded-full">
+            <span className="inline-block mt-2 px-3 py-1 text-xs bg-(--primary)/10 text-(--primary) border border-(--primary)/20 rounded-full">
               {t("active")}
             </span>
           </div>
@@ -190,7 +185,7 @@ export default function Profile() {
                 type="text"
                 value={form.displayName}
                 onChange={(e) => setForm({ ...form, displayName: e.target.value })}
-                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-(--primary) focus:outline-none transition-colors"
               />
             ) : (
               <div className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm">
@@ -208,7 +203,7 @@ export default function Profile() {
                 onChange={(e) => setForm({ ...form, bio: e.target.value })}
                 rows={3}
                 placeholder={t("bioPlaceholder")}
-                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors resize-none"
+                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-(--primary) focus:outline-none transition-colors resize-none"
               />
             ) : (
               <div className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm min-h-20">
@@ -236,12 +231,12 @@ export default function Profile() {
                 value={form.website}
                 onChange={(e) => setForm({ ...form, website: e.target.value })}
                 placeholder="https://yourwebsite.com"
-                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-(--primary) focus:outline-none transition-colors"
               />
             ) : (
               <div className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm">
                 {form.website ? (
-                  <a href={form.website} target="_blank" className="text-[#10b981] hover:underline">
+                  <a href={form.website} target="_blank" className="text-(--primary) hover:underline">
                     {form.website}
                   </a>
                 ) : (

@@ -56,7 +56,7 @@ export default function Contact() {
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           {t("title")}
         </h1>
-        <p className="text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+        <p className="text-xl text-(--text-muted) max-w-2xl mx-auto">
           {t("subtitle")}
         </p>
       </section>

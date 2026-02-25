@@ -5,6 +5,8 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import UserAvatar from "@/components/UserAvatar";
+import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -44,11 +46,7 @@ export default function Dashboard() {
   }, [status, router, locale]);
 
   if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#10b981] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (!session) return null;
@@ -60,17 +58,11 @@ export default function Dashboard() {
         <div className="w-full px-6 md:px-12 lg:px-20 py-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              {session.user?.image ? (
-                <img
-                  src={session.user.image}
-                  alt={session.user.name || "User"}
-                  className="w-16 h-16 rounded-full border-2 border-[#10b981]"
-                />
-              ) : (
-                <div className="w-16 h-16 rounded-full bg-[#10b981] flex items-center justify-center text-(--background) font-bold text-xl">
-                  {session.user?.name?.charAt(0).toUpperCase()}
-                </div>
-              )}
+              <UserAvatar
+                src={session.user?.image}
+                name={session.user?.name}
+                size="md"
+              />
               <div>
                 <h1 className="text-2xl font-bold">{session.user?.name}</h1>
                 <p className="text-(--text-muted)">{session.user?.email}</p>
@@ -95,11 +87,11 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Link
             href={`/${locale}/dashboard/profile`}
-            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-[#10b981] transition-colors group"
+            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-(--primary) transition-colors group"
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#10b981]/10 flex items-center justify-center group-hover:bg-[#10b981]/20 transition-colors">
-                <svg className="w-6 h-6 text-[#10b981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-(--primary)/10 flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
+                <svg className="w-6 h-6 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
@@ -112,11 +104,11 @@ export default function Dashboard() {
 
           <Link
             href={`/${locale}/dashboard/settings`}
-            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-[#10b981] transition-colors group"
+            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-(--primary) transition-colors group"
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#10b981]/10 flex items-center justify-center group-hover:bg-[#10b981]/20 transition-colors">
-                <svg className="w-6 h-6 text-[#10b981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-(--primary)/10 flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
+                <svg className="w-6 h-6 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -130,11 +122,11 @@ export default function Dashboard() {
 
           <Link
             href={`/${locale}/product`}
-            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-[#10b981] transition-colors group"
+            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-(--primary) transition-colors group"
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#10b981]/10 flex items-center justify-center group-hover:bg-[#10b981]/20 transition-colors">
-                <svg className="w-6 h-6 text-[#10b981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-(--primary)/10 flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
+                <svg className="w-6 h-6 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
@@ -154,8 +146,8 @@ export default function Dashboard() {
                 <p className="text-sm text-(--text-muted)">{t("totalProducts")}</p>
                 <p className="text-3xl font-bold mt-1">{stats.totalProducts}</p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-[#10b981]/10 flex items-center justify-center">
-                <svg className="w-6 h-6 text-[#10b981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-(--primary)/10 flex items-center justify-center">
+                <svg className="w-6 h-6 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
@@ -203,7 +195,7 @@ export default function Dashboard() {
             <p className="text-(--text-muted)">{t("noActivity")}</p>
             <Link
               href={`/${locale}/product`}
-              className="inline-block mt-4 text-[#10b981] hover:underline"
+              className="inline-block mt-4 text-(--primary) hover:underline"
             >
               {t("browseProducts")}
             </Link>

@@ -67,22 +67,22 @@ export default async function About({ params }: Props) {
             </p>
           </div>
           <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
-            <h3 className="text-xl font-bold mb-6 text-[#10b981]">{t("whatWeDo")}</h3>
+            <h3 className="text-xl font-bold mb-6 text-(--primary)">{t("whatWeDo")}</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <span className="text-[#10b981] text-xl">▹</span>
+                <span className="text-(--primary) text-xl">▹</span>
                 <span className="text-(--text-muted)">{t("whatWeDo1")}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#10b981] text-xl">▹</span>
+                <span className="text-(--primary) text-xl">▹</span>
                 <span className="text-(--text-muted)">{t("whatWeDo2")}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#10b981] text-xl">▹</span>
+                <span className="text-(--primary) text-xl">▹</span>
                 <span className="text-(--text-muted)">{t("whatWeDo3")}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#10b981] text-xl">▹</span>
+                <span className="text-(--primary) text-xl">▹</span>
                 <span className="text-(--text-muted)">{t("whatWeDo4")}</span>
               </li>
             </ul>
@@ -100,11 +100,11 @@ export default async function About({ params }: Props) {
             <div key={index} className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl">
               <div className="flex justify-between mb-2">
                 <span className="font-semibold">{skill.name}</span>
-                <span className="text-[#10b981]">{skill.level}%</span>
+                <span className="text-(--primary)">{skill.level}%</span>
               </div>
               <div className="h-2 bg-(--card-border) rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#10b981] rounded-full"
+                  className="h-full bg-(--primary) rounded-full"
                   style={{ width: `${skill.level}%` }}
                 />
               </div>
@@ -130,12 +130,12 @@ export default async function About({ params }: Props) {
               >
                 <div className="flex-1 md:text-right">
                   <div className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl">
-                    <span className="text-[#10b981] font-bold">{item.year}</span>
+                    <span className="text-(--primary) font-bold">{item.year}</span>
                     <h3 className="text-lg font-semibold mt-2">{item.title}</h3>
                     <p className="text-(--text-muted) text-sm mt-1">{item.description}</p>
                   </div>
                 </div>
-                <div className="w-4 h-4 bg-[#10b981] rounded-full mx-4 relative z-10" />
+                <div className="w-4 h-4 bg-(--primary) rounded-full mx-4 relative z-10" />
                 <div className="flex-1" />
               </div>
             ))}
@@ -154,7 +154,7 @@ export default async function About({ params }: Props) {
           </p>
           <a
             href="mailto:hello@dotsuite.dev"
-            className="inline-block px-8 py-4 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200"
+            className="inline-block px-8 py-4 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200"
           >
             {t("getInTouch")}
           </a>

@@ -1,0 +1,55 @@
+{
+  "version": "0.3.0",
+  "releaseDate": "2026-02-24",
+  "description": "Performance & Bug Fixes",
+  "planned": [
+    {
+      "id": 1,
+      "title": "Review and verify all pages work",
+      "description": "Test all pages for any errors or issues",
+      "files": [],
+      "status": "completed"
+    },
+    {
+      "id": 2,
+      "title": "Add next/image optimization for user avatars",
+      "description": "Use next/image for user avatars in dashboard and UserMenu",
+      "files": [
+        "src/components/UserAvatar.tsx",
+        "src/app/[locale]/dashboard/page.tsx",
+        "src/app/[locale]/dashboard/profile/page.tsx",
+        "src/components/UserMenu.tsx"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": 3,
+      "title": "Add loading skeletons to more pages",
+      "description": "Add skeleton components for better UX",
+      "files": [
+        "ProfileSkeleton.tsx - used in profile page",
+        "SettingsSkeleton.tsx - used in settings page",
+        "ProductCardSkeleton.tsx - used in products page",
+        "ProductDetailSkeleton.tsx - used in product detail page",
+        "DashboardSkeleton.tsx - NEW: used in dashboard page",
+        "UserAvatarSkeleton.tsx - NEW: reusable avatar skeleton component"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": 4,
+      "title": "Fix CSS variables consistency",
+      "description": "Use CSS variables (var(--primary)) instead of hardcoded #10b981 - all 155 occurrences updated",
+      "files": [
+        "All TSX and CSS files in src/"
+      ],
+      "status": "completed"
+    }
+  ],
+  "completed": [],
+  "notes": [
+    "Contact page doesn't need debounce - it's a form submit, not search",
+    "Product model has no image field - skipping product image optimization",
+    "Added next.config.ts for remotePatterns (GitHub & Google avatars)"
+  ]
+}

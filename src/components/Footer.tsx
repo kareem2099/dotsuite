@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href={`/${locale}`} className="text-2xl font-bold text-[#10b981]">
+            <Link href={`/${locale}`} className="text-2xl font-bold text-(--primary)">
               dotsuite
             </Link>
             <p className="mt-4 text-(--text-muted) text-sm">
@@ -40,34 +40,34 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">{t("quickLinks")}</h4>
             <ul className="space-y-2 text-sm text-(--text-muted)">
               <li>
-                <Link href={`/${locale}`} className="hover:text-[#10b981] transition-colors">
+                <Link href={`/${locale}`} className="hover:text-(--primary) transition-colors">
                   {tNav("home")}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/product`} className="hover:text-[#10b981] transition-colors">
+                <Link href={`/${locale}/product`} className="hover:text-(--primary) transition-colors">
                   {tNav("product")}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/about`} className="hover:text-[#10b981] transition-colors">
+                <Link href={`/${locale}/about`} className="hover:text-(--primary) transition-colors">
                   {tNav("about")}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/contact`} className="hover:text-[#10b981] transition-colors">
+                <Link href={`/${locale}/contact`} className="hover:text-(--primary) transition-colors">
                   {tNav("contact")}
                 </Link>
               </li>
               {!session && (
                 <>
                   <li>
-                    <Link href={`/${locale}/login`} className="hover:text-[#10b981] transition-colors">
+                    <Link href={`/${locale}/login`} className="hover:text-(--primary) transition-colors">
                       {tNav("login")}
                     </Link>
                   </li>
                   <li>
-                    <Link href={`/${locale}/register`} className="hover:text-[#10b981] transition-colors">
+                    <Link href={`/${locale}/register`} className="hover:text-(--primary) transition-colors">
                       {tNav("register")}
                     </Link>
                   </li>
@@ -85,7 +85,7 @@ export default function Footer() {
                 href="https://www.linkedin.com/in/freerave/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="LinkedIn"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@ export default function Footer() {
                 href="https://www.tiktok.com/@dotfreerave"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="TikTok"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -109,7 +109,7 @@ export default function Footer() {
                 href="https://x.com/FreeRave2"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="X (Twitter)"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ export default function Footer() {
                 href="https://www.youtube.com/@DotFreeRave"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="YouTube"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -133,7 +133,7 @@ export default function Footer() {
                 href="https://dev.to/freerave"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="Dev.to"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -145,7 +145,7 @@ export default function Footer() {
                 href="https://medium.com/@freerave"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="Medium"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -157,7 +157,7 @@ export default function Footer() {
                 href="https://www.facebook.com/profile.php?id=61582297589938"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -169,7 +169,7 @@ export default function Footer() {
                 href="https://www.instagram.com/dotfreerave/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors"
                 title="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -192,11 +192,11 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t("emailPlaceholder")}
                 required
-                className="w-full px-4 py-2 bg-(--card-bg) border border-(--card-border) rounded-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors"
+                className="w-full px-4 py-2 bg-(--card-bg) border border-(--card-border) rounded-lg text-sm focus:border-(--primary) focus:outline-none transition-colors"
               />
               <button
                 type="submit"
-                className="w-full px-4 py-2 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors text-sm"
+                className="w-full px-4 py-2 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
               >
                 {t("subscribe")}
               </button>

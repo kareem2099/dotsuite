@@ -5,6 +5,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import UserAvatar from "@/components/UserAvatar";
 
 interface UserMenuProps {
   isMobile?: boolean;
@@ -59,17 +60,11 @@ export default function UserMenu({ isMobile = false, onClose }: UserMenuProps) {
         className="flex items-center gap-2 focus:outline-none"
         aria-label="User menu"
       >
-        {session.user?.image ? (
-          <img
-            src={session.user.image}
-            alt="avatar"
-            className="w-9 h-9 rounded-full border-2 border-(--card-border) hover:border-[#10b981] transition-colors"
-          />
-        ) : (
-          <div className="w-9 h-9 rounded-full bg-[#10b981] flex items-center justify-center text-(--background) font-bold text-sm border-2 border-(--card-border)">
-            {session.user?.name?.charAt(0).toUpperCase()}
-          </div>
-        )}
+        <UserAvatar
+          src={session.user?.image}
+          name={session.user?.name}
+          size="sm"
+        />
         {!isMobile && (
           <svg
             className={`w-4 h-4 text-(--text-muted) transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}

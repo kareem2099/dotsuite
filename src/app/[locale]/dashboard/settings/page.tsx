@@ -57,7 +57,7 @@ export default function Settings() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-bold mb-8">
-        <span className="text-[#10b981]">{t("title")}</span>
+        <span className="text-(--primary)">{t("title")}</span>
       </h1>
 
       {/* Tabs */}
@@ -68,7 +68,7 @@ export default function Settings() {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
               activeTab === tab
-                ? "bg-[#10b981] text-(--background)"
+                ? "bg-(--primary) text-(--background)"
                 : "text-(--text-muted) hover:text-(--foreground)"
             }`}
           >
@@ -79,7 +79,7 @@ export default function Settings() {
 
       {/* Success Toast */}
       {saved && (
-        <div className="mb-6 px-4 py-3 bg-[#10b981]/10 border border-[#10b981]/20 rounded-lg text-sm text-[#10b981] flex items-center gap-2">
+        <div className="mb-6 px-4 py-3 bg-(--primary)/10 border border-(--primary)/20 rounded-lg text-sm text-(--primary) flex items-center gap-2">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
@@ -179,7 +179,7 @@ export default function Settings() {
                   </svg>
                   <span className="text-sm">{t("google")}</span>
                 </div>
-                <span className="text-xs px-2 py-1 bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/20 rounded-full">
+                <span className="text-xs px-2 py-1 bg-(--primary)/10 text-(--primary) border border-(--primary)/20 rounded-full">
                   {t("connected")}
                 </span>
               </div>
@@ -219,7 +219,7 @@ export default function Settings() {
                 <button
                   onClick={() => setNotifications({ ...notifications, [key]: !notifications[key as keyof typeof notifications] })}
                   className={`relative w-11 h-6 rounded-full transition-colors ${
-                    notifications[key as keyof typeof notifications] ? "bg-[#10b981]" : "bg-(--card-border)"
+                    notifications[key as keyof typeof notifications] ? "bg-(--primary)" : "bg-(--card-border)"
                   }`}
                 >
                   <span
@@ -252,7 +252,7 @@ export default function Settings() {
                   <button
                     onClick={() => setPrivacy({ ...privacy, [key]: !privacy[key as keyof typeof privacy] })}
                     className={`relative w-11 h-6 rounded-full transition-colors ${
-                      privacy[key as keyof typeof privacy] ? "bg-[#10b981]" : "bg-(--card-border)"
+                      privacy[key as keyof typeof privacy] ? "bg-(--primary)" : "bg-(--card-border)"
                     }`}
                   >
                     <span
@@ -289,7 +289,7 @@ export default function Settings() {
       <div className="mt-8 flex justify-end">
         <button
           onClick={handleSave}
-          className="flex items-center gap-2 px-6 py-3 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors"
+          className="flex items-center gap-2 px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

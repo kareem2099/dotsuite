@@ -82,7 +82,7 @@ export default function SocialLinks({ twitter, github, isEditing, onChange }: Pr
                   value={value}
                   onChange={(e) => onChange(key, e.target.value)}
                   placeholder={t("usernamePlaceholder")}
-                  className="flex-1 px-4 py-3 bg-(--background) border border-(--card-border) rounded-r-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors"
+                  className="flex-1 px-4 py-3 bg-(--background) border border-(--card-border) rounded-r-lg text-sm focus:border-(--primary) focus:outline-none transition-colors"
                 />
               </div>
             ) : (
@@ -92,7 +92,7 @@ export default function SocialLinks({ twitter, github, isEditing, onChange }: Pr
                     href={`${baseUrl}${value}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#10b981] hover:underline flex items-center gap-2"
+                    className="text-(--primary) hover:underline flex items-center gap-2"
                   >
                     {icon}
                     {key === "twitter" ? `@${value}` : value}

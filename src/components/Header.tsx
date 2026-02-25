@@ -31,7 +31,7 @@ export default function Header() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-(--background)/90 backdrop-blur-sm border-b border-(--card-border)">
         <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <Link href={`/${locale}`} className="text-2xl font-bold text-[#10b981]">
+          <Link href={`/${locale}`} className="text-2xl font-bold text-(--primary)">
             dotsuite
           </Link>
 
@@ -41,7 +41,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-(--text-muted) hover:text-[#10b981] transition-colors duration-200"
+                className="text-(--text-muted) hover:text-(--primary) transition-colors duration-200"
               >
                 {link.label}
               </Link>
@@ -58,7 +58,7 @@ export default function Header() {
               <div className="flex items-center gap-4">
                 <Link
                   href={`/${locale}/dashboard`}
-                  className="text-sm font-semibold text-[#10b981] bg-[#10b981]/10 border border-[#10b981]/20 px-4 py-2 rounded-lg hover:bg-[#10b981] hover:text-(--background) transition-all duration-300"
+                  className="text-sm font-semibold text-(--primary) bg-(--primary)/10 border border-(--primary)/20 px-4 py-2 rounded-lg hover:bg-(--primary) hover:text-(--background) transition-all duration-300"
                 >
                   {tNav("dashboard") || "Dashboard"}
                 </Link>
@@ -68,13 +68,13 @@ export default function Header() {
               <div className="flex items-center gap-3">
                 <Link
                   href={`/${locale}/login`}
-                  className="px-4 py-2 text-(--text-muted) hover:text-[#10b981] transition-colors duration-200"
+                  className="px-4 py-2 text-(--text-muted) hover:text-(--primary) transition-colors duration-200"
                 >
                   {tNav("login")}
                 </Link>
                 <Link
                   href={`/${locale}/register`}
-                  className="px-4 py-2 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200"
+                  className="px-4 py-2 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200"
                 >
                   {tNav("register")}
                 </Link>
@@ -85,7 +85,7 @@ export default function Header() {
           {/* Mobile Menu Button - Hidden on desktop */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-2 text-(--text-muted) hover:text-[#10b981] transition-colors"
+            className="lg:hidden p-2 text-(--text-muted) hover:text-(--primary) transition-colors"
             aria-label="Open menu"
           >
             <svg

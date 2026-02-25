@@ -88,7 +88,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 key={link.href}
                 href={link.href}
                 onClick={onClose}
-                className="px-4 py-3 text-lg text-(--text-muted) hover:text-[#10b981] hover:bg-(--card-border) rounded-lg transition-colors"
+                className="px-4 py-3 text-lg text-(--text-muted) hover:text-(--primary) hover:bg-(--card-border) rounded-lg transition-colors"
               >
                 {link.label}
               </Link>
@@ -123,14 +123,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <Link
                 href={`/${locale}/login`}
                 onClick={onClose}
-                className="w-full px-4 py-3 text-center text-(--text-muted) hover:text-[#10b981] border border-(--card-border) rounded-lg transition-colors"
+                className="w-full px-4 py-3 text-center text-(--text-muted) hover:text-(--primary) border border-(--card-border) rounded-lg transition-colors"
               >
                 {tNav("login")}
               </Link>
               <Link
                 href={`/${locale}/register`}
                 onClick={onClose}
-                className="w-full px-4 py-3 text-center bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors"
+                className="w-full px-4 py-3 text-center bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
               >
                 {tNav("register")}
               </Link>

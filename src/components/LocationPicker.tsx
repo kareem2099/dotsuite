@@ -70,14 +70,14 @@ export default function LocationPicker({ value, isEditing, onChange, placeholder
               value={value}
               onChange={(e) => onChange(e.target.value)}
               placeholder={placeholder ?? "e.g. Cairo, Egypt"}
-              className="flex-1 px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors"
+              className="flex-1 px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-(--primary) focus:outline-none transition-colors"
             />
             <button
               type="button"
               onClick={handleDetect}
               disabled={isDetecting}
               title="Detect my location"
-              className="px-4 py-3 border border-(--card-border) rounded-lg hover:border-[#10b981] hover:text-[#10b981] transition-colors disabled:opacity-50"
+              className="px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors disabled:opacity-50"
             >
               {isDetecting ? (
                 <div className="w-4 h-4 border-2 border-(--text-muted) border-t-transparent rounded-full animate-spin" />

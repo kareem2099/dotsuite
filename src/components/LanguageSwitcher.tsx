@@ -42,7 +42,7 @@ export default function LanguageSwitcher() {
       value={locale}
       onChange={onSelectChange}
       disabled={isPending}
-      className="bg-(--card-bg) border border-(--card-border) text-(--text-muted) text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#10b981] transition-colors cursor-pointer"
+      className="bg-(--card-bg) border border-(--card-border) text-(--text-muted) text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-(--primary) transition-colors cursor-pointer"
     >
       {languages.map((lang) => (
         <option key={lang.code} value={lang.code}>

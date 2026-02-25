@@ -79,7 +79,7 @@ export default function ResetPassword() {
             <p className="text-red-500">{t("invalidToken")}</p>
             <Link
               href={`/${locale}/forgot-password`}
-              className="inline-block mt-4 text-[#10b981] hover:text-[#059669]"
+              className="inline-block mt-4 text-(--primary) hover:text-(--primary-hover)"
             >
               {t("forgotPassword")}
             </Link>
@@ -111,7 +111,7 @@ export default function ResetPassword() {
             
             <Link
               href={`/${locale}/login`}
-              className="inline-block mt-4 px-6 py-3 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors"
+              className="inline-block mt-4 px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
             >
               {t("signIn")}
             </Link>
@@ -127,7 +127,7 @@ export default function ResetPassword() {
       <section className="max-w-6xl mx-auto px-6 py-12 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           {t("resetPasswordTitle").split(" ")[0]}{" "}
-          <span className="text-[#10b981]">
+          <span className="text-(--primary)">
             {t("resetPasswordTitle").split(" ").slice(1).join(" ")}
           </span>
         </h1>
@@ -158,7 +158,7 @@ export default function ResetPassword() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg focus:border-[#10b981] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg focus:border-(--primary) focus:outline-none transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -173,7 +173,7 @@ export default function ResetPassword() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg focus:border-[#10b981] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg focus:border-(--primary) focus:outline-none transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -181,7 +181,7 @@ export default function ResetPassword() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full px-6 py-3 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? t("resettingPassword") : t("resetPassword")}
             </button>
@@ -190,7 +190,7 @@ export default function ResetPassword() {
           <div className="mt-6 text-center">
             <Link
               href={`/${locale}/login`}
-              className="text-[#10b981] hover:text-[#059669] transition-colors"
+              className="text-(--primary) hover:text-(--primary-hover) transition-colors"
             >
               ← {t("backToLogin")}
             </Link>
@@ -201,7 +201,7 @@ export default function ResetPassword() {
         <div className="mt-6 text-center">
           <Link
             href={`/${locale}`}
-            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-[#10b981] transition-colors"
+            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-(--primary) transition-colors"
           >
             <span>←</span>
             <span>{t("backToHome")}</span>

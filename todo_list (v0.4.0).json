@@ -1,0 +1,37 @@
+{
+  "version": "0.4.0",
+  "releaseDate": "",
+  "description": "Contact Page & SEO Improvements",
+  "planned": [
+    {
+      "id": 1,
+      "title": "Improve Contact Page",
+      "description": "Enhance contact page with better form handling and validation",
+      "files": [],
+      "status": "pending"
+    },
+    {
+      "id": 2,
+      "title": "Add SEO Meta Tags",
+      "description": "Add proper meta tags for all pages (title, description, Open Graph)",
+      "files": [],
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "title": "Add Accessibility Improvements",
+      "description": "Improve a11y with proper ARIA labels and keyboard navigation",
+      "files": [],
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "title": "Add Error Boundaries",
+      "description": "Add error boundaries for better error handling",
+      "files": [],
+      "status": "pending"
+    }
+  ],
+  "completed": [],
+  "notes": []
+}

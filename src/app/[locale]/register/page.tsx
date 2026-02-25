@@ -76,7 +76,7 @@ export default function Register() {
       <section className="max-w-6xl mx-auto px-6 py-12 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           {t("createAccount").split(" ")[0]}{" "}
-          <span className="text-[#10b981]">
+          <span className="text-(--primary)">
             {t("createAccount").split(" ").slice(1).join(" ")}
           </span>
         </h1>
@@ -108,7 +108,7 @@ export default function Register() {
                 type="text"
                 id="name"
                 {...register("name")}
-                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
+                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
                   errors.name ? "border-red-500" : "border-(--card-border)"
                 }`}
                 placeholder="John Doe"
@@ -127,7 +127,7 @@ export default function Register() {
                 type="email"
                 id="email"
                 {...register("email")}
-                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
+                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
                   errors.email ? "border-red-500" : "border-(--card-border)"
                 }`}
                 placeholder="you@example.com"
@@ -147,7 +147,7 @@ export default function Register() {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   {...register("password")}
-                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
+                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
                     errors.password ? "border-red-500" : "border-(--card-border)"
                   }`}
                   placeholder="Min 8 characters"
@@ -155,7 +155,7 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "left-3" : "right-3"} text-(--text-muted) hover:text-[#10b981] transition-colors`}
+                  className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "left-3" : "right-3"} text-(--text-muted) hover:text-(--primary) transition-colors`}
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -185,7 +185,7 @@ export default function Register() {
                   type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   {...register("confirmPassword")}
-                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
+                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
                     errors.confirmPassword ? "border-red-500" : "border-(--card-border)"
                   }`}
                   placeholder="Confirm your password"
@@ -193,7 +193,7 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "left-3" : "right-3"} text-(--text-muted) hover:text-[#10b981] transition-colors`}
+                  className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? "left-3" : "right-3"} text-(--text-muted) hover:text-(--primary) transition-colors`}
                 >
                   {showConfirmPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -219,15 +219,15 @@ export default function Register() {
                   type="checkbox"
                   id="terms"
                   {...register("terms")}
-                  className="w-4 h-4 mt-1 rounded border-(--card-border) bg-(--background) text-[#10b981] focus:ring-[#10b981]"
+                  className="w-4 h-4 mt-1 rounded border-(--card-border) bg-(--background) text-(--primary) focus:ring-(--primary)"
                 />
                 <label htmlFor="terms" className="text-sm text-(--text-muted)">
                   {t("iAgreeTerms")}{" "}
-                  <Link href={`/${locale}/terms`} className="text-[#10b981] hover:text-[#059669]">
+                  <Link href={`/${locale}/terms`} className="text-(--primary) hover:text-(--primary-hover)">
                     {t("termsOfService")}
                   </Link>{" "}
                   {t("and")}{" "}
-                  <Link href={`/${locale}/privacy`} className="text-[#10b981] hover:text-[#059669]">
+                  <Link href={`/${locale}/privacy`} className="text-(--primary) hover:text-(--primary-hover)">
                     {t("privacyPolicy")}
                   </Link>
                 </label>
@@ -242,7 +242,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={isLoading || success}
-              className="w-full px-6 py-3 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? t("creatingAccount") : success ? t("redirecting") : t("signUp")}
             </button>
@@ -283,7 +283,7 @@ export default function Register() {
         <div className="mt-6 text-center">
           <Link
             href={`/${locale}`}
-            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-[#10b981] transition-colors"
+            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-(--primary) transition-colors"
           >
             <span>←</span>
             <span>{t("backToHome")}</span>

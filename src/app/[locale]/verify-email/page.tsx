@@ -55,7 +55,7 @@ function VerifyEmailContent() {
         {status === "loading" && (
           <>
             <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-              <div className="w-12 h-12 border-2 border-[#10b981] border-t-transparent rounded-full animate-spin" />
+              <div className="w-12 h-12 border-2 border-(--primary) border-t-transparent rounded-full animate-spin" />
             </div>
             <h2 className="text-2xl font-bold mb-2">{t("verifyingEmail")}</h2>
             <p className="text-(--text-muted)">Please wait...</p>
@@ -64,8 +64,8 @@ function VerifyEmailContent() {
 
         {status === "success" && (
           <>
-            <div className="w-16 h-16 mx-auto mb-6 bg-[#10b981]/10 border border-[#10b981]/20 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-[#10b981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 mx-auto mb-6 bg-(--primary)/10 border border-(--primary)/20 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
@@ -73,7 +73,7 @@ function VerifyEmailContent() {
             <p className="text-(--text-muted) mb-8">{message}</p>
             <Link
               href={`/${locale}/login`}
-              className="inline-block px-6 py-3 bg-[#10b981] text-[#0a0a0a] font-semibold rounded-lg hover:bg-[#059669] transition-colors"
+              className="inline-block px-6 py-3 bg-(--primary) text-[#0a0a0a] font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
             >
               {t("goToLogin")}
             </Link>
@@ -92,13 +92,13 @@ function VerifyEmailContent() {
             <div className="flex flex-col gap-3">
               <Link
                 href={`/${locale}/login`}
-                className="inline-block px-6 py-3 bg-[#10b981] text-[#0a0a0a] font-semibold rounded-lg hover:bg-[#059669] transition-colors"
+                className="inline-block px-6 py-3 bg-(--primary) text-[#0a0a0a] font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
               >
                 {t("backToLogin")}
               </Link>
               <Link
                 href={`/${locale}/resend-verification`}
-                className="text-sm text-(--text-muted) hover:text-[#10b981] transition-colors"
+                className="text-sm text-(--text-muted) hover:text-(--primary) transition-colors"
               >
                 {t("resendVerification")} →
               </Link>
@@ -116,7 +116,7 @@ export default function VerifyEmailPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="w-12 h-12 border-2 border-[#10b981] border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-2 border-(--primary) border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

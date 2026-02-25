@@ -50,7 +50,7 @@ export default function LanguageSelector({ label, className = "" }: LanguageSele
         value={locale}
         onChange={onSelectChange}
         disabled={isPending}
-        className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-[#10b981] focus:outline-none transition-colors"
+        className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:border-(--primary) focus:outline-none transition-colors"
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>

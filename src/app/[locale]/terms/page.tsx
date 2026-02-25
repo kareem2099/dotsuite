@@ -5,7 +5,7 @@ export default function TermsPage() {
     <div className="min-h-screen py-16">
       <div className="max-w-4xl mx-auto px-6">
         <h1 className="text-4xl md:text-5xl font-bold mb-8">
-          Terms of <span className="text-[#10b981]">Service</span>
+          Terms of <span className="text-(--primary)">Service</span>
         </h1>
         
         <div className="prose dark:prose-invert max-w-none space-y-6">
@@ -55,7 +55,7 @@ export default function TermsPage() {
         <div className="mt-12 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[#10b981] hover:text-[#059669] transition-colors"
+            className="inline-flex items-center gap-2 text-(--primary) hover:text-(--primary-hover) transition-colors"
           >
             <span>←</span>
             <span>Back to Home</span>

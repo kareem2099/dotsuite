@@ -98,7 +98,7 @@ export default function ResendVerification() {
                   type="email"
                   id="email"
                   {...register("email")}
-                  className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
+                  className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
                     errors.email ? "border-red-500" : "border-(--card-border)"
                   }`}
                   placeholder="you@example.com"
@@ -111,7 +111,7 @@ export default function ResendVerification() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full px-6 py-3 bg-[#10b981] text-(--background) font-semibold rounded-lg hover:bg-[#059669] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? t("sending") : t("resendVerificationBtn") || "Send Verification Email"}
               </button>
@@ -135,7 +135,7 @@ export default function ResendVerification() {
         <div className="mt-6 text-center">
           <Link
             href={`/${locale}`}
-            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-[#10b981] transition-colors"
+            className="inline-flex items-center gap-2 text-(--text-muted) hover:text-(--primary) transition-colors"
           >
             <span>←</span>
             <span>{t("backToHome")}</span>
