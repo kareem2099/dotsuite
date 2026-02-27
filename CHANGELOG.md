@@ -18,6 +18,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] — 2026-02-27
+
+### Added
+- Contact page with form validation and MongoDB storage
+- Error boundary pages with i18n support (error.tsx, dashboard/error.tsx, not-found.tsx, global-error.tsx)
+- Accessibility improvements (skip links, ARIA labels, focus management)
+- Skip to main content link in layout
+- Contact page refactored into components: ContactForm, ContactInfo, SocialLinks
+
+### Fixed
+- Improved SEO metadata across all pages
+
+---
+
 ## [0.3.0] — 2026-02-25
 
 ### Added

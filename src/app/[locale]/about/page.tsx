@@ -153,7 +153,7 @@ export default async function About({ params }: Props) {
             {t("workTogetherDesc")}
           </p>
           <a
-            href="mailto:hello@dotsuite.dev"
+            href="mailto:kareem209907@gmail.com"
             className="inline-block px-8 py-4 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors duration-200"
           >
             {t("getInTouch")}

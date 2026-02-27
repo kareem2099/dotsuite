@@ -302,3 +302,61 @@ ${t.welcomeEmailTeam}
 
   return { subject: t.passwordResetSuccessEmailSubject, html, message };
 };
+
+// ─── Contact Form Notification ────────────────────────────────────
+
+export const getContactNotificationTemplate = (
+  name: string,
+  email: string,
+  subject: string,
+  message: string
+): { subject: string; html: string; message: string } => {
+  const emailSubject = `📬 New Contact: ${subject}`;
+
+  const html = emailWrapper(`
+    <div class="body">
+      <p class="greeting">New Contact Message 📬</p>
+      <p class="text">You received a new message from the dotsuite contact form.</p>
+      <div class="divider"></div>
+      <table style="width:100%; border-collapse:collapse;">
+        <tr>
+          <td style="padding:8px 0; color:#71717a; width:80px; font-size:13px;">Name</td>
+          <td style="padding:8px 0; color:#0a0a0a; font-weight:600;">${name}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0; color:#71717a; font-size:13px;">Email</td>
+          <td style="padding:8px 0;">
+            <a href="mailto:${email}" style="color:#10b981;">${email}</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0; color:#71717a; font-size:13px;">Subject</td>
+          <td style="padding:8px 0; color:#0a0a0a;">${subject}</td>
+        </tr>
+      </table>
+      <div class="divider"></div>
+      <p class="features-title">Message</p>
+      <div style="background:#f4f4f5; border:1px solid #e4e4e7; border-radius:10px; padding:20px;">
+        <p class="text" style="margin-bottom:0; white-space:pre-wrap;">${message}</p>
+      </div>
+      <div class="cta-section">
+        <a href="mailto:${email}?subject=Re: ${subject}" class="cta-button">
+          Reply to ${name} →
+        </a>
+      </div>
+    </div>
+  `);
+
+  const text = `
+New Contact Form Message
+
+Name: ${name}
+Email: ${email}
+Subject: ${subject}
+
+Message:
+${message}
+  `;
+
+  return { subject: emailSubject, html, message: text };
+};

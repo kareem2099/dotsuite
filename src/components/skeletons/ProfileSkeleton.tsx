@@ -53,7 +53,7 @@ export default function ProfileSkeleton() {
         </div>
 
         {/* Danger Zone */}
-        <div className="p-8 bg-(--card-bg) border border-red-500/20 rounded-xl">
+        <div className="p-8 bg-(--card-bg) border border-(--danger-border) rounded-xl">
           <Skeleton width={150} height={24} borderRadius={8} className="mb-2" />
           <Skeleton width="60%" height={16} borderRadius={8} className="mb-4" />
           <Skeleton width={150} height={40} borderRadius={8} />

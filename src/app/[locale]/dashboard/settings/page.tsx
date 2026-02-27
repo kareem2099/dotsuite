@@ -267,14 +267,14 @@ export default function Settings() {
           </div>
 
           {/* Danger Zone */}
-          <div className="p-8 bg-(--card-bg) border border-red-500/20 rounded-xl">
+          <div className="p-8 bg-(--card-bg) border border-(--danger-border) rounded-xl">
             <h3 className="text-lg font-semibold mb-2 text-red-400">{t("dangerZone")}</h3>
             <p className="text-(--text-muted) text-sm mb-4">
               {t("dangerZoneDesc")}
             </p>
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="px-4 py-2 border border-red-500/30 text-red-400 rounded-lg text-sm hover:bg-red-500/10 transition-colors">
+              className="px-4 py-2 border border-red-500/30 text-red-400 rounded-lg text-sm hover:bg-(--danger-bg) transition-colors">
               {t("deleteAccount")}
             </button>
           </div>

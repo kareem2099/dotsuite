@@ -76,7 +76,7 @@ export default function ResetPassword() {
 
         <section className="max-w-md mx-auto px-6 pb-16">
           <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl text-center">
-            <p className="text-red-500">{t("invalidToken")}</p>
+            <p className="text-(--danger)">{t("invalidToken")}</p>
             <Link
               href={`/${locale}/forgot-password`}
               className="inline-block mt-4 text-(--primary) hover:text-(--primary-hover)"
@@ -140,8 +140,8 @@ export default function ResetPassword() {
           {message && (
             <div className={`mb-4 p-3 rounded-lg text-sm ${
               isInvalidToken
-                ? "bg-red-500/10 border border-red-500/20 text-red-500"
-                : "bg-red-500/10 border border-red-500/20 text-red-500"
+                ? "bg-(--danger-bg) border border-(--danger-border) text-(--danger)"
+                : "bg-(--danger-bg) border border-(--danger-border) text-(--danger)"
             }`}>
               {message}
             </div>

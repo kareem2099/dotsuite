@@ -347,5 +347,17 @@
     "faq": "FAQ",
     "faqDesc": "Check out our frequently asked questions for quick answers.",
     "viewFaq": "View FAQ"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "message": "An unexpected error occurred. Please try again.",
+    "goBack": "Go Back",
+    "tryAgain": "Try Again"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "message": "The page you're looking for doesn't exist or has been moved.",
+    "goHome": "Go Home",
+    "viewProducts": "View Products"
   }
 }

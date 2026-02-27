@@ -347,5 +347,17 @@
     "faq": "FAQ",
     "faqDesc": "Schauen Sie sich unsere häufig gestellten Fragen für schnelle Antworten an.",
     "viewFaq": "FAQ ansehen"
+  },
+  "Error": {
+    "title": "Etwas ist schiefgelaufen",
+    "message": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "goBack": "Zurück",
+    "tryAgain": "Erneut versuchen"
+  },
+  "NotFound": {
+    "title": "Seite nicht gefunden",
+    "message": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "goHome": "Zur Startseite",
+    "viewProducts": "Produkte ansehen"
   }
 }

@@ -147,7 +147,7 @@ export default function Profile() {
 
       {/* Error Toast */}
       {error && (
-        <div className="mb-6 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-500 flex items-center gap-2">
+        <div className="mb-6 px-4 py-3 bg-(--danger-bg) border border-(--danger-border) rounded-lg text-sm text-(--danger) flex items-center gap-2">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -266,14 +266,14 @@ export default function Profile() {
       />
 
       {/* Danger Zone */}
-      <div className="p-8 bg-(--card-bg) border border-red-500/20 rounded-xl">
+      <div className="p-8 bg-(--card-bg) border border-(--danger-border) rounded-xl">
         <h3 className="text-lg font-semibold mb-2 text-red-400">{t("dangerZone")}</h3>
         <p className="text-(--text-muted) text-sm mb-4">
           {t("dangerZoneDesc")}
         </p>
         <button
           onClick={() => setShowDeleteModal(true)}
-          className="px-4 py-2 border border-red-500/30 text-red-400 rounded-lg text-sm hover:bg-red-500/10 transition-colors">
+          className="px-4 py-2 border border-red-500/30 text-red-400 rounded-lg text-sm hover:bg-(--danger-bg) transition-colors">
           {t("deleteAccount")}
         </button>
       </div>

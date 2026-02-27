@@ -37,6 +37,7 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🌙 **Dark / Light Theme** — System-aware with manual toggle
 - 📦 **Product Catalog** — VS Code, Next.js, Python tools with live GitHub data
 - 📖 **Live README & Changelog** — Fetched directly from GitHub repos
+- ⭐ **Product Reviews** — Ratings and reviews system (v0.5.0)
 - 🔄 **GitHub Webhooks** — Auto cache revalidation on push/release
 - 🛡️ **Rate Limiting** — MongoDB-backed atomic rate limiting (60 req/min)
 - 📧 **HTML Emails** — Professional transactional emails via Nodemailer
@@ -45,6 +46,9 @@ It features a full authentication system, multi-language support, GitHub integra
 - ⚡ **Debounced Search** — Optimized search with useDebounce hook
 - 🎭 **Loading Skeletons** — Smooth loading experience with skeleton components
 - 🖼️ **Image Optimization** — next/image for avatars with lazy loading
+- 🚨 **Error Boundaries** — error.tsx, not-found.tsx, global-error with i18n
+- ♿ **Accessibility** — Skip links, ARIA labels, focus management
+- 📬 **Contact Form** — With validation and MongoDB storage
 
 ---
 

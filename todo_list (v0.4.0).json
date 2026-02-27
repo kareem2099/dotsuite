@@ -8,30 +8,89 @@
       "title": "Improve Contact Page",
       "description": "Enhance contact page with better form handling and validation",
       "files": [],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": 2,
-      "title": "Add SEO Meta Tags",
-      "description": "Add proper meta tags for all pages (title, description, Open Graph)",
-      "files": [],
-      "status": "pending"
+      "title": "Add Accessibility Improvements",
+      "description": "Improve a11y with proper ARIA labels, skip links, focus management, and SEO metadata",
+      "files": [
+        "src/app/[locale]/layout.tsx",
+        "src/app/globals.css"
+      ],
+      "status": "completed"
     },
     {
       "id": 3,
-      "title": "Add Accessibility Improvements",
-      "description": "Improve a11y with proper ARIA labels and keyboard navigation",
-      "files": [],
-      "status": "pending"
+      "title": "Add Error Boundaries",
+      "description": "Add error boundaries for better error handling",
+      "files": [
+        "src/app/[locale]/error.tsx",
+        "src/app/[locale]/dashboard/error.tsx",
+        "src/app/[locale]/not-found.tsx",
+        "src/app/global-error.tsx"
+      ],
+      "status": "completed"
     },
     {
       "id": 4,
-      "title": "Add Error Boundaries",
-      "description": "Add error boundaries for better error handling",
-      "files": [],
-      "status": "pending"
+      "title": "Refactor Contact Page",
+      "description": "Split contact page into smaller components: ContactForm, ContactInfo, SocialLinks",
+      "files": [
+        "src/components/contact/ContactForm.tsx",
+        "src/components/contact/ContactInfo.tsx",
+        "src/components/contact/SocialLinks.tsx",
+        "src/app/[locale]/contact/page.tsx"
+      ],
+      "status": "completed"
     }
   ],
-  "completed": [],
-  "notes": []
+  "completed": [
+    {
+      "id": 1,
+      "title": "Improve Contact Page",
+      "description": "Enhance contact page with better form handling and validation",
+      "files": []
+    },
+    {
+      "id": 2,
+      "title": "Add Accessibility Improvements",
+      "description": "Improve a11y with proper ARIA labels, skip links, focus management, and SEO metadata",
+      "files": [
+        "src/app/[locale]/layout.tsx",
+        "src/app/globals.css"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Add Error Boundaries",
+      "description": "Add error boundaries for better error handling with i18n support",
+      "files": [
+        "src/app/[locale]/error.tsx",
+        "src/app/[locale]/dashboard/error.tsx",
+        "src/app/[locale]/not-found.tsx",
+        "src/app/global-error.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/de.json",
+        "messages/fr.json",
+        "messages/ru.json"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Refactor Contact Page",
+      "description": "Split contact page into smaller components: ContactForm, ContactInfo, SocialLinks",
+      "files": [
+        "src/components/contact/ContactForm.tsx",
+        "src/components/contact/ContactInfo.tsx",
+        "src/components/contact/SocialLinks.tsx",
+        "src/app/[locale]/contact/page.tsx"
+      ]
+    }
+  ],
+  "notes": [
+    "All tasks completed for v0.4.0",
+    "Added i18n support for error pages in 5 languages (en, ar, de, fr, ru)"
+  ]
 }

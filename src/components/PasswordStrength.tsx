@@ -29,7 +29,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
   };
 
   const getTextColor = () => {
-    if (progress <= 20) return "text-red-500";
+    if (progress <= 20) return "text-(--danger)";
     if (progress <= 40) return "text-red-400";
     if (progress <= 60) return "text-yellow-500";
     if (progress <= 80) return "text-yellow-400";

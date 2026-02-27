@@ -97,7 +97,7 @@ export default function ForgotPassword() {
             <div className={`mb-4 p-3 rounded-lg text-sm ${
               isSuccess 
                 ? "bg-green-500/10 border border-green-500/20 text-green-500"
-                : "bg-red-500/10 border border-red-500/20 text-red-500"
+                : "bg-(--danger-bg) border border-(--danger-border) text-(--danger)"
             }`}>
               {message}
             </div>

@@ -87,7 +87,7 @@ export default function Login() {
       <section className="max-w-md mx-auto px-6 pb-16">
         <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
           {error && (
-            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm">
+            <div className="mb-4 p-3 bg-(--danger-bg) border border-(--danger-border) rounded-lg text-(--danger) text-sm">
               {error}
             </div>
           )}
@@ -107,7 +107,7 @@ export default function Login() {
                 placeholder="you@example.com"
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{t(errors.email.message as string)}</p>
+                <p className="mt-1 text-sm text-(--danger)">{t(errors.email.message as string)}</p>
               )}
             </div>
 
@@ -143,7 +143,7 @@ export default function Login() {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">{t(errors.password.message as string)}</p>
+                <p className="mt-1 text-sm text-(--danger)">{t(errors.password.message as string)}</p>
               )}
             </div>
 
@@ -177,7 +177,7 @@ export default function Login() {
               {t("noAccount")}{" "}
               <Link
                 href={`/${locale}/register`}
-                className="text-[#f59e0b] font-semibold hover:text-[#d97706] transition-colors"
+                className="text-(--primary) font-semibold hover:text-(--warning-hover) transition-colors"
               >
                 {t("signUp")}
               </Link>

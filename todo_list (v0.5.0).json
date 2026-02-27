@@ -1,0 +1,64 @@
+{
+  "version": "0.5.0",
+  "releaseDate": "",
+  "description": "Product Ratings, Reviews & Comments System",
+  "planned": [
+    {
+      "id": 1,
+      "title": "Add Review Model",
+      "description": "Create MongoDB model for product reviews with ratings, user reference, and timestamps",
+      "files": [
+        "src/models/Review.ts"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 2,
+      "title": "Create Reviews API",
+      "description": "Add API routes for creating, reading, updating, and deleting reviews",
+      "files": [
+        "src/app/api/reviews/route.ts",
+        "src/app/api/reviews/[productId]/route.ts"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "title": "Add Review Components",
+      "description": "Create UI components for displaying and submitting reviews",
+      "files": [
+        "src/components/reviews/ReviewCard.tsx",
+        "src/components/reviews/ReviewForm.tsx",
+        "src/components/reviews/ReviewList.tsx",
+        "src/components/reviews/StarRating.tsx"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "title": "Integrate Reviews to Product Page",
+      "description": "Add reviews section to product detail page with rating display",
+      "files": [
+        "src/app/[locale]/product/[slug]/page.tsx"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 5,
+      "title": "Add Review Translations",
+      "description": "Add review-related translations to all 5 language files",
+      "files": [
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/de.json",
+        "messages/fr.json",
+        "messages/ru.json"
+      ],
+      "status": "pending"
+    }
+  ],
+  "completed": [],
+  "notes": [
+    "Features: 5-star ratings, written reviews, user attribution, average rating calculation"
+  ]
+}

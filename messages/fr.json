@@ -326,7 +326,7 @@
   },
   "Contact": {
     "title": "Contactez-nous",
-    "subtitle": "Vous avez une question ou voulez travailler ensemble? Nous serions ravis de vous entendre.",
+    "subtitle": "Vous avez une question ou vous voulez travailler ensemble? Nous serions ravis de vous entendre.",
     "name": "Nom",
     "namePlaceholder": "Votre nom",
     "email": "E-mail",
@@ -347,5 +347,17 @@
     "faq": "FAQ",
     "faqDesc": "Consultez nos questions fréquentes pour des réponses rapides.",
     "viewFaq": "Voir la FAQ"
+  },
+  "Error": {
+    "title": "Une erreur s'est produite",
+    "message": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "goBack": "Retour",
+    "tryAgain": "Réessayer"
+  },
+  "NotFound": {
+    "title": "Page non trouvée",
+    "message": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "goHome": "Retour à l'accueil",
+    "viewProducts": "Voir les produits"
   }
 }

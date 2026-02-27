@@ -82,8 +82,8 @@ function VerifyEmailContent() {
 
         {status === "error" && (
           <>
-            <div className="w-16 h-16 mx-auto mb-6 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 mx-auto mb-6 bg-(--danger-bg) border border-(--danger-border) rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-(--danger)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>

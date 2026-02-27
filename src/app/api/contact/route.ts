@@ -1,20 +1,10 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
-import mongoose from "mongoose";
+import { sendEmail } from "@/lib/email";
+import { getContactNotificationTemplate } from "@/lib/emailTemplates";
+import Contact from "@/models/Contact";
 import { z } from "zod";
-
-// importing mongoose schema for contact form submissions
-const ContactSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
-  email: { type: String, required: true, trim: true, lowercase: true },
-  subject: { type: String, required: true, trim: true },
-  message: { type: String, required: true, trim: true },
-  createdAt: { type: Date, default: Date.now },
-});
-
-// model for Contact form submissions
-const Contact = mongoose.models.Contact || mongoose.model("Contact", ContactSchema);
 
 // zod schema for validating contact form input
 const contactFormSchema = z.object({
@@ -53,9 +43,22 @@ export async function POST(req: Request) {
 
     const { name, email, subject, message } = validation.data;
 
-    // 5. Save to Database
     await connectDB();
-    await Contact.create({ name, email, subject, message });
+
+    // Save to DB + Send email in parallel
+    const { subject: emailSubject, html, message: emailText } = getContactNotificationTemplate(
+      name, email, subject, message
+    );
+
+    await Promise.all([
+      Contact.create({ name, email, subject, message }),
+      sendEmail({
+        to: process.env.EMAIL_USER!,
+        subject: emailSubject,
+        html,
+        text: emailText,
+      }),
+    ]);
 
     return NextResponse.json(
       { success: true, message: "Your message has been sent successfully!" },
