@@ -1,0 +1,94 @@
+{
+    "version": "0.6.0",
+    "releaseDate": "TBD",
+    "description": "Discovery, User Profiles & Dashboard Depth",
+    "planned": [
+        {
+            "id": 1,
+            "title": "My Reviews Dashboard Page",
+            "description": "A dedicated page in the user dashboard listing all reviews the user has written, with inline edit and delete actions.",
+            "files": [
+                "src/app/[locale]/dashboard/reviews/page.tsx",
+                "src/components/skeletons/ReviewsDashboardSkeleton.tsx"
+            ],
+            "status": "pending"
+        },
+        {
+            "id": 2,
+            "title": "Product Search with URL Params",
+            "description": "Full search page with real URL query params (?q=...) so results are shareable and browser-navigable. Highlights matched text in results.",
+            "files": [
+                "src/app/[locale]/search/page.tsx",
+                "src/components/SearchResult.tsx"
+            ],
+            "status": "pending"
+        },
+        {
+            "id": 3,
+            "title": "Tag / Category Filtering",
+            "description": "Filter the product listing page by tag (vscode, nextjs, python). Tags are clickable pills on product cards and on the listing header.",
+            "files": [
+                "src/app/[locale]/product/page.tsx",
+                "src/components/TagFilter.tsx"
+            ],
+            "status": "pending"
+        },
+        {
+            "id": 4,
+            "title": "Related Products Section",
+            "description": "Show 3 suggested products at the bottom of each product detail page, filtered by same category/tags.",
+            "files": [
+                "src/components/RelatedProducts.tsx",
+                "src/app/[locale]/product/[slug]/page.tsx"
+            ],
+            "status": "pending"
+        },
+        {
+            "id": 5,
+            "title": "Review Pagination",
+            "description": "Show first 5 reviews with a 'Load more' button instead of listing all. Improves performance on products with many reviews.",
+            "files": [
+                "src/components/reviews/ReviewList.tsx"
+            ],
+            "status": "pending"
+        },
+        {
+            "id": 6,
+            "title": "Avatar Upload",
+            "description": "Allow users to upload a custom profile picture from the profile settings page. Store in cloud storage (e.g. Cloudinary or S3).",
+            "files": [
+                "src/app/[locale]/dashboard/profile/page.tsx",
+                "src/app/api/profile/avatar/route.ts",
+                "src/components/UserAvatar.tsx"
+            ],
+            "status": "pending"
+        },
+        {
+            "id": 7,
+            "title": "Dynamic OG Image per Product",
+            "description": "Generate Open Graph images on the fly per product using @vercel/og so social shares show the product name, rating, and icon.",
+            "files": [
+                "src/app/api/og/route.tsx"
+            ],
+            "status": "pending"
+        },
+        {
+            "id": 8,
+            "title": "PWA Support",
+            "description": "Add web app manifest and service worker so dotsuite is installable as a PWA with basic offline support.",
+            "files": [
+                "public/manifest.json",
+                "public/sw.js",
+                "src/app/[locale]/layout.tsx"
+            ],
+            "status": "pending"
+        }
+    ],
+    "notes": [
+        "Priority order: 1 (My Reviews) → 2 (Search) → 3 (Tag Filter) → 4 (Related) → 5 (Pagination) → 6 (Avatar) → 7 (OG) → 8 (PWA)",
+        "Items 1–5 are the core release, items 6–8 are stretch goals",
+        "All new pages must be fully localized (EN, AR, FR, DE, RU)",
+        "All new pages must have a loading skeleton component",
+        "No hardcoded colors — use CSS variables from globals.css"
+    ]
+}

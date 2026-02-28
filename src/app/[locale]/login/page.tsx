@@ -10,6 +10,7 @@ import { z } from "zod";
 import GoogleLogin from "@/components/GoogleLogin";
 import GitHubLogin from "@/components/GitHubLogin";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/components/Toast";
 
 // Zod Schema for login
 const loginSchema = z.object({
@@ -21,14 +22,14 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Login() {
   const t = useTranslations("Auth");
+  const { toast } = useToast();
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string || "en";
   const isRTL = locale === "ar";
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const {
     register,
@@ -40,7 +41,6 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    setError("");
 
     try {
       const result = await signIn("credentials", {
@@ -50,21 +50,19 @@ export default function Login() {
       });
 
       if (result?.error) {
-        // Check for specific error types if needed (e.g., invalid credentials)
         if (result.error === "CredentialsSignin") {
-          setError(t("invalidCredentials"));
+          toast.error(t("invalidCredentials"));
         } else if (result.error === "EmailNotVerified") {
-          setError(t("emailNotVerified") || "Please verify your email before logging in.");
+          toast.error(t("emailNotVerified") || "Please verify your email before logging in.");
         } else {
-          // Handle other error cases
-          setError(result.error);
+          toast.error(result.error);
         }
       } else {
         router.push(`/${locale}/dashboard`);
         router.refresh();
       }
     } catch (err) {
-      setError(t("unexpectedError"));
+      toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -86,12 +84,6 @@ export default function Login() {
       {/* Login Form */}
       <section className="max-w-md mx-auto px-6 pb-16">
         <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
-          {error && (
-            <div className="mb-4 p-3 bg-(--danger-bg) border border-(--danger-border) rounded-lg text-(--danger) text-sm">
-              {error}
-            </div>
-          )}
-          
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
@@ -101,9 +93,8 @@ export default function Login() {
                 type="email"
                 id="email"
                 {...register("email")}
-                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
-                  errors.email ? "border-red-500" : "border-(--card-border)"
-                }`}
+                className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${errors.email ? "border-red-500" : "border-(--card-border)"
+                  }`}
                 placeholder="you@example.com"
               />
               {errors.email && (
@@ -120,9 +111,8 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   {...register("password")}
-                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
-                    errors.password ? "border-red-500" : "border-(--card-border)"
-                  }`}
+                  className={`w-full px-4 py-3 ${isRTL ? "pl-12" : "pr-12"} bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${errors.password ? "border-red-500" : "border-(--card-border)"
+                    }`}
                   placeholder="••••••••"
                 />
                 <button

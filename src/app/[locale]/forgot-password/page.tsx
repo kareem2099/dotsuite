@@ -4,29 +4,27 @@ import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/components/Toast";
 
 export default function ForgotPassword() {
   const t = useTranslations("Auth");
+  const { toast } = useToast();
   const params = useParams();
   const router = useRouter();
   const locale = params.locale as string || "en";
-  
+
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage("");
 
     try {
       const response = await fetch("/api/auth/forgot-password", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
@@ -34,12 +32,12 @@ export default function ForgotPassword() {
 
       if (response.ok) {
         setIsSuccess(true);
-        setMessage(data.message);
+        toast.success(t("resetLinkSent"));
       } else {
-        setMessage(data.message);
+        toast.error(data.message);
       }
     } catch (err) {
-      setMessage(t("unexpectedError"));
+      toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -57,14 +55,14 @@ export default function ForgotPassword() {
         <section className="max-w-md mx-auto px-6 pb-16">
           <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl text-center">
             <div className="mb-6">
-              <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-(--primary)/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-green-500 font-medium">{t("resetLinkSent")}</p>
+              <p className="text-(--primary) font-medium">{t("resetLinkSent")}</p>
             </div>
-            
+
             <Link
               href={`/${locale}/login`}
               className="inline-block mt-4 px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
@@ -93,16 +91,6 @@ export default function ForgotPassword() {
       {/* Forgot Password Form */}
       <section className="max-w-md mx-auto px-6 pb-16">
         <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
-          {message && (
-            <div className={`mb-4 p-3 rounded-lg text-sm ${
-              isSuccess 
-                ? "bg-green-500/10 border border-green-500/20 text-green-500"
-                : "bg-(--danger-bg) border border-(--danger-border) text-(--danger)"
-            }`}>
-              {message}
-            </div>
-          )}
-          
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">

@@ -33,11 +33,12 @@ It features a full authentication system, multi-language support, GitHub integra
 ## ✨ Features
 
 - 🔐 **Full Auth System** — Register, Login, Email Verification, Forgot/Reset Password
-- 🌍 **Multi-language** — English, Arabic, French, Russian, German
+- 🌍 **Multi-language** — English, Arabic, French, German, Russian with RTL support
 - 🌙 **Dark / Light Theme** — System-aware with manual toggle
 - 📦 **Product Catalog** — VS Code, Next.js, Python tools with live GitHub data
 - 📖 **Live README & Changelog** — Fetched directly from GitHub repos
-- ⭐ **Product Reviews** — Ratings and reviews system (v0.5.0)
+- ⭐ **Product Reviews & Ratings** — 5-star ratings, written reviews, avg rating, one review per user (v0.5.0)
+- 🔔 **Toast Notifications** — Animated toast system + async confirm modal, zero native dialogs (v0.5.0)
 - 🔄 **GitHub Webhooks** — Auto cache revalidation on push/release
 - 🛡️ **Rate Limiting** — MongoDB-backed atomic rate limiting (60 req/min)
 - 📧 **HTML Emails** — Professional transactional emails via Nodemailer
@@ -47,8 +48,9 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🎭 **Loading Skeletons** — Smooth loading experience with skeleton components
 - 🖼️ **Image Optimization** — next/image for avatars with lazy loading
 - 🚨 **Error Boundaries** — error.tsx, not-found.tsx, global-error with i18n
-- ♿ **Accessibility** — Skip links, ARIA labels, focus management
+- ♿ **Accessibility** — Skip links, ARIA labels, focus management, translated aria-labels
 - 📬 **Contact Form** — With validation and MongoDB storage
+- 🎨 **CSS Variables** — All colors centralized in globals.css, zero hardcoded values
 
 ---
 
@@ -124,14 +126,20 @@ dotsuite/
 │   │   └── api/
 │   │       ├── auth/
 │   │       ├── products/
+│   │       ├── reviews/
 │   │       ├── webhooks/
 │   │       └── contact/
 │   ├── components/
+│   │   ├── reviews/         # ReviewCard, ReviewForm, ReviewList, StarRating
+│   │   ├── skeletons/
+│   │   ├── Toast.tsx        # Toast notification system
+│   │   ├── ConfirmModal.tsx # Async confirm dialog
+│   │   └── ...
 │   ├── lib/
 │   ├── models/
 │   └── i18n/
 ├── scripts/
-├── messages/
+├── messages/                # EN, AR, FR, DE, RU locale files
 └── public/
 ```
 

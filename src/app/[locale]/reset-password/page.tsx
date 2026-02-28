@@ -4,36 +4,36 @@ import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/components/Toast";
 
 export default function ResetPassword() {
   const t = useTranslations("Auth");
+  const { toast } = useToast();
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
   const locale = params.locale as string || "en";
-  
+
   const token = searchParams.get("token");
-  
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isInvalidToken, setIsInvalidToken] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage("");
 
     if (password !== confirmPassword) {
-      setMessage(t("passwordMismatch"));
+      toast.error(t("passwordMismatch"));
       setIsLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      setMessage(t("passwordTooShort"));
+      toast.error(t("passwordTooShort"));
       setIsLoading(false);
       return;
     }
@@ -41,9 +41,7 @@ export default function ResetPassword() {
     try {
       const response = await fetch("/api/auth/reset-password", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password }),
       });
 
@@ -51,15 +49,15 @@ export default function ResetPassword() {
 
       if (response.ok) {
         setIsSuccess(true);
-        setMessage(data.message);
+        toast.success(t("passwordResetSuccess"));
       } else {
-        setMessage(data.message);
+        toast.error(data.message);
         if (data.message.includes("Invalid") || data.message.includes("expired")) {
           setIsInvalidToken(true);
         }
       }
     } catch (err) {
-      setMessage(t("unexpectedError"));
+      toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -101,14 +99,14 @@ export default function ResetPassword() {
         <section className="max-w-md mx-auto px-6 pb-16">
           <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl text-center">
             <div className="mb-6">
-              <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-(--primary)/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-green-500 font-medium">{t("passwordResetSuccess")}</p>
+              <p className="text-(--primary) font-medium">{t("passwordResetSuccess")}</p>
             </div>
-            
+
             <Link
               href={`/${locale}/login`}
               className="inline-block mt-4 px-6 py-3 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
@@ -137,16 +135,6 @@ export default function ResetPassword() {
       {/* Reset Password Form */}
       <section className="max-w-md mx-auto px-6 pb-16">
         <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
-          {message && (
-            <div className={`mb-4 p-3 rounded-lg text-sm ${
-              isInvalidToken
-                ? "bg-(--danger-bg) border border-(--danger-border) text-(--danger)"
-                : "bg-(--danger-bg) border border-(--danger-border) text-(--danger)"
-            }`}>
-              {message}
-            </div>
-          )}
-          
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="password" className="block text-sm font-medium mb-2">

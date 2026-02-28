@@ -5,19 +5,21 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
+import { useToast } from "@/components/Toast";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const params = useParams();
   const locale = (params.locale as string) || "en";
   const { data: session } = useSession();
-  
+  const { toast } = useToast();
+
   const t = useTranslations("Footer");
   const tNav = useTranslations("Navigation");
 
   const handleSubscribe = (e: FormEvent) => {
     e.preventDefault();
-    alert("Thanks for subscribing!");
+    toast.success(t("subscribeSuccess"));
     setEmail("");
   };
 

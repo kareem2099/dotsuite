@@ -5,6 +5,7 @@
   --foreground: #0a0a0a;
   --primary: #10b981;
   --primary-hover: #059669;
+  --primary-text: #0a0a0a;
   --card-bg: #f5f5f5;
   --card-border: #e5e5e5;
   --text-muted: #737373;
@@ -21,6 +22,14 @@
   --warning-bg: #fef3c7;
   --warning-border: #fde68a;
   --warning-text: #92400e;
+
+  /* UI element variables */
+  --toggle-knob: #ffffff;
+  --star-color: #facc15;
+  --star-empty-color: #d1d5db;
+  --purple-accent: #a855f7;
+  --purple-accent-bg: rgba(168, 85, 247, 0.1);
+  --purple-accent-border: rgba(168, 85, 247, 0.2);
 }
 
 .dark {
@@ -35,9 +44,19 @@
   --warning-bg: rgba(245, 158, 11, 0.1);
   --warning-border: rgba(245, 158, 11, 0.2);
   --warning-text: #f59e0b;
+
+  /* UI element variables (same in dark) */
+  --toggle-knob: #ffffff;
+  --star-color: #facc15;
+  --star-empty-color: #374151;
+  --purple-accent: #a855f7;
+  --purple-accent-bg: rgba(168, 85, 247, 0.1);
+  --purple-accent-border: rgba(168, 85, 247, 0.2);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
@@ -70,6 +89,7 @@ textarea:focus-visible {
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -118,7 +138,9 @@ textarea:focus-visible {
   color: var(--foreground);
 }
 
-.prose h4, .prose h5, .prose h6 {
+.prose h4,
+.prose h5,
+.prose h6 {
   font-size: 1rem;
   font-weight: 600;
   margin-top: 1rem;
@@ -149,7 +171,8 @@ textarea:focus-visible {
   line-height: 1.75;
 }
 
-.prose li > ul, .prose li > ol {
+.prose li>ul,
+.prose li>ol {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
@@ -241,7 +264,7 @@ textarea:focus-visible {
   display: block;
 }
 
-.prose p > img {
+.prose p>img {
   display: inline;
   margin: 0 0.25rem;
   vertical-align: middle;

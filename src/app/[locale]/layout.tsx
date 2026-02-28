@@ -5,6 +5,8 @@ import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
+import { ToastProvider } from "@/components/Toast";
+import { ConfirmProvider } from "@/components/ConfirmModal";
 
 const BASE_URL = process.env.NEXTAUTH_URL || "";
 
@@ -71,17 +73,21 @@ export default async function RootLayout({
       <body className="antialiased min-h-screen flex flex-col">
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:px-4 focus:py-2 focus:bg-(--primary) focus:text-(--background) focus:rounded-lg focus:font-semibold focus:shadow-lg"
-            >
-              Skip to main content
-            </a>
-            <Header />
-            <main id="main-content" className="pt-20 flex-1">
-              {children}
-            </main>
-            <Footer />
+            <ToastProvider>
+              <ConfirmProvider>
+                <a
+                  href="#main-content"
+                  className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:px-4 focus:py-2 focus:bg-(--primary) focus:text-(--background) focus:rounded-lg focus:font-semibold focus:shadow-lg"
+                >
+                  Skip to main content
+                </a>
+                <Header />
+                <main id="main-content" className="pt-20 flex-1">
+                  {children}
+                </main>
+                <Footer />
+              </ConfirmProvider>
+            </ToastProvider>
           </Providers>
         </NextIntlClientProvider>
       </body>

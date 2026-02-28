@@ -1,6 +1,6 @@
 {
   "version": "0.5.0",
-  "releaseDate": "",
+  "releaseDate": "2026-02-28",
   "description": "Product Ratings, Reviews & Comments System",
   "planned": [
     {
@@ -10,7 +10,7 @@
       "files": [
         "src/models/Review.ts"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": 2,
@@ -20,7 +20,7 @@
         "src/app/api/reviews/route.ts",
         "src/app/api/reviews/[productId]/route.ts"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": 3,
@@ -32,7 +32,7 @@
         "src/components/reviews/ReviewList.tsx",
         "src/components/reviews/StarRating.tsx"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": 4,
@@ -41,7 +41,7 @@
       "files": [
         "src/app/[locale]/product/[slug]/page.tsx"
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": 5,
@@ -54,11 +54,70 @@
         "messages/fr.json",
         "messages/ru.json"
       ],
-      "status": "pending"
+      "status": "completed"
+    },
+    {
+      "id": 6,
+      "title": "Full Review System Localization",
+      "description": "Fix wrong namespace casing ('common' → 'Common'), add useTranslations to ReviewForm and StarRating, replace all hardcoded English strings with t() calls across all 4 review components. Added 13 new Common keys to all 5 locale files.",
+      "files": [
+        "src/components/reviews/ReviewCard.tsx",
+        "src/components/reviews/ReviewForm.tsx",
+        "src/components/reviews/ReviewList.tsx",
+        "src/components/reviews/StarRating.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/de.json",
+        "messages/fr.json",
+        "messages/ru.json"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": 7,
+      "title": "Remove Hardcoded Colors from Review Components",
+      "description": "Replace fill-yellow-400, text-yellow-400, fill-gray-200, text-gray-300, dark:fill-gray-700, dark:text-gray-600 with CSS variables. Added --star-empty-color to globals.css for light and dark modes.",
+      "files": [
+        "src/components/reviews/StarRating.tsx",
+        "src/components/reviews/ReviewList.tsx",
+        "src/app/globals.css"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": 8,
+      "title": "Toast Notification System",
+      "description": "Built custom toast system from scratch. Replaced all native alert()/confirm() dialogs and inline success/error banners across the entire app with animated toasts and a promise-based confirm modal.",
+      "files": [
+        "src/components/Toast.tsx",
+        "src/components/ConfirmModal.tsx",
+        "src/app/[locale]/layout.tsx",
+        "src/components/Footer.tsx",
+        "src/components/reviews/ReviewList.tsx",
+        "src/components/reviews/ReviewForm.tsx",
+        "src/app/[locale]/dashboard/profile/page.tsx",
+        "src/app/[locale]/dashboard/settings/page.tsx",
+        "src/app/[locale]/login/page.tsx",
+        "src/app/[locale]/forgot-password/page.tsx",
+        "src/app/[locale]/reset-password/page.tsx",
+        "src/app/[locale]/resend-verification/page.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/de.json",
+        "messages/fr.json",
+        "messages/ru.json"
+      ],
+      "status": "completed"
     }
   ],
-  "completed": [],
   "notes": [
-    "Features: 5-star ratings, written reviews, user attribution, average rating calculation"
+    "Features: 5-star ratings, written reviews, user attribution, average rating calculation",
+    "Rate limiting on all review endpoints",
+    "One review per user per product (unique constraint)",
+    "Reviews tab integrated into product detail page",
+    "All 4 review components fully localized (EN, AR, FR, DE, RU)",
+    "Star colors driven by --star-color and --star-empty-color CSS variables",
+    "Toast system: useToast() for success/error/warning/info, useConfirm() for async confirmation modals",
+    "Zero native alert() or window.confirm() calls remain in the codebase"
   ]
 }

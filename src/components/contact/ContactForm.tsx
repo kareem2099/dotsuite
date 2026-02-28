@@ -54,7 +54,7 @@ export default function ContactForm() {
     return (
       <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl text-center py-12">
         <div className="w-16 h-16 mx-auto mb-4 bg-(--success-bg) border border-(--success-border) rounded-full flex items-center justify-center">
-          <svg className="w-8 h-8 text-[#10b981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-8 h-8 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -62,7 +62,7 @@ export default function ContactForm() {
         <p className="text-(--text-muted) mb-6">{t("responseTime")}</p>
         <button
           onClick={() => setSubmitted(false)}
-          className="px-6 py-2 bg-[#10b981] text-[#0a0a0a] font-semibold rounded-lg hover:bg-[#059669] transition-colors"
+          className="px-6 py-2 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
         >
           {t("sendAnother")}
         </button>
@@ -93,9 +93,8 @@ export default function ContactForm() {
               id={id}
               {...register(id as keyof ContactFormData)}
               aria-describedby={errors[id as keyof ContactFormData] ? `${id}-error` : undefined}
-              className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors ${
-                errors[id as keyof ContactFormData] ? "border-(--danger)" : "border-(--card-border)"
-              }`}
+              className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${errors[id as keyof ContactFormData] ? "border-(--danger)" : "border-(--card-border)"
+                }`}
               placeholder={t(`${key}Placeholder`)}
             />
             {errors[id as keyof ContactFormData] && (
@@ -115,9 +114,8 @@ export default function ContactForm() {
             {...register("message")}
             aria-describedby={errors.message ? "message-error" : undefined}
             rows={5}
-            className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-[#10b981] focus:outline-none transition-colors resize-none ${
-              errors.message ? "border-(--danger)" : "border-(--card-border)"
-            }`}
+            className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors resize-none ${errors.message ? "border-(--danger)" : "border-(--card-border)"
+              }`}
             placeholder={t("messagePlaceholder")}
           />
           {errors.message && (
@@ -130,11 +128,11 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full px-6 py-3 bg-[#10b981] text-[#0a0a0a] font-semibold rounded-lg hover:bg-[#059669] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full px-6 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSubmitting ? (
             <>
-              <div className="w-4 h-4 border-2 border-[#0a0a0a] border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-(--primary-text) border-t-transparent rounded-full animate-spin" />
               {t("sending")}
             </>
           ) : (

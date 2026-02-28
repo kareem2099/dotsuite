@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/components/Toast";
 
 // Zod Schema for resend verification
 const resendSchema = z.object({
@@ -17,13 +18,13 @@ type ResendFormData = z.infer<typeof resendSchema>;
 
 export default function ResendVerification() {
   const t = useTranslations("Auth");
+  const { toast } = useToast();
   const params = useParams();
   const locale = params.locale as string || "en";
   const isRTL = locale === "ar";
 
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
 
   const {
     register,
@@ -34,16 +35,12 @@ export default function ResendVerification() {
   });
 
   const onSubmit = async (data: ResendFormData) => {
-    setError("");
-    setSuccess(false);
     setIsLoading(true);
 
     try {
       const response = await fetch("/api/auth/resend-verification", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: data.email }),
       });
 
@@ -51,11 +48,12 @@ export default function ResendVerification() {
 
       if (response.ok) {
         setSuccess(true);
+        toast.success(t("verificationEmailSent") || "Verification email sent!");
       } else {
-        setError(result.error || result.message || t("unexpectedError"));
+        toast.error(result.error || result.message || t("unexpectedError"));
       }
     } catch (err) {
-      setError(t("unexpectedError"));
+      toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -76,18 +74,6 @@ export default function ResendVerification() {
       {/* Resend Verification Form */}
       <section className="max-w-md mx-auto px-6 pb-16">
         <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
-          {error && (
-            <div className="mb-4 p-3 bg-(--danger-bg) border border-(--danger-border) rounded-lg text-(--danger) text-sm">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-green-500 text-sm">
-              {t("verificationEmailSent") || "If an account exists and is not verified, a verification email has been sent."}
-            </div>
-          )}
-
           {!success && (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
@@ -98,9 +84,8 @@ export default function ResendVerification() {
                   type="email"
                   id="email"
                   {...register("email")}
-                  className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${
-                    errors.email ? "border-red-500" : "border-(--card-border)"
-                  }`}
+                  className={`w-full px-4 py-3 bg-(--background) border rounded-lg focus:border-(--primary) focus:outline-none transition-colors ${errors.email ? "border-red-500" : "border-(--card-border)"
+                    }`}
                   placeholder="you@example.com"
                 />
                 {errors.email && (

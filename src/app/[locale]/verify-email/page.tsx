@@ -73,7 +73,7 @@ function VerifyEmailContent() {
             <p className="text-(--text-muted) mb-8">{message}</p>
             <Link
               href={`/${locale}/login`}
-              className="inline-block px-6 py-3 bg-(--primary) text-[#0a0a0a] font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
+              className="inline-block px-6 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
             >
               {t("goToLogin")}
             </Link>
@@ -92,7 +92,7 @@ function VerifyEmailContent() {
             <div className="flex flex-col gap-3">
               <Link
                 href={`/${locale}/login`}
-                className="inline-block px-6 py-3 bg-(--primary) text-[#0a0a0a] font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
+                className="inline-block px-6 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
               >
                 {t("backToLogin")}
               </Link>

@@ -32,7 +32,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  
+
   // Use debounce hook
   const debouncedSearch = useDebounce(search, 500);
 
@@ -47,7 +47,7 @@ export default function ProductsPage() {
       try {
         const res = await fetch(`/api/products?${searchParams}`);
         const data = await res.json();
-        
+
         // Handle both array and { products: [] } response formats
         const productsArray = Array.isArray(data) ? data : (data.products || []);
         setProducts(productsArray);
@@ -105,11 +105,10 @@ export default function ProductsPage() {
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`px-4 py-3 rounded-lg text-sm font-medium capitalize transition-colors ${
-                  category === cat
-                    ? "bg-(--primary) text-[#0a0a0a]"
+                className={`px-4 py-3 rounded-lg text-sm font-medium capitalize transition-colors ${category === cat
+                    ? "bg-(--primary) text-(--primary-text)"
                     : "bg-(--card-bg) border border-(--card-border) text-(--text-muted) hover:border-(--primary) hover:text-(--primary)"
-                }`}
+                  }`}
               >
                 {cat === "all" ? t("all") : `${categoryIcons[cat]} ${cat}`}
               </button>

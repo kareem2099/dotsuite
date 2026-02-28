@@ -9,17 +9,17 @@ import SocialLinks from "@/components/SocialLinks";
 import LocationPicker from "@/components/LocationPicker";
 import ProfileSkeleton from "@/components/skeletons/ProfileSkeleton";
 import UserAvatar from "@/components/UserAvatar";
+import { useToast } from "@/components/Toast";
 
 
 export default function Profile() {
   const { data: session, status, update } = useSession();
   const router = useRouter();
   const t = useTranslations("Profile");
+  const { toast } = useToast();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 
@@ -33,27 +33,26 @@ export default function Profile() {
   });
 
   useEffect(() => {
-  if (status === "unauthenticated") router.push("/login");
-  if (status === "authenticated") {
-    fetch("/api/profile")
-      .then((r) => r.json())
-      .then((data) => {
-        setForm({
-          displayName: data.name ?? "",
-          bio: data.bio ?? "",
-          location: data.location ?? "",
-          website: data.website ?? "",
-          twitter: data.twitter ?? "",
-          github: data.github ?? "",
+    if (status === "unauthenticated") router.push("/login");
+    if (status === "authenticated") {
+      fetch("/api/profile")
+        .then((r) => r.json())
+        .then((data) => {
+          setForm({
+            displayName: data.name ?? "",
+            bio: data.bio ?? "",
+            location: data.location ?? "",
+            website: data.website ?? "",
+            twitter: data.twitter ?? "",
+            github: data.github ?? "",
+          });
         });
-      });
-  }
-}, [status, router]);
+    }
+  }, [status, router]);
 
   const handleSave = async () => {
-    setError("");
     setIsSaving(true);
-    
+
     try {
       const response = await fetch("/api/profile", {
         method: "PUT",
@@ -64,26 +63,20 @@ export default function Profile() {
       const result = await response.json();
 
       if (!response.ok) {
-        setError(result.error || "Failed to save profile");
+        toast.error(result.error || "Failed to save profile");
         setIsSaving(false);
         return;
       }
 
       setIsEditing(false);
-      setSaved(true);
-      
-      // Update session with new name
+      toast.success(t("profileSaved"));
+
       await update({
         ...session,
-        user: {
-          ...session?.user,
-          name: form.displayName,
-        },
+        user: { ...session?.user, name: form.displayName },
       });
-      
-      setTimeout(() => setSaved(false), 3000);
     } catch (err) {
-      setError("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setIsSaving(false);
     }
@@ -134,26 +127,6 @@ export default function Profile() {
           </div>
         )}
       </div>
-
-      {/* Success Toast */}
-      {saved && (
-        <div className="mb-6 px-4 py-3 bg-(--primary)/10 border border-(--primary)/20 rounded-lg text-sm text-(--primary) flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          {t("profileSaved")}
-        </div>
-      )}
-
-      {/* Error Toast */}
-      {error && (
-        <div className="mb-6 px-4 py-3 bg-(--danger-bg) border border-(--danger-border) rounded-lg text-sm text-(--danger) flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          {error}
-        </div>
-      )}
 
       {/* Avatar + Basic Info */}
       <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl mb-6">
@@ -278,8 +251,8 @@ export default function Profile() {
         </button>
       </div>
       <DeleteAccountModal
-      isOpen={showDeleteModal}
-      onClose={() => setShowDeleteModal(false)}
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
       />
     </div>
   );
