@@ -3,7 +3,7 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextRequest } from "next/server";
 import { routing } from "./i18n/routing";
 
-// 1. Public pages that don't require login
+// 1. Public pages that don't require login (exact match only — no wildcards)
 const publicPages = [
   "/",
   "/login",
@@ -13,10 +13,14 @@ const publicPages = [
   "/verify-email",
   "/resend-verification",
   "/about",
-  "/product",
   "/contact",
   "/terms",
   "/privacy",
+];
+
+// Public page prefixes (allow sub-routes, e.g. /product/slug)
+const publicPrefixes = [
+  "/product",
 ];
 
 // 2. Protected pages that require authentication
@@ -42,51 +46,67 @@ const authMiddleware = withAuth(
   }
 );
 
+// ─── Pre-compiled Regex Patterns (performance: compile once, match many) ───
+
+const localeSegment = `(${routing.locales.join("|")})`;
+
+const publicPagesPattern = publicPages
+  .map((p) => {
+    if (p === "/") {
+      return "(/|)"; // home page only
+    }
+    // escape special regex chars
+    return p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  })
+  .join("|");
+
+const protectedPagesPattern = protectedPages
+  .map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+  .join("|");
+
+const publicPrefixesPattern = publicPrefixes
+  .map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+  .join("|");
+
+// Check protected pages first (includes sub-routes like /dashboard/profile)
+const protectedPathnameRegex = RegExp(
+  `^(/${localeSegment})?(${protectedPagesPattern})(/.*)?$`,
+  "i"
+);
+
+// Exact match for public pages only (no sub-routes)
+const publicPathnameRegex = RegExp(
+  `^(/${localeSegment})?(${publicPagesPattern})$`,
+  "i"
+);
+
+// Prefix match for public pages that allow sub-routes (e.g. /product/slug)
+const publicPrefixRegex = RegExp(
+  `^(/${localeSegment})?(${publicPrefixesPattern})(/.*)?$`,
+  "i"
+);
+
 // 5. Main proxy function to route requests
 export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Build regex pattern for public pages
-  const publicPagesPattern = publicPages
-    .map((p) => {
-      if (p === "/") {
-        return "(/|)";
-      }
-      return p;
-    })
-    .join("|");
-
-  // Build regex pattern for protected pages
-  const protectedPagesPattern = protectedPages.join("|");
-
-  // Check if path matches protected pages first
-  const protectedPathnameRegex = RegExp(
-    `^(/(${routing.locales.join("|")}))?(${protectedPagesPattern})(/.*)?$`,
-    "i"
-  );
-
-  const isProtectedPage = protectedPathnameRegex.test(pathname);
-
-  if (isProtectedPage) {
-    // Protected page: apply auth first
+  // 1. Check protected pages first (auth required)
+  if (protectedPathnameRegex.test(pathname)) {
     return (authMiddleware as any)(req);
   }
 
-  // Check if path matches public pages
-  const publicPathnameRegex = RegExp(
-    `^(/(${routing.locales.join("|")}))?(${publicPagesPattern})(/.*)?$`,
-    "i"
-  );
-
-  const isPublicPage = publicPathnameRegex.test(pathname);
-
-  if (isPublicPage) {
-    // Public page: apply internationalization only
+  // 2. Check exact public pages
+  if (publicPathnameRegex.test(pathname)) {
     return intlMiddleware(req);
   }
 
-  // Default: apply internationalization
-  return intlMiddleware(req);
+  // 3. Check public prefixes (allow sub-routes)
+  if (publicPrefixRegex.test(pathname)) {
+    return intlMiddleware(req);
+  }
+
+  // 4. Default: treat unknown routes as protected (secure by default)
+  return (authMiddleware as any)(req);
 }
 
 export const config = {

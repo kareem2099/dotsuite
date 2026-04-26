@@ -1,11 +1,31 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
+import AuditLog from "@/models/AuditLog";
 import { sendEmail } from "@/lib/email";
 import { getPasswordResetSuccessEmailTemplate } from "@/lib/emailTemplates";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 import crypto from "crypto";
+
+// 📝 Helper to create audit log (fire and forget)
+async function logAudit(
+  data: {
+    userId?: string;
+    email?: string;
+    action: string;
+    status: "SUCCESS" | "FAILED";
+    ip?: string;
+    userAgent?: string;
+    details?: string;
+  }
+) {
+  try {
+    await AuditLog.create(data);
+  } catch (err) {
+    console.error("Failed to create audit log:", err);
+  }
+}
 
 // Zod Schema for password reset
 const resetPasswordSchema = z.object({
@@ -59,11 +79,32 @@ export async function POST(request: Request) {
     const user = await User.findOne({
       resetPasswordToken,
       resetPasswordExpire: { $gt: Date.now() },
-    }).select("+password");
+    }).select("+password +passwordHistory");
 
     if (!user) {
       return NextResponse.json(
         { message: "Invalid or expired reset token" },
+        { status: 400 }
+      );
+    }
+
+    // 🛡️ Check password history (prevent reuse of last 5 passwords)
+    const isInHistory = await user.isPasswordInHistory(password);
+    if (isInHistory) {
+      // 📝 Log failed password reset attempt (password reuse)
+      const userAgent = request.headers.get("user-agent") || "Unknown Device";
+      await logAudit({
+        userId: user._id.toString(),
+        email: user.email,
+        action: "PASSWORD_RESET",
+        status: "FAILED",
+        ip,
+        userAgent,
+        details: "Attempted to reuse a previous password during reset",
+      });
+
+      return NextResponse.json(
+        { message: "You cannot reuse a recent password. Please choose a different password." },
         { status: 400 }
       );
     }
@@ -74,6 +115,18 @@ export async function POST(request: Request) {
     user.resetPasswordExpire = undefined;
 
     await user.save();
+
+    // 3. 📝 Log successful password reset
+    const userAgent = request.headers.get("user-agent") || "Unknown Device";
+    await logAudit({
+      userId: user._id.toString(),
+      email: user.email,
+      action: "PASSWORD_RESET",
+      status: "SUCCESS",
+      ip,
+      userAgent,
+      details: "Password reset via email token",
+    });
 
     // 2. 🚀 Send confirmation email (fire and forget)
     const { subject, html, message } = getPasswordResetSuccessEmailTemplate();

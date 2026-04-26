@@ -1,11 +1,31 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
+import AuditLog from "@/models/AuditLog";
 import { sendEmail } from "@/lib/email";
 import { getWelcomeEmailTemplate } from "@/lib/emailTemplates";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 import crypto from "crypto";
+
+// 📝 Helper to create audit log (fire and forget)
+async function logAudit(
+  data: {
+    userId?: string;
+    email?: string;
+    action: string;
+    status: "SUCCESS" | "FAILED";
+    ip?: string;
+    userAgent?: string;
+    details?: string;
+  }
+) {
+  try {
+    await AuditLog.create(data);
+  } catch (err) {
+    console.error("Failed to create audit log:", err);
+  }
+}
 
 // Zod Schema for verify email
 const verifyEmailSchema = z.object({
@@ -64,6 +84,17 @@ export async function POST(request: Request) {
     user.verificationToken = undefined;
     user.verificationTokenExpire = undefined;
     await user.save();
+
+    // 📝 Log email verification
+    await logAudit({
+      userId: user._id.toString(),
+      email: user.email,
+      action: "EMAIL_VERIFIED",
+      status: "SUCCESS",
+      ip,
+      userAgent: request.headers.get("user-agent") || "Unknown Device",
+      details: "Email verified successfully",
+    });
 
     //  Send welcome email (fire and forget)
     const { subject, html, message } = getWelcomeEmailTemplate(user.name);

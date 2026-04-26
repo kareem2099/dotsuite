@@ -3,10 +3,30 @@ import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
+import AuditLog from "@/models/AuditLog";
 import { sendEmail } from "@/lib/email";
 import { getPasswordResetSuccessEmailTemplate } from "@/lib/emailTemplates";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { z } from "zod";
+
+// 📝 Helper to create audit log (fire and forget)
+async function logAudit(
+  data: {
+    userId?: string;
+    email?: string;
+    action: string;
+    status: "SUCCESS" | "FAILED";
+    ip?: string;
+    userAgent?: string;
+    details?: string;
+  }
+) {
+  try {
+    await AuditLog.create(data);
+  } catch (err) {
+    console.error("Failed to create audit log:", err);
+  }
+}
 
 // Zod Schema for change password
 const changePasswordSchema = z.object({
@@ -61,8 +81,8 @@ export async function POST(req: Request) {
 
     await connectDB();
 
-    // Fetch user with password field
-    const user = await User.findOne({ email: session.user.email }).select("+password");
+    // Fetch user with password and password history fields
+    const user = await User.findOne({ email: session.user.email }).select("+password +passwordHistory");
 
     if (!user || !user.password) {
       return NextResponse.json(
@@ -71,12 +91,47 @@ export async function POST(req: Request) {
       );
     }
 
+    // Extract request metadata for audit logs
+    const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
+    const userAgent = req.headers.get("user-agent") || "Unknown Device";
+
     // Verify current password
     const isValid = await user.comparePassword(currentPassword);
 
     if (!isValid) {
+      // 📝 Log failed password change attempt
+      await logAudit({
+        userId: user._id.toString(),
+        email: user.email,
+        action: "PASSWORD_CHANGE",
+        status: "FAILED",
+        ip,
+        userAgent,
+        details: "Current password incorrect",
+      });
+      
       return NextResponse.json(
         { error: "Current password is incorrect" },
+        { status: 400 }
+      );
+    }
+
+    // 🛡️ Check password history (prevent reuse of last 5 passwords)
+    const isInHistory = await user.isPasswordInHistory(newPassword);
+    if (isInHistory) {
+      // 📝 Log failed password change attempt (password reuse)
+      await logAudit({
+        userId: user._id.toString(),
+        email: user.email,
+        action: "PASSWORD_CHANGE",
+        status: "FAILED",
+        ip,
+        userAgent,
+        details: "Attempted to reuse a previous password",
+      });
+      
+      return NextResponse.json(
+        { error: "You cannot reuse a recent password. Please choose a different password." },
         { status: 400 }
       );
     }
@@ -84,6 +139,17 @@ export async function POST(req: Request) {
     // Update to new password (will be hashed by pre-save middleware)
     user.password = newPassword;
     await user.save();
+
+    // 📝 Log successful password change
+    await logAudit({
+      userId: user._id.toString(),
+      email: user.email,
+      action: "PASSWORD_CHANGE",
+      status: "SUCCESS",
+      ip,
+      userAgent,
+      details: "Password changed successfully",
+    });
 
     // 2. 🚀 Send confirmation email (fire and forget)
     const { subject, html, message } = getPasswordResetSuccessEmailTemplate();
