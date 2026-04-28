@@ -9,7 +9,16 @@
     "profile": "Профиль",
     "settings": "Настройки",
     "logout": "Выход",
-    "dashboard": "Панель управления"
+    "dashboard": "Панель управления",
+    "myReviews": "Мои отзывы",
+    "searchPlaceholder": "Поиск продуктов...",
+    "searchResults": "Результаты поиска",
+    "noResultsFor": "По запросу \"{q}\" ничего не найдено",
+    "foundResultsFor": "Найдено {count} результатов для \"{q}\"",
+    "enterSearchTerm": "Введите поисковый запрос, чтобы найти продукты.",
+    "tryDifferentKeywords": "Попробуйте использовать другие ключевые слова или проверьте опечатки.",
+    "browseAllProducts": "Просмотреть все продукты",
+    "search": "Поиск"
   },
   "Product": {
     "title": "Наши продукты",
@@ -45,7 +54,9 @@
     "pythonFeature1": "Автоматизация задач",
     "pythonFeature2": "Обработка данных",
     "pythonFeature3": "Интеграция ИИ/МО",
-    "pythonFeature4": "Шаблоны скриптов"
+    "pythonFeature4": "Шаблоны скриптов",
+    "loadMore": "Загрузить больше",
+    "loading": "Загрузка..."
   },
   "ProductDetail": {
     "back": "Назад",
@@ -63,7 +74,8 @@
     "issues": "проблем",
     "downloads": "загрузок",
     "version": "Версия",
-    "productNotFound": "Продукт не найден."
+    "productNotFound": "Продукт не найден.",
+    "relatedProducts": "Похожие продукты"
   },
   "Home": {
     "title": "Создавайте лучше с",
@@ -349,7 +361,12 @@
     "downloads": "Загрузки",
     "reviews": "Отзывы",
     "recentActivity": "Недавняя активность",
-    "noActivity": "Нет недавней активности"
+    "noActivity": "Нет недавней активности",
+    "myReviews": "Мои отзывы",
+    "manageReviews": "Управление вашими отзывами",
+    "noReviewsYet": "Пока нет отзывов",
+    "noReviewsDesc": "Вы еще не написали ни одного отзыва. Просмотрите наши инструменты и поделитесь своим мнением!",
+    "backToDashboard": "Вернуться на панель"
   },
   "Contact": {
     "title": "Связаться с нами",

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/mongodb";
-import Product from "@/models/Product";
+import { products as staticProducts } from "@/config/products";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 
@@ -55,8 +54,7 @@ export async function GET(
       );
     }
 
-    await connectDB();
-    const product = await Product.findOne({ slug });
+    const product = staticProducts.find(p => p.slug === slug);
 
     if (!product) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -81,7 +79,7 @@ export async function GET(
       fetch(`https://raw.githubusercontent.com/${repo}/main/CHANGELOG.md`, getNoTokenOptions(repo)),
       fetch(`https://raw.githubusercontent.com/${repo}/main/package.json`, getNoTokenOptions(repo)),
       // cache for 24 hours since OpenVSX data doesn't change frequently and we want to minimize requests to their API
-      fetch(`https://open-vsx.org/api/freerave/${slug}`, { next: { revalidate: 86400 } }), 
+      fetch(`https://open-vsx.org/api/freerave/${product.extensionId || slug}`, { next: { revalidate: 86400 } }), 
     ]);
 
     const repoData = repoRes.status === "fulfilled" && repoRes.value.ok
@@ -123,7 +121,7 @@ export async function GET(
         version: openVsxData?.version ?? null,
         downloads: openVsxData.downloadCount ?? 0,
         description: openVsxData.description ?? "",
-        url: `https://open-vsx.org/extension/freerave/${slug}`,
+        url: `https://open-vsx.org/extension/freerave/${product.extensionId || slug}`,
       } : null,
     });
   } catch (error) {

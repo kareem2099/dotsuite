@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/mongodb";
-import Product from "@/models/Product";
+import { products as staticProducts } from "@/config/products";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 
@@ -46,36 +45,34 @@ export async function GET(req: Request) {
 
     const { category, search, page, limit } = validation.data;
 
-    await connectDB();
-
-    // Build the query object based on category and search parameters
-    const query: Record<string, unknown> = {};
+    // Filter the products array
+    let filteredProducts = staticProducts;
     
     if (category && category !== "all") {
-      query.category = category;
+      filteredProducts = filteredProducts.filter(p => p.category === category);
     }
     
     if (search) {
-      // clean the search query to prevent regex DoS attacks by escaping special characters
-      const safeSearch = escapeRegExp(search);
-      // add the search query to the query object to search in the translations.en.title field using case-insensitive regex
-      query["translations.en.title"] = { $regex: safeSearch, $options: "i" };
+      const searchLower = search.toLowerCase();
+      filteredProducts = filteredProducts.filter(p => {
+        const title = p.translations.en.title.toLowerCase();
+        const desc = p.translations.en.description.toLowerCase();
+        return title.includes(searchLower) || desc.includes(searchLower);
+      });
     }
 
-    // calculate how many documents to skip based on the current page and limit for pagination
+    // Sort by order
+    filteredProducts.sort((a, b) => a.order - b.order);
+
+    // calculate how many items to skip based on the current page and limit for pagination
     const skip = (page - 1) * limit;
-
-    // retrieve the products from the database based on the query, sorted by order, and paginated using skip and limit
-    const products = await Product.find(query)
-      .sort({ order: 1 })
-      .skip(skip)
-      .limit(limit);
-
-    // get the total count of products matching the query for pagination metadata
-    const total = await Product.countDocuments(query);
+    const total = filteredProducts.length;
+    
+    // retrieve the paginated products
+    const paginatedProducts = filteredProducts.slice(skip, skip + limit);
 
     return NextResponse.json({
-      products,
+      products: paginatedProducts,
       pagination: {
         total,
         page,

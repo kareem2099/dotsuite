@@ -10,6 +10,8 @@ import LocationPicker from "@/components/LocationPicker";
 import ProfileSkeleton from "@/components/skeletons/ProfileSkeleton";
 import UserAvatar from "@/components/UserAvatar";
 import { useToast } from "@/components/Toast";
+import { useRef } from "react";
+import { Camera, Loader2 } from "lucide-react";
 
 
 export default function Profile() {
@@ -21,6 +23,8 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
 
   const [form, setForm] = useState({
@@ -82,6 +86,55 @@ export default function Profile() {
     }
   };
 
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size must be less than 5MB");
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("/api/profile/avatar", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || "Failed to upload avatar");
+        return;
+      }
+
+      toast.success("Avatar updated successfully");
+      
+      // Update session with new image
+      await update({
+        ...session,
+        user: { ...session?.user, image: data.imageUrl },
+      });
+    } catch (error) {
+      toast.error("An error occurred during upload");
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+
   if (status === "loading") {
     return <ProfileSkeleton />;
   }
@@ -131,11 +184,31 @@ export default function Profile() {
       {/* Avatar + Basic Info */}
       <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl mb-6">
         <div className="flex items-center gap-6">
-          <UserAvatar
-            src={session?.user?.image}
-            name={session?.user?.name}
-            size="lg"
-          />
+          <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+            <UserAvatar
+              src={session?.user?.image}
+              name={session?.user?.name}
+              size="lg"
+              className={isUploadingAvatar ? "opacity-50" : "group-hover:opacity-75 transition-opacity"}
+            />
+            
+            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+              {isUploadingAvatar ? (
+                <Loader2 className="w-6 h-6 text-white animate-spin" />
+              ) : (
+                <Camera className="w-6 h-6 text-white" />
+              )}
+            </div>
+            
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              className="hidden" 
+              accept="image/*"
+              onChange={handleAvatarUpload}
+              disabled={isUploadingAvatar}
+            />
+          </div>
           <div>
             <h2 className="text-2xl font-bold">{session?.user?.name}</h2>
             <p className="text-(--text-muted) mt-1">{session?.user?.email}</p>

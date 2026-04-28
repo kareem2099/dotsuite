@@ -2,30 +2,10 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { headers } from "next/headers";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
-import AuditLog from "@/models/AuditLog";
 import { checkRateLimit } from "@/lib/rateLimit";
-
-// 📝 Helper to create audit log (fire and forget)
-async function logAudit(
-  data: {
-    userId?: string;
-    email?: string;
-    action: string;
-    status: "SUCCESS" | "FAILED";
-    ip?: string;
-    userAgent?: string;
-    details?: string;
-  }
-) {
-  try {
-    await AuditLog.create(data);
-  } catch (err) {
-    console.error("Failed to create audit log:", err);
-  }
-}
+import { logAudit } from "@/lib/audit";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -262,16 +242,26 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub;
+      if (token && session.user) {
+        session.user.id = token.sub as string;
+        if (token.image) session.user.image = token.image as string;
+        if (token.name) session.user.name = token.name as string;
       }
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.sub = user.id;
+        token.image = user.image;
+        token.name = user.name;
       }
+
+      if (trigger === "update" && session?.user) {
+        if (session.user.image) token.image = session.user.image;
+        if (session.user.name) token.name = session.user.name;
+      }
+
       return token;
     },
   },

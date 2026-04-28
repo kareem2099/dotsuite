@@ -11,7 +11,7 @@
                 "src/app/[locale]/dashboard/reviews/page.tsx",
                 "src/components/skeletons/ReviewsDashboardSkeleton.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         },
         {
             "id": 2,
@@ -21,7 +21,7 @@
                 "src/app/[locale]/search/page.tsx",
                 "src/components/SearchResult.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         },
         {
             "id": 3,
@@ -31,7 +31,7 @@
                 "src/app/[locale]/product/page.tsx",
                 "src/components/TagFilter.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         },
         {
             "id": 4,
@@ -41,7 +41,7 @@
                 "src/components/RelatedProducts.tsx",
                 "src/app/[locale]/product/[slug]/page.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         },
         {
             "id": 5,
@@ -50,7 +50,7 @@
             "files": [
                 "src/components/reviews/ReviewList.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         },
         {
             "id": 6,
@@ -61,7 +61,7 @@
                 "src/app/api/profile/avatar/route.ts",
                 "src/components/UserAvatar.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         },
         {
             "id": 7,
@@ -70,7 +70,7 @@
             "files": [
                 "src/app/api/og/route.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         },
         {
             "id": 8,
@@ -81,7 +81,7 @@
                 "public/sw.js",
                 "src/app/[locale]/layout.tsx"
             ],
-            "status": "pending"
+            "status": "completed"
         }
     ],
     "notes": [

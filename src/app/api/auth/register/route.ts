@@ -1,30 +1,11 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
-import AuditLog from "@/models/AuditLog";
 import { sendEmail } from "@/lib/email";
 import { getVerifyEmailTemplate } from "@/lib/emailTemplates";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
+import { logAudit } from "@/lib/audit";
 import { z } from "zod";
-
-// 📝 Helper to create audit log (fire and forget)
-async function logAudit(
-  data: {
-    userId?: string;
-    email?: string;
-    action: string;
-    status: "SUCCESS" | "FAILED";
-    ip?: string;
-    userAgent?: string;
-    details?: string;
-  }
-) {
-  try {
-    await AuditLog.create(data);
-  } catch (err) {
-    console.error("Failed to create audit log:", err);
-  }
-}
 
 const apiRegisterSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -35,6 +16,7 @@ const apiRegisterSchema = z.object({
     .regex(/[a-z]/, "Password must contain at least 1 lowercase letter")
     .regex(/[0-9]/, "Password must contain at least 1 number")
     .regex(/[!@#$%^&*]/, "Password must contain at least 1 special character (!@#$%^&*)"),
+  locale: z.string().min(2).max(5).optional().default("en"),
 });
 
 export async function POST(req: Request) {
@@ -42,7 +24,7 @@ export async function POST(req: Request) {
     // Rate limit: 5 registrations per hour per IP
     const ip = getClientIP(req.headers);
     const rateLimit = await checkRateLimit(ip, "register", 5, 3600);
-    
+
     if (!rateLimit.success) {
       return NextResponse.json(
         { error: `Too many registration attempts. Please try again in ${Math.ceil(rateLimit.resetIn / 60)} minutes.` },
@@ -61,7 +43,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { name, email, password } = validation.data;
+    const { name, email, password, locale } = validation.data;
 
     await connectDB();
 
@@ -96,12 +78,11 @@ export async function POST(req: Request) {
       details: "New account created via email registration",
     });
 
-    // ✅ Send verification email only (welcome email will be sent after email is verified)
-    const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${rawToken}`;
+    // ✅ Send verification email with locale-aware URL
+    const verifyUrl = `${process.env.NEXTAUTH_URL}/${locale}/verify-email?token=${rawToken}`;
     const { subject, html, message } = getVerifyEmailTemplate(user.name, verifyUrl);
-    
-    // Fire and forget - don't block response for email sending
-    // But we await to catch any errors and log them
+
+    // Fire and forget
     sendEmail({ to: email, subject, html, text: message }).catch((err) => {
       console.error("Failed to send verification email:", err);
     });

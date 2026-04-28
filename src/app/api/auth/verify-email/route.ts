@@ -1,31 +1,12 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
-import AuditLog from "@/models/AuditLog";
 import { sendEmail } from "@/lib/email";
 import { getWelcomeEmailTemplate } from "@/lib/emailTemplates";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
+import { logAudit } from "@/lib/audit";
 import { z } from "zod";
 import crypto from "crypto";
-
-// 📝 Helper to create audit log (fire and forget)
-async function logAudit(
-  data: {
-    userId?: string;
-    email?: string;
-    action: string;
-    status: "SUCCESS" | "FAILED";
-    ip?: string;
-    userAgent?: string;
-    details?: string;
-  }
-) {
-  try {
-    await AuditLog.create(data);
-  } catch (err) {
-    console.error("Failed to create audit log:", err);
-  }
-}
 
 // Zod Schema for verify email
 const verifyEmailSchema = z.object({

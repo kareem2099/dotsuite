@@ -9,7 +9,16 @@
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
     "logout": "تسجيل الخروج",
-    "dashboard": "لوحة التحكم"
+    "dashboard": "لوحة التحكم",
+    "myReviews": "مراجعاتي",
+    "searchPlaceholder": "ابحث عن المنتجات...",
+    "searchResults": "نتائج البحث",
+    "noResultsFor": "لم يتم العثور على نتائج لـ \"{q}\"",
+    "foundResultsFor": "تم العثور على {count} نتيجة لـ \"{q}\"",
+    "enterSearchTerm": "أدخل كلمة للبحث عن المنتجات.",
+    "tryDifferentKeywords": "حاول استخدام كلمات بحث مختلفة أو تأكد من الإملاء.",
+    "browseAllProducts": "تصفح جميع المنتجات",
+    "search": "بحث"
   },
   "Product": {
     "title": "منتجاتنا",
@@ -45,7 +54,9 @@
     "pythonFeature1": "أتمتة المهام",
     "pythonFeature2": "معالجة البيانات",
     "pythonFeature3": "تكامل الذكاء الاصطناعي/التعلم الآلي",
-    "pythonFeature4": "قوالب النصوص"
+    "pythonFeature4": "قوالب النصوص",
+    "loadMore": "تحميل المزيد",
+    "loading": "جاري التحميل..."
   },
   "ProductDetail": {
     "back": "العودة",
@@ -63,7 +74,8 @@
     "issues": "مشاكل",
     "downloads": "تنزيلات",
     "version": "الإصدار",
-    "productNotFound": "لم يتم العثور على المنتج."
+    "productNotFound": "لم يتم العثور على المنتج.",
+    "relatedProducts": "منتجات مشابهة"
   },
   "Home": {
     "title": "ابني بشكل أفضل مع",
@@ -350,7 +362,12 @@
     "downloads": "التنزيلات",
     "reviews": "التقييمات",
     "recentActivity": "النشاط الأخير",
-    "noActivity": "لا يوجد نشاط حديث"
+    "noActivity": "لا يوجد نشاط حديث",
+    "myReviews": "مراجعاتي",
+    "manageReviews": "إدارة وتعديل مراجعاتك",
+    "noReviewsYet": "لا توجد مراجعات بعد",
+    "noReviewsDesc": "لم تقم بكتابة أي مراجعات لأي منتج حتى الآن. تصفح المنتجات وشاركنا رأيك!",
+    "backToDashboard": "العودة للوحة التحكم"
   },
   "Contact": {
     "title": "تواصل معنا",

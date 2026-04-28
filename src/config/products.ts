@@ -1,11 +1,26 @@
-import mongoose from "mongoose";
-import Product from "../src/models/Product";
+export interface IProduct {
+  _id: string; // Used instead of MongoDB _id
+  slug: string;
+  extensionId?: string;
+  category: "vscode" | "python" | "nextjs";
+  githubRepo: string;
+  hasLicense: boolean;
+  price: number;
+  order: number;
+  translations: {
+    en: { title: string; description: string };
+    ar: { title: string; description: string };
+    fr: { title: string; description: string };
+    ru: { title: string; description: string };
+    de: { title: string; description: string };
+  };
+}
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-const products = [
+export const products: IProduct[] = [
   {
+    _id: "prod_codetune",
     slug: "codetune",
+    extensionId: "codetune",
     category: "vscode",
     githubRepo: "kareem2099/codetune",
     hasLicense: false,
@@ -20,7 +35,9 @@ const products = [
     },
   },
   {
+    _id: "prod_dotcommand",
     slug: "dotcommand",
+    extensionId: "dotcommand",
     category: "vscode",
     githubRepo: "kareem2099/dotcommand",
     hasLicense: false,
@@ -35,7 +52,9 @@ const products = [
     },
   },
   {
+    _id: "prod_dotenvy",
     slug: "dotenvy",
+    extensionId: "dotenvy",
     category: "vscode",
     githubRepo: "kareem2099/dotenvy",
     hasLicense: false,
@@ -50,7 +69,9 @@ const products = [
     },
   },
   {
+    _id: "prod_dotfetch",
     slug: "dotfetch",
+    extensionId: "dotfetch",
     category: "vscode",
     githubRepo: "kareem2099/DotFetch",
     hasLicense: false,
@@ -65,7 +86,9 @@ const products = [
     },
   },
   {
+    _id: "prod_dotreadme",
     slug: "dotreadme",
+    extensionId: "dotreadme",
     category: "vscode",
     githubRepo: "kareem2099/DotReadme",
     hasLicense: false,
@@ -80,7 +103,9 @@ const products = [
     },
   },
   {
+    _id: "prod_dotsense",
     slug: "dotsense",
+    extensionId: "dotsense",
     category: "vscode",
     githubRepo: "kareem2099/dotsense",
     hasLicense: false,
@@ -95,7 +120,9 @@ const products = [
     },
   },
   {
+    _id: "prod_dotshare",
     slug: "dotshare",
+    extensionId: "dotshare",
     category: "vscode",
     githubRepo: "kareem2099/DotShare",
     hasLicense: false,
@@ -110,28 +137,3 @@ const products = [
     },
   },
 ];
-
-async function seed() {
-  if (!MONGODB_URI) {
-    console.error("❌ MONGODB_URI not found in environment variables");
-    process.exit(1);
-  }
-  
-  await mongoose.connect(MONGODB_URI);
-  console.log("✅ Connected to MongoDB");
-
-  for (const product of products) {
-    await Product.findOneAndUpdate(
-      { slug: product.slug },
-      product,
-      { upsert: true, returnDocument: "after" }
-
-    );
-    console.log(`✓ ${product.slug}`);
-  }
-
-  console.log("🎉 Done! Products seeded successfully!");
-  await mongoose.disconnect();
-}
-
-seed().catch(console.error);

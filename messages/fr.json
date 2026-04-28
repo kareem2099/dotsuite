@@ -9,7 +9,16 @@
     "profile": "Profil",
     "settings": "Paramètres",
     "logout": "Déconnexion",
-    "dashboard": "Tableau de bord"
+    "dashboard": "Tableau de bord",
+    "myReviews": "Mes Avis",
+    "searchPlaceholder": "Rechercher des produits...",
+    "searchResults": "Résultats de recherche",
+    "noResultsFor": "Aucun résultat trouvé pour \"{q}\"",
+    "foundResultsFor": "{count} résultats trouvés pour \"{q}\"",
+    "enterSearchTerm": "Entrez un terme de recherche pour trouver des produits.",
+    "tryDifferentKeywords": "Essayez d'utiliser d'autres mots-clés ou vérifiez l'orthographe.",
+    "browseAllProducts": "Parcourir tous les produits",
+    "search": "Recherche"
   },
   "Product": {
     "title": "Nos produits",
@@ -45,7 +54,9 @@
     "pythonFeature1": "Automatisation des tâches",
     "pythonFeature2": "Traitement des données",
     "pythonFeature3": "Intégration IA/ML",
-    "pythonFeature4": "Modèles de scripts"
+    "pythonFeature4": "Modèles de scripts",
+    "loadMore": "Charger plus",
+    "loading": "Chargement..."
   },
   "ProductDetail": {
     "back": "Retour",
@@ -63,7 +74,8 @@
     "issues": "problèmes",
     "downloads": "téléchargements",
     "version": "Version",
-    "productNotFound": "Produit non trouvé."
+    "productNotFound": "Produit non trouvé.",
+    "relatedProducts": "Produits similaires"
   },
   "Home": {
     "title": "Construisez mieux avec",
@@ -349,7 +361,12 @@
     "downloads": "Téléchargements",
     "reviews": "Avis",
     "recentActivity": "Activité récente",
-    "noActivity": "Aucune activité récente"
+    "noActivity": "Aucune activité récente",
+    "myReviews": "Mes Avis",
+    "manageReviews": "Gérez et modifiez vos avis",
+    "noReviewsYet": "Pas encore d'avis",
+    "noReviewsDesc": "Vous n'avez pas encore rédigé d'avis. Parcourez les produits et partagez votre opinion !",
+    "backToDashboard": "Retour au tableau de bord"
   },
   "Contact": {
     "title": "Contactez-nous",

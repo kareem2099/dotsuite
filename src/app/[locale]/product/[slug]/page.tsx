@@ -10,12 +10,14 @@ import { useSession } from "next-auth/react";
 import ProductDetailSkeleton from "@/components/skeletons/ProductDetailSkeleton";
 import ReviewList from "@/components/reviews/ReviewList";
 import ReviewSkeleton from "@/components/skeletons/ReviewSkeleton";
+import RelatedProducts from "@/components/RelatedProducts";
 
 
 interface ProductData {
   product: {
     _id: string;
     slug: string;
+    extensionId?: string;
     category: string;
     githubRepo: string;
     hasLicense: boolean;
@@ -161,6 +163,7 @@ export default function ProductDetail() {
   const { product, github, openVsx } = data;
   const title = product.translations[locale]?.title || product.translations.en?.title;
   const description = product.translations[locale]?.description || product.translations.en?.description;
+  const extensionName = product.extensionId || product.slug;
 
   return (
     <div className="min-h-screen">
@@ -253,7 +256,7 @@ export default function ProductDetail() {
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 min-w-48">
               <a
-                href={`vscode:extension/FreeRave.${slug}`}
+                href={`vscode:extension/FreeRave.${extensionName}`}
                 className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,7 +266,7 @@ export default function ProductDetail() {
               </a>
 
               <a
-                href={`https://marketplace.visualstudio.com/items?itemName=FreeRave.${slug}`}
+                href={`https://marketplace.visualstudio.com/items?itemName=FreeRave.${extensionName}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors text-sm"
@@ -360,6 +363,13 @@ export default function ProductDetail() {
             />
           )}
         </div>
+
+        {/* Related Products */}
+        <RelatedProducts 
+          currentProductId={product._id} 
+          category={product.category} 
+          locale={locale} 
+        />
 
       </div>
     </div>

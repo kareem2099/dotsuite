@@ -47,6 +47,7 @@ export default function ReviewList({
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [sort, setSort] = useState<SortOption>("newest");
+  const [visibleCount, setVisibleCount] = useState(5);
   const t = useTranslations("Common");
   const { confirm } = useConfirm();
 
@@ -159,7 +160,10 @@ export default function ReviewList({
             {SORT_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
-                onClick={() => setSort(opt.value)}
+                onClick={() => {
+                  setSort(opt.value);
+                  setVisibleCount(5);
+                }}
                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-150 ${sort === opt.value
                     ? "bg-(--primary) text-(--background) border-(--primary)"
                     : "bg-transparent text-(--text-muted) border-(--card-border) hover:border-(--primary) hover:text-(--primary)"
@@ -185,7 +189,7 @@ export default function ReviewList({
         </div>
       ) : (
         <div className="space-y-2">
-          {sortedReviews.map((review) => (
+          {sortedReviews.slice(0, visibleCount).map((review) => (
             <ReviewCard
               key={review._id}
               review={review}
@@ -194,6 +198,17 @@ export default function ReviewList({
               onDelete={currentUserId && review.userId._id === currentUserId ? handleDelete : undefined}
             />
           ))}
+          
+          {visibleCount < sortedReviews.length && (
+            <div className="mt-8 text-center pt-4">
+              <button
+                onClick={() => setVisibleCount((prev) => prev + 5)}
+                className="px-8 py-3 bg-(--card-bg) border border-(--card-border) text-(--foreground) font-medium rounded-lg hover:border-(--primary) hover:text-(--primary) transition-all duration-300 shadow-sm"
+              >
+                {t("loadMore") || "Load More"}
+              </button>
+            </div>
+          )}
         </div>
       )}
 

@@ -6,9 +6,10 @@ import Review from "@/models/Review";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 import mongoose from "mongoose";
+import { products as staticProducts } from "@/config/products";
 
 const createReviewSchema = z.object({
-  productId: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
+  productId: z.string().refine((val) => staticProducts.some(p => p._id === val), {
     message: "Invalid product ID",
   }),
   rating: z.number().min(1).max(5),
@@ -33,15 +34,22 @@ export async function GET(req: Request) {
     const [reviews, total] = await Promise.all([
       Review.find()
         .populate("userId", "name image")
-        .populate("productId", "slug")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
       Review.countDocuments(),
     ]);
 
+    const mappedReviews = reviews.map((r) => {
+      const p = staticProducts.find(prod => prod._id === r.productId);
+      return {
+        ...r.toObject(),
+        productId: { _id: r.productId, slug: p?.slug || "unknown" }
+      };
+    });
+
     return NextResponse.json({
-      reviews,
+      reviews: mappedReviews,
       pagination: { total, page, limit, totalPages: Math.ceil(total / limit) },
     });
   } catch (error) {
@@ -78,7 +86,7 @@ export async function POST(req: Request) {
 
     try {
       const review = await Review.create({
-        productId: new mongoose.Types.ObjectId(productId),
+        productId: productId,
         userId: new mongoose.Types.ObjectId(session.user.id),
         rating,
         comment,

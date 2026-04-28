@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
 import { ToastProvider } from "@/components/Toast";
 import { ConfirmProvider } from "@/components/ConfirmModal";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const BASE_URL = process.env.NEXTAUTH_URL || "";
 
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
     shortcut: "/favicon.ico",
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.json",
   robots: {
     index: true,
     follow: true,
@@ -75,6 +76,7 @@ export default async function RootLayout({
           <Providers>
             <ToastProvider>
               <ConfirmProvider>
+                <ServiceWorkerRegister />
                 <a
                   href="#main-content"
                   className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:px-4 focus:py-2 focus:bg-(--primary) focus:text-(--background) focus:rounded-lg focus:font-semibold focus:shadow-lg"

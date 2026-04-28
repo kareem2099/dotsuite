@@ -6,6 +6,7 @@ import Review from "@/models/Review";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 import mongoose from "mongoose";
+import { products as staticProducts } from "@/config/products";
 
 const updateReviewSchema = z.object({
   rating: z.number().min(1).max(5).optional(),
@@ -26,7 +27,7 @@ export async function GET(
 
     const { productId } = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
+    if (!staticProducts.some(p => p._id === productId)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
     }
 
@@ -38,14 +39,14 @@ export async function GET(
     await connectDB();
 
     const [reviews, total, avgRating] = await Promise.all([
-      Review.find({ productId: new mongoose.Types.ObjectId(productId) })
+      Review.find({ productId })
         .populate("userId", "name image")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
-      Review.countDocuments({ productId: new mongoose.Types.ObjectId(productId) }),
+      Review.countDocuments({ productId }),
       Review.aggregate([
-        { $match: { productId: new mongoose.Types.ObjectId(productId) } },
+        { $match: { productId } },
         { $group: { _id: null, avgRating: { $avg: "$rating" } } },
       ]),
     ]);
@@ -80,7 +81,7 @@ export async function PUT(
 
     const { productId } = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
+    if (!staticProducts.some(p => p._id === productId)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
     }
 
@@ -97,7 +98,7 @@ export async function PUT(
 
     const review = await Review.findOneAndUpdate(
       {
-        productId: new mongoose.Types.ObjectId(productId),
+        productId,
         userId: new mongoose.Types.ObjectId(session.user.id),
       },
       { $set: validation.data },
@@ -133,14 +134,14 @@ export async function DELETE(
 
     const { productId } = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
+    if (!staticProducts.some(p => p._id === productId)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
     }
 
     await connectDB();
 
     const review = await Review.findOneAndDelete({
-      productId: new mongoose.Types.ObjectId(productId),
+      productId,
       userId: new mongoose.Types.ObjectId(session.user.id),
     });
 

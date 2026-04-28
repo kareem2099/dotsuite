@@ -3,19 +3,20 @@ import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import { sendEmail } from "@/lib/email";
 import { getVerifyEmailTemplate } from "@/lib/emailTemplates";
-import { checkRateLimit } from "@/lib/rateLimit";
+import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 
 // Zod Schema for resend verification
 const resendVerificationSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
+  locale: z.string().min(2).max(5).optional().default("en"),
 });
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // 1. Validate email once
+    // 1. Validate email + locale
     const validation = resendVerificationSchema.safeParse(body);
     if (!validation.success) {
       const firstError = validation.error.issues[0];
@@ -25,19 +26,30 @@ export async function POST(req: Request) {
       );
     }
 
-    const { email } = validation.data;
+    const { email, locale } = validation.data;
 
-    // 2. Rate limit: 3 resend attempts per hour per email
-    const rateLimit = await checkRateLimit(email, "resend-verification", 3, 3600);
-    
-    if (!rateLimit.success) {
+    // 2. Rate limit by IP (3 attempts per hour)
+    const ip = getClientIP(req.headers);
+    const ipRateLimit = await checkRateLimit(`${ip}_resend_verification`, "resend-verification-ip", 3, 3600);
+
+    if (!ipRateLimit.success) {
       return NextResponse.json(
-        { error: `Too many verification requests. Please try again in ${Math.ceil(rateLimit.resetIn / 60)} minutes.` },
+        { error: `Too many verification requests. Please try again in ${Math.ceil(ipRateLimit.resetIn / 60)} minutes.` },
         { status: 429 }
       );
     }
 
-    // 3. Database connection & User lookup
+    // 3. Rate limit by email (3 attempts per hour)
+    const emailRateLimit = await checkRateLimit(email, "resend-verification", 3, 3600);
+
+    if (!emailRateLimit.success) {
+      return NextResponse.json(
+        { error: `Too many verification requests. Please try again in ${Math.ceil(emailRateLimit.resetIn / 60)} minutes.` },
+        { status: 429 }
+      );
+    }
+
+    // 4. Database connection & User lookup
     await connectDB();
     const user = await User.findOne({ email });
 
@@ -57,12 +69,12 @@ export async function POST(req: Request) {
       );
     }
 
-    // 4. Generate new token and save
+    // 5. Generate new token and save
     const rawToken = user.getVerificationToken();
     await user.save();
 
-    // 5. Send Email
-    const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${rawToken}`;
+    // 6. Send Email with locale-aware URL
+    const verifyUrl = `${process.env.NEXTAUTH_URL}/${locale}/verify-email?token=${rawToken}`;
     const { subject, html, message } = getVerifyEmailTemplate(user.name, verifyUrl);
     await sendEmail({ to: email, subject, html, text: message });
 

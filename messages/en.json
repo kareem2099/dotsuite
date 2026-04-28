@@ -9,7 +9,16 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Sign Out",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "myReviews": "My Reviews",
+    "searchPlaceholder": "Search products...",
+    "searchResults": "Search Results",
+    "noResultsFor": "No results found for \"{q}\"",
+    "foundResultsFor": "Found {count} results for \"{q}\"",
+    "enterSearchTerm": "Enter a search term to find products.",
+    "tryDifferentKeywords": "Try using different keywords or checking for typos.",
+    "browseAllProducts": "Browse all products",
+    "search": "Search"
   },
   "Product": {
     "title": "Our Products",
@@ -45,7 +54,9 @@
     "pythonFeature1": "Task automation",
     "pythonFeature2": "Data processing",
     "pythonFeature3": "AI/ML integration",
-    "pythonFeature4": "Script templates"
+    "pythonFeature4": "Script templates",
+    "loadMore": "Load More",
+    "loading": "Loading..."
   },
   "ProductDetail": {
     "back": "Back",
@@ -63,7 +74,8 @@
     "issues": "issues",
     "downloads": "downloads",
     "version": "Version",
-    "productNotFound": "Product not found."
+    "productNotFound": "Product not found.",
+    "relatedProducts": "Related Products"
   },
   "Home": {
     "title": "Build better with",
@@ -349,7 +361,12 @@
     "downloads": "Downloads",
     "reviews": "Reviews",
     "recentActivity": "Recent Activity",
-    "noActivity": "No recent activity"
+    "noActivity": "No recent activity",
+    "myReviews": "My Reviews",
+    "manageReviews": "Manage and edit your reviews",
+    "noReviewsYet": "No reviews yet",
+    "noReviewsDesc": "You haven't written any reviews for any products yet. Browse our tools and let us know what you think!",
+    "backToDashboard": "Back to Dashboard"
   },
   "Contact": {
     "title": "Get in Touch",

@@ -51,6 +51,7 @@ export default function Register() {
           name: data.name,
           email: data.email,
           password: data.password,
+          locale,
         }),
       });
 
