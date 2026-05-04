@@ -13,30 +13,42 @@ export default function DeleteAccountModal({ isOpen, onClose }: Props) {
   const { data: session } = useSession();
   const t = useTranslations("DeleteAccount");
   const [input, setInput] = useState("");
+  const [password, setPassword] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const userEmail = session?.user?.email ?? "";
+  // For OAuth users (no password set on their profile), we only require email confirmation
+  const isOAuthUser = !(session?.user as { hasPassword?: boolean })?.hasPassword;
   const isMatch = input === userEmail;
+  const isReady = isMatch && (isOAuthUser || password.length > 0);
 
   useEffect(() => {
     if (isOpen) {
       setInput("");
+      setPassword("");
       setError("");
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
 
   const handleDelete = async () => {
-    if (!isMatch) return;
+    if (!isReady) return;
     setIsDeleting(true);
     try {
-      const res = await fetch("/api/profile", { method: "DELETE" });
+      const res = await fetch("/api/profile", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        // Send password in body — API requires it for credential accounts
+        // OAuth accounts send an empty string; API will skip the password check for them
+        body: JSON.stringify({ password }),
+      });
       if (res.ok) {
         await signOut({ callbackUrl: "/" });
       } else {
-        setError(t("errorMessage"));
+        const data = await res.json().catch(() => ({}));
+        setError(data?.error || t("errorMessage"));
         setIsDeleting(false);
       }
     } catch {
@@ -79,7 +91,7 @@ export default function DeleteAccountModal({ isOpen, onClose }: Props) {
           </div>
 
           {/* Confirm Email */}
-          <div className="mb-6">
+          <div className="mb-4">
             <label className="block text-sm text-(--text-muted) mb-2">
               {t("confirmLabel")}
               <span className="ml-1 text-(--foreground) font-medium select-none">
@@ -115,6 +127,26 @@ export default function DeleteAccountModal({ isOpen, onClose }: Props) {
             )}
           </div>
 
+          {/* Confirm Password — only shown for credential accounts */}
+          {!isOAuthUser && (
+            <div className="mb-6">
+              <label className="block text-sm text-(--text-muted) mb-2">
+                {t("passwordLabel", { defaultValue: "Enter your password to confirm" })}
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError("");
+                }}
+                placeholder="••••••••"
+                autoComplete="current-password"
+                className="w-full px-4 py-3 bg-(--background) border border-(--card-border) rounded-lg text-sm focus:outline-none focus:border-red-500 transition-colors"
+              />
+            </div>
+          )}
+
           {error && (
             <p className="text-sm text-red-400 mb-4">{error}</p>
           )}
@@ -129,7 +161,7 @@ export default function DeleteAccountModal({ isOpen, onClose }: Props) {
             </button>
             <button
               onClick={handleDelete}
-              disabled={!isMatch || isDeleting}
+              disabled={!isReady || isDeleting}
               className="flex-1 px-4 py-3 bg-red-500 text-white font-semibold rounded-lg text-sm hover:bg-red-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isDeleting ? (

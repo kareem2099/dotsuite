@@ -7,16 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [Unreleased] — v1.1.0
 
 ### Planned
-- Python tools category
-- Related products section
-- Product analytics tracking
-- Pagination for product listing
-- PWA support
+- Webhook end-to-end testing (subscription_created / cancelled / updated / expired)
+- "Manage Billing" button → Lemon Squeezy customer portal
+- Show subscription end date in dashboard
+- Post scheduling UI (DotShare core feature)
+- Platform token management (LinkedIn, Twitter/X, Telegram…)
 
 ---
+
+## [1.0.0] — 2026-05-03
+
+### Added
+- **Lemon Squeezy Billing** — full server-side checkout via Rust backend (`dotsuite-core`)
+- **Internal Billing Routes** — `POST /internal/billing/checkout`, `GET /internal/billing/status`, `GET /internal/billing/portal`; all protected by `X-Internal-Secret`, never exposed publicly
+- **Checkout pre-fill** — Lemon Squeezy checkout form auto-populated with user email & name from MongoDB
+- **Webhook→User mapping** — `user_id` embedded in `checkout_data.custom` so the Rust webhook handler can tie any payment to the correct MongoDB user without session state
+- **Upgrade Page** (`/dashboard/dotshare/upgrade`) — live billing status fetched on load; active plan highlighted with green "✓ Current Plan" badge and disabled button
+- **Pricing Tab redirect** — product page pricing tab now shows a simple CTA card linking to the upgrade page (removed duplicate `<PricingTiers />`)
+- **OAuth ID fix** — Google/GitHub OAuth users now get the real MongoDB `_id` stored in the JWT (previously stored the provider's numeric ID, breaking all Rust API calls)
+
+### Fixed
+- `logAudit()` no longer crashes on signout when `userId` is a Google/GitHub numeric string (not a valid ObjectId)
+- `QuotaBar` crashes on `.toLocaleString()` when API returns `undefined` — safe fallbacks added
+- `DashboardError` no longer shows `MISSING_MESSAGE` for `Error.goHome` — default messages added
+- Billing routes switched from `rustProxy` (Bearer API key) to `rustInternal` (shared secret), fixing `Unable To Extract Key!` 500 errors
+
 
 ## [0.5.0] — 2026-02-28
 

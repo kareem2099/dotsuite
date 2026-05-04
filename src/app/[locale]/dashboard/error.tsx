@@ -15,10 +15,10 @@ export default function DashboardError({ error, reset }: { error: Error & { dige
   return (
     <ErrorDisplay
       type="error"
-      title={t("title")}
-      message={error.message || t("message")}
-      primaryAction={{ label: t("tryAgain"), onClick: reset }}
-      secondaryAction={{ label: t("goHome"), onClick: () => router.push(`/${locale}`) }}
+      title={t("title", { defaultMessage: "Something went wrong!" })}
+      message={error.message || t("message", { defaultMessage: "An unexpected error occurred in the dashboard." })}
+      primaryAction={{ label: t("tryAgain", { defaultMessage: "Try Again" }), onClick: reset }}
+      secondaryAction={{ label: t("goHome", { defaultMessage: "Go Home" }), onClick: () => router.push(`/${locale}`) }}
     />
   );
 }

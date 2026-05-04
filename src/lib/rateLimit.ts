@@ -45,11 +45,18 @@ export async function checkRateLimit(
 }
 
 export function getClientIP(headers: Headers): string {
+  // ⚠️ Security: Never trust the first IP in x-forwarded-for — the client controls it.
+  // We take the LAST IP added by a trusted proxy/server, which cannot be spoofed by the client.
+  // If no trusted proxy is present (direct connection), use x-real-ip or fall back to "unknown".
   const forwarded = headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
+  if (forwarded) {
+    const ips = forwarded.split(",").map((ip) => ip.trim());
+    // The last entry is added by the closest trusted proxy (our server/CDN)
+    return ips[ips.length - 1] || "unknown";
+  }
 
   const realIP = headers.get("x-real-ip");
-  if (realIP) return realIP;
+  if (realIP) return realIP.trim();
 
   return "unknown";
 }

@@ -50,14 +50,10 @@ export async function POST(req: Request) {
     // Check if user already exists
     const existingUser = await User.findOne({ email }).select("+password");
     if (existingUser) {
-      if (!existingUser.password) {
-        return NextResponse.json(
-          { error: "This email is registered with Google or GitHub. Please sign in with that provider." },
-          { status: 400 }
-        );
-      }
+      // 🛡️ Anti-Enumeration: Use a unified message regardless of the reason
+      // (whether the email exists with credentials or via OAuth)
       return NextResponse.json(
-        { error: "User already exists with this email" },
+        { error: "An account with this email already exists. Try signing in instead." },
         { status: 400 }
       );
     }

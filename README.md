@@ -2,8 +2,10 @@
 
 > Developer tools built to make your workflow faster and smarter.
 
+[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)](./CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
+[![Rust](https://img.shields.io/badge/Rust-Axum-orange?logo=rust)](https://axum.rs)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?logo=mongodb)](https://www.mongodb.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](./LICENSE)
 
@@ -37,20 +39,22 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🌙 **Dark / Light Theme** — System-aware with manual toggle
 - 📦 **Product Catalog** — VS Code, Next.js, Python tools with live GitHub data
 - 📖 **Live README & Changelog** — Fetched directly from GitHub repos
-- ⭐ **Product Reviews & Ratings** — 5-star ratings, written reviews, avg rating, one review per user (v0.5.0)
-- 🔔 **Toast Notifications** — Animated toast system + async confirm modal, zero native dialogs (v0.5.0)
+- ⭐ **Product Reviews & Ratings** — 5-star ratings, written reviews, avg rating, one review per user
+- 🔔 **Toast Notifications** — Animated toast system + async confirm modal
 - 🔄 **GitHub Webhooks** — Auto cache revalidation on push/release
-- 🛡️ **Rate Limiting** — MongoDB-backed atomic rate limiting (60 req/min)
+- 🛡️ **Rate Limiting** — MongoDB-backed atomic rate limiting
 - 📧 **HTML Emails** — Professional transactional emails via Nodemailer
 - 👤 **User Dashboard** — Stats, profile, settings, activity
 - 📱 **Responsive** — Mobile-first design with ultra-wide support
 - ⚡ **Debounced Search** — Optimized search with useDebounce hook
 - 🎭 **Loading Skeletons** — Smooth loading experience with skeleton components
-- 🖼️ **Image Optimization** — next/image for avatars with lazy loading
 - 🚨 **Error Boundaries** — error.tsx, not-found.tsx, global-error with i18n
-- ♿ **Accessibility** — Skip links, ARIA labels, focus management, translated aria-labels
+- ♿ **Accessibility** — Skip links, ARIA labels, focus management
 - 📬 **Contact Form** — With validation and MongoDB storage
-- 🎨 **CSS Variables** — All colors centralized in globals.css, zero hardcoded values
+- 🎨 **CSS Variables** — All colors centralized in globals.css
+- 💳 **DotShare Billing** *(v1.0.0)* — Lemon Squeezy subscriptions via Rust backend; secure server-side checkout, webhook→MongoDB sync, pre-filled checkout form
+- 🦀 **Rust Core** *(v1.0.0)* — `dotsuite-core` (Axum) handles billing, scheduling, API key auth; internal routes protected by shared secret
+- 🔒 **OAuth ID Fix** *(v1.0.0)* — Google/GitHub users correctly mapped to MongoDB ObjectId in JWT
 
 ---
 
@@ -59,7 +63,8 @@ It features a full authentication system, multi-language support, GitHub integra
 | Category | Technology |
 |---|---|
 | Framework | Next.js 16 (App Router) |
-| Language | TypeScript |
+| Language | TypeScript + Rust |
+| Backend Core | Axum (Rust) — `dotsuite-core` |
 | Database | MongoDB + Mongoose |
 | Auth | NextAuth.js v4 |
 | Styling | Tailwind CSS v4 |
@@ -67,6 +72,7 @@ It features a full authentication system, multi-language support, GitHub integra
 | Validation | Zod + React Hook Form |
 | i18n | next-intl |
 | Markdown | react-markdown + remark-gfm |
+| Payments | Lemon Squeezy |
 
 ---
 
@@ -95,6 +101,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## 🔑 Environment Variables
 ```env
+# Next.js Frontend
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your_nextauth_secret
 MONGODB_URI=mongodb+srv://...
@@ -106,10 +113,18 @@ GITHUB_TOKEN=your_github_personal_access_token
 GITHUB_WEBHOOK_SECRET=your_webhook_secret
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_SECURE=false
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
 EMAIL_FROM="dotsuite <your_email@gmail.com>"
+
+# Rust Core (dotsuite-core/.env)
+CORE_API_URL=http://127.0.0.1:8080
+INTERNAL_API_SECRET=your_internal_shared_secret
+
+# Lemon Squeezy (Frontend — variant IDs only, not secrets)
+NEXT_PUBLIC_LS_VARIANT_BASIC=your_basic_variant_id
+NEXT_PUBLIC_LS_VARIANT_PRO=your_pro_variant_id
+NEXT_PUBLIC_LS_VARIANT_MAX=your_max_variant_id
 ```
 
 ---

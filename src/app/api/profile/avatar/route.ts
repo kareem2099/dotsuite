@@ -15,6 +15,40 @@ const s3Client = new S3Client({
   },
 });
 
+// 🛡️ Allowed image types: MIME type → allowed extensions + magic bytes (file signature)
+// Magic bytes allow us to verify the actual file content, not just the client-supplied MIME type
+const ALLOWED_IMAGE_TYPES: Record<string, { extensions: string[]; magic: number[][] }> = {
+  "image/jpeg": {
+    extensions: ["jpg", "jpeg"],
+    magic: [[0xff, 0xd8, 0xff]], // JPEG signature
+  },
+  "image/png": {
+    extensions: ["png"],
+    magic: [[0x89, 0x50, 0x4e, 0x47]], // PNG signature
+  },
+  "image/webp": {
+    extensions: ["webp"],
+    magic: [[0x52, 0x49, 0x46, 0x46]], // RIFF (WebP)
+  },
+  "image/gif": {
+    extensions: ["gif"],
+    magic: [[0x47, 0x49, 0x46, 0x38]], // GIF8
+  },
+};
+
+/**
+ * Validates a file buffer against known magic bytes for the claimed MIME type.
+ * This prevents attackers from renaming a malicious file to bypass type checks.
+ */
+function validateMagicBytes(buffer: Buffer, mimeType: string): boolean {
+  const typeConfig = ALLOWED_IMAGE_TYPES[mimeType];
+  if (!typeConfig) return false;
+
+  return typeConfig.magic.some((signature) =>
+    signature.every((byte, index) => buffer[index] === byte)
+  );
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -29,8 +63,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json({ error: "File must be an image" }, { status: 400 });
+    // 1. 🛡️ Check MIME type against strict allowlist (not just startsWith "image/")
+    if (!ALLOWED_IMAGE_TYPES[file.type]) {
+      return NextResponse.json(
+        { error: "Unsupported file type. Allowed: JPEG, PNG, WebP, GIF" },
+        { status: 400 }
+      );
     }
 
     if (file.size > 5 * 1024 * 1024) {
@@ -38,10 +76,20 @@ export async function POST(req: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    
-    const fileExtension = file.name.split('.').pop() || 'png';
-    const fileKey = `dotsuite/avatars/${crypto.randomUUID()}.${fileExtension}`; 
-    
+
+    // 2. 🛡️ Validate magic bytes — verify actual file content matches claimed type
+    if (!validateMagicBytes(buffer, file.type)) {
+      return NextResponse.json(
+        { error: "File content does not match its type. Upload rejected." },
+        { status: 400 }
+      );
+    }
+
+    // 3. 🛡️ Use only allowed extension from whitelist, never trust file.name
+    const allowedExtensions = ALLOWED_IMAGE_TYPES[file.type].extensions;
+    const fileExtension = allowedExtensions[0]; // Use the canonical extension for this MIME type
+    const fileKey = `dotsuite/avatars/${crypto.randomUUID()}.${fileExtension}`;
+
     const bucketName = process.env.R2_BUCKET_NAME || "";
     const publicUrl = process.env.R2_PUBLIC_URL || "";
 
@@ -99,4 +147,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

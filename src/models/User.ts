@@ -20,6 +20,7 @@ export interface IUser extends Document {
   failedLoginAttempts: number;
   lockoutUntil?: Date;
   passwordHistory: string[];
+  sessionVersion: number;
   createdAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
   isLockedOut(): boolean;
@@ -28,6 +29,7 @@ export interface IUser extends Document {
   isPasswordInHistory(candidatePassword: string): Promise<boolean>;
   getResetPasswordToken(): string;
   getVerificationToken(): string;
+  incrementSessionVersion(): Promise<void>;
 }
 
 export interface IUserModel extends mongoose.Model<IUser> {
@@ -53,6 +55,7 @@ const UserSchema = new Schema<IUser>(
     failedLoginAttempts: { type: Number, default: 0 },
     lockoutUntil: { type: Date },
     passwordHistory: { type: [String], default: [], select: false },
+    sessionVersion: { type: Number, default: 1 },
   },
   { timestamps: true }
 );
@@ -101,6 +104,13 @@ UserSchema.methods.getLockoutTimeRemaining = function (this: IUser): number {
 UserSchema.methods.resetLoginAttempts = async function (this: IUser): Promise<void> {
   this.failedLoginAttempts = 0;
   this.lockoutUntil = undefined;
+  await this.save();
+};
+
+// Increment session version to invalidate all existing JWT sessions
+// Called after password change or reset to force re-login on all devices
+UserSchema.methods.incrementSessionVersion = async function (this: IUser): Promise<void> {
+  this.sessionVersion = (this.sessionVersion || 1) + 1;
   await this.save();
 };
 

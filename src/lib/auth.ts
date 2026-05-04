@@ -157,6 +157,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           image: user.image,
+          sessionVersion: user.sessionVersion ?? 1,
         };
       },
     }),
@@ -246,15 +247,47 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub as string;
         if (token.image) session.user.image = token.image as string;
         if (token.name) session.user.name = token.name as string;
+
+        // 🛡️ Session Version Validation: Invalidate JWTs after password change/reset.
+        // If sessionVersion in the token doesn't match the DB, the user must re-login.
+        if (token.sub && token.sessionVersion !== undefined) {
+          try {
+            await connectDB();
+            const dbUser = await User.findById(token.sub).select("sessionVersion");
+            if (!dbUser || dbUser.sessionVersion !== token.sessionVersion) {
+              // Returning null triggers NextAuth to clear the session
+              return null as unknown as typeof session;
+            }
+          } catch {
+            // On DB error, fail safely by allowing the session to continue
+          }
+        }
       }
       return session;
     },
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, account, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.sub = user.id;
         token.image = user.image;
         token.name = user.name;
+        // Store sessionVersion in token so we can validate it later
+        token.sessionVersion = (user as { sessionVersion?: number }).sessionVersion ?? 1;
+
+        // For OAuth, user.id is the provider ID (e.g. GitHub ID). 
+        // We MUST fetch the MongoDB _id so the Rust backend can parse it as an ObjectId.
+        if (account && account.provider !== "credentials") {
+          try {
+            await connectDB();
+            const dbUser = await User.findOne({ email: user.email });
+            if (dbUser) {
+              token.sub = dbUser._id.toString();
+              token.id = dbUser._id.toString();
+            }
+          } catch (e) {
+            console.error("Error fetching db user in jwt callback", e);
+          }
+        }
       }
 
       if (trigger === "update" && session?.user) {

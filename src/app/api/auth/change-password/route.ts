@@ -121,6 +121,9 @@ export async function POST(req: Request) {
     user.password = newPassword;
     await user.save();
 
+    // 🛡️ Invalidate all existing sessions on other devices by bumping the session version
+    await user.incrementSessionVersion();
+
     // 📝 Log successful password change
     await logAudit({
       userId: user._id.toString(),

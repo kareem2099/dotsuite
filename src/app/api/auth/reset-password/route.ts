@@ -97,6 +97,9 @@ export async function POST(request: Request) {
 
     await user.save();
 
+    // 🛡️ Invalidate all existing sessions on other devices by bumping the session version
+    await user.incrementSessionVersion();
+
     // 3. 📝 Log successful password reset
     const userAgent = request.headers.get("user-agent") || "Unknown Device";
     await logAudit({

@@ -14,7 +14,7 @@ export async function generateMetadata({
   const title = product.translations[locale as "en" | "ar" | "fr" | "ru" | "de"]?.title || product.translations.en.title;
   
   // Base URL for API
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXTAUTH_URL!;
   
   let averageRating = "0.0";
   try {

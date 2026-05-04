@@ -125,8 +125,8 @@ export const products: IProduct[] = [
     extensionId: "dotshare",
     category: "vscode",
     githubRepo: "kareem2099/DotShare",
-    hasLicense: false,
-    price: 0,
+    hasLicense: true,
+    price: 5,
     order: 7,
     translations: {
       en: { title: "DotShare", description: "Share code snippets directly from VS Code" },

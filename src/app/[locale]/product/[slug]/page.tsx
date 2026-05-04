@@ -52,7 +52,7 @@ interface Review {
   };
 }
 
-type Tab = "readme" | "changelog" | "reviews";
+type Tab = "readme" | "changelog" | "reviews" | "pricing";
 
 export default function ProductDetail() {
   const t = useTranslations("ProductDetail");
@@ -138,7 +138,7 @@ export default function ProductDetail() {
     await fetchReviews(data.product._id);
   };
 
-  const handleDeleteReview = async (reviewId: string) => {
+  const handleDeleteReview = async () => {
     if (!data?.product?._id) return;
     const res = await fetch(`/api/reviews/${data.product._id}`, {
       method: "DELETE",
@@ -307,8 +307,8 @@ export default function ProductDetail() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 p-1 bg-(--card-bg) border border-(--card-border) rounded-xl w-fit">
-          {(["readme", "changelog", "reviews"] as Tab[]).map((tabKey) => (
+        <div className="flex flex-wrap gap-1 mb-6 p-1 bg-(--card-bg) border border-(--card-border) rounded-xl w-fit">
+          {(["readme", "changelog", "reviews", ...(product.hasLicense ? ["pricing"] : [])] as Tab[]).map((tabKey) => (
             <button
               key={tabKey}
               onClick={() => setTab(tabKey)}
@@ -321,14 +321,32 @@ export default function ProductDetail() {
                 ? `📖 ${t("readme")}`
                 : tabKey === "changelog"
                   ? `📋 ${t("changelog")}`
-                  : `⭐ ${t("reviews")}${totalReviews > 0 ? ` (${totalReviews})` : ""}`}
+                  : tabKey === "pricing"
+                    ? `💎 ${t("pricing", { defaultMessage: "Pricing" })}`
+                    : `⭐ ${t("reviews")}${totalReviews > 0 ? ` (${totalReviews})` : ""}`}
             </button>
           ))}
         </div>
 
         {/* Content */}
-        <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
-          {tab === "readme" ? (
+        <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl overflow-hidden">
+          {tab === "pricing" ? (
+            <div className="flex flex-col items-center justify-center py-12 gap-6 text-center">
+              <div className="text-5xl">💎</div>
+              <div>
+                <h3 className="text-2xl font-bold mb-2">DotShare Premium Plans</h3>
+                <p className="text-(--text-muted) max-w-md">
+                  Unlock more posts, image support, video posts, and faster scheduling windows.
+                </p>
+              </div>
+              <Link
+                href={`/${locale}/dashboard/dotshare/upgrade`}
+                className="px-8 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-xl hover:bg-(--primary-hover) transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                View Plans & Pricing →
+              </Link>
+            </div>
+          ) : tab === "readme" ? (
             github.readme ? (
               <div className="prose max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>

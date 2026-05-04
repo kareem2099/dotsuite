@@ -84,7 +84,7 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="w-full max-w-400 mx-auto px-6 md:px-12 lg:px-20 py-8">
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           <Link
             href={`/${locale}/dashboard/profile`}
             className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-(--primary) transition-colors group"
@@ -150,6 +150,40 @@ export default function Dashboard() {
               <div>
                 <h3 className="font-semibold">{t("myReviews")}</h3>
                 <p className="text-sm text-(--text-muted)">{t("manageReviews")}</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href={`/${locale}/dashboard/keys`}
+            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-primary transition-colors group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4v-3.286a2 2 0 01.586-1.414l9.743-9.743A6 6 0 0121 9z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-semibold">{t("apiKeys", { defaultMessage: "API Keys" })}</h3>
+                <p className="text-sm text-muted-foreground">{t("manageKeys", { defaultMessage: "Manage extension keys" })}</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href={`/${locale}/dashboard/dotshare`}
+            className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-purple-500/50 transition-colors group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
+                <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-semibold">DotShare</h3>
+                <p className="text-sm text-(--text-muted)">Schedule & publish posts</p>
               </div>
             </div>
           </Link>

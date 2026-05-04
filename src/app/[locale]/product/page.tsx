@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -39,42 +39,48 @@ export default function ProductsPage() {
   // Use debounce hook
   const debouncedSearch = useDebounce(search, 500);
 
-  // Reset page to 1 when search or category changes
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch, category]);
+  // Track the current "intent" page — resets to 1 when filters change
+  const pageRef = useRef(page);
+  pageRef.current = page;
 
-  // Fetch products when category, debounced search, or page changes
+  // Single unified effect — fixes race condition by:
+  // 1. Resetting page to 1 when filters change (instead of a separate effect)
+  // 2. Using AbortController to cancel stale in-flight requests
   useEffect(() => {
+    // When search or category changes, always start from page 1
+    setPage(1);
+  }, [debouncedSearch, category]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const fetchProducts = async () => {
-      const searchParams = new URLSearchParams();
-      if (category !== "all") searchParams.set("category", category);
-      if (debouncedSearch) searchParams.set("search", debouncedSearch);
-      searchParams.set("page", page.toString());
-      searchParams.set("limit", "6"); // Limit to 6 per page for nicer grid
+      const qs = new URLSearchParams();
+      if (category !== "all") qs.set("category", category);
+      if (debouncedSearch) qs.set("search", debouncedSearch);
+      qs.set("page", page.toString());
+      qs.set("limit", "6");
 
       if (page === 1) setLoading(true);
       else setLoadingMore(true);
 
       try {
-        const res = await fetch(`/api/products?${searchParams}`);
+        const res = await fetch(`/api/products?${qs}`, { signal: controller.signal });
         const data = await res.json();
 
         // Handle both array and { products: [] } response formats
         const productsArray = data.products || (Array.isArray(data) ? data : []);
-        
+
         if (page === 1) {
           setProducts(productsArray);
         } else {
           setProducts((prev) => [...prev, ...productsArray]);
         }
-        
-        if (data.pagination) {
-          setTotalPages(data.pagination.totalPages);
-        } else {
-          setTotalPages(1);
-        }
-      } catch (err) {
+
+        setTotalPages(data.pagination?.totalPages ?? 1);
+      } catch (err: unknown) {
+        // Ignore abort errors from cancelled requests — they are intentional
+        if (err instanceof Error && err.name === "AbortError") return;
         console.error("Fetch error:", err);
         if (page === 1) setProducts([]);
       } finally {
@@ -84,6 +90,9 @@ export default function ProductsPage() {
     };
 
     fetchProducts();
+
+    // Cleanup: cancel the request if the component re-renders before it completes
+    return () => controller.abort();
   }, [debouncedSearch, category, page]);
 
   const handleCategoryChange = (cat: string) => {

@@ -1,4 +1,5 @@
 import AuditLog from "@/models/AuditLog";
+import mongoose from "mongoose";
 
 export interface AuditLogData {
   userId?: string;
@@ -16,7 +17,15 @@ export interface AuditLogData {
  */
 export async function logAudit(data: AuditLogData): Promise<void> {
   try {
-    await AuditLog.create(data);
+    // Only include userId if it's a valid MongoDB ObjectId (24-char hex).
+    // OAuth sessions may temporarily carry a provider ID (e.g. Google numeric ID)
+    // before the JWT callback overwrites it with the real MongoDB _id.
+    const safeUserId =
+      data.userId && mongoose.Types.ObjectId.isValid(data.userId)
+        ? data.userId
+        : undefined;
+
+    await AuditLog.create({ ...data, userId: safeUserId });
   } catch (err) {
     console.error("Failed to create audit log:", err);
   }
