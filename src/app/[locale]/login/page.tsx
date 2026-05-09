@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -21,6 +21,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Login() {
+  const { status } = useSession();
   const t = useTranslations("Auth");
   const { toast } = useToast();
   const router = useRouter();
@@ -30,6 +31,25 @@ export default function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Magic link auth intent and auto-redirect
+  useEffect(() => {
+    // 1. Save intent if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const intent = urlParams.get("intent");
+    const scheme = urlParams.get("scheme");
+    if (intent === "vscode") {
+      localStorage.setItem("auth_intent", "vscode");
+      if (scheme) {
+        localStorage.setItem("auth_scheme", scheme);
+      }
+    }
+
+    // 2. Redirect if already authenticated
+    if (status === "authenticated") {
+      router.push(`/${locale}/dashboard`);
+    }
+  }, [status, router, locale]);
 
   const {
     register,

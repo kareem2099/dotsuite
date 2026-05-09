@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import UserAvatar from "@/components/UserAvatar";
@@ -39,6 +39,74 @@ export default function Dashboard() {
     }
   }, [status]);
 
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const intentProcessed = useRef(false);
+
+  useEffect(() => {
+    const checkIntent = async () => {
+      const intent = localStorage.getItem("auth_intent");
+      
+      if (intent === "vscode" && status === "authenticated" && !intentProcessed.current) {
+        intentProcessed.current = true;
+        setIsRedirecting(true);
+        console.log("[DotSuite] VS Code auth intent detected, generating key...");
+        
+        try {
+          const res = await fetch("/api/keys", { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ label: "VS Code Extension" })
+          });
+          
+          if (res.ok) {
+            const data = await res.json();
+            const token = data.plaintext_key;
+
+            console.log("[DotSuite] Raw token from API:", token);
+            console.log("[DotSuite] Token type:", typeof token);
+            console.log("[DotSuite] Token length:", token?.length);
+            console.log("[DotSuite] Token starts with ds_prod_:", token?.startsWith?.("ds_prod_"));
+
+            if (!token) {
+              throw new Error("No token received from API");
+            }
+
+            // 1. Sanitization
+            const safeToken = encodeURIComponent(token);
+            
+            console.log("[DotSuite] After encodeURIComponent - token:", safeToken);
+            console.log("[DotSuite] After encoding - length:", safeToken.length);
+            
+            // 2. Build link
+            const scheme = localStorage.getItem("auth_scheme") || "vscode";
+            const vscodeUrl = `${scheme}://freerave.dotshare/login?token=${safeToken}`;
+            
+            console.log("[DotSuite] Full VS Code URL:", vscodeUrl);
+            
+            // 3. Small delay to ensure the UI is ready and intent is cleared
+            localStorage.removeItem("auth_intent");
+            localStorage.removeItem("auth_scheme");
+            console.log("[DotSuite] Key generated, redirecting to VS Code...");
+            
+            setTimeout(() => {
+              window.location.href = vscodeUrl;
+            }, 500);
+          } else {
+            console.error("Failed to generate key for VS Code");
+            localStorage.removeItem("auth_intent");
+          }
+        } catch (error) {
+          console.error("Failed to setup VS Code auth", error);
+          localStorage.removeItem("auth_intent");
+        } finally {
+          setIsRedirecting(false);
+        }
+      }
+    };
+
+    checkIntent();
+  }, [status]);
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push(`/${locale}/login`);
@@ -53,6 +121,12 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen">
+      {isRedirecting && (
+        <div className="bg-green-500 text-white p-4 text-center mb-4 animate-pulse">
+          Connecting to DotShare VS Code Extension... Please confirm the prompt.
+        </div>
+      )}
+      
       {/* Header */}
       <div className="border-b border-(--card-border) bg-(--card-bg)">
         <div className="w-full px-6 md:px-12 lg:px-20 py-8">

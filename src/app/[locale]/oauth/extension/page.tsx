@@ -14,7 +14,8 @@ export default function ExtensionOAuthPage() {
   const searchParams = useSearchParams();
   
   const product = searchParams.get("product") || "dotshare";
-  const callbackUrl = searchParams.get("callbackUrl") || "vscode://kareem2099.dotshare/auth";
+  const scheme = searchParams.get("scheme") || "vscode";
+  const callbackUrl = searchParams.get("callbackUrl") || `${scheme}://freerave.dotshare/auth`;
   
   const [isAuthorizing, setIsAuthorizing] = useState(false);
   const [error, setError] = useState<string | null>(null);

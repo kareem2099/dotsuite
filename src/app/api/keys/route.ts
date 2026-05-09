@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     }
 
     // Call Rust backend server-to-server
-    const res = await rustInternal(`/internal/keys/${session.user.id}`, {
+    const res = await rustInternal("/internal/keys", {
       method: "GET",
     }, session.user.id);
 
@@ -46,7 +46,6 @@ export async function POST(req: Request) {
     const res = await rustInternal("/internal/keys/generate", {
       method: "POST",
       body: JSON.stringify({
-        user_id: session.user.id,
         label,
       }),
     }, session.user.id);
