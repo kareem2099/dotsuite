@@ -7,14 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased] — v1.1.0
+## [1.1.0] — 2026-05-24 — "Backend Goes Live"
 
-### Planned
-- Webhook end-to-end testing (subscription_created / cancelled / updated / expired)
-- "Manage Billing" button → Lemon Squeezy customer portal
-- Show subscription end date in dashboard
-- Post scheduling UI (DotShare core feature)
-- Platform token management (LinkedIn, Twitter/X, Telegram…)
+### Added
+- **Production Rust Backend on Railway**: `dotsuite-core` is now deployed to `https://dotsuite-core-production.up.railway.app` via Railway. All internal Next.js API routes point to the live backend instead of `localhost:8080`.
+- **OAuth Connection Status Routes**: New Next.js API proxies for `/api/oauth/connections`, `/api/oauth/disconnect`, and `/api/oauth/status` — enable the DotShare VS Code extension to query which platforms are connected without exposing tokens.
+- **Checkout & Billing Proxy Routes**: Internal API routes for Lemon Squeezy checkout, portal, and status checks are fully wired to the Rust backend via `X-Internal-Secret` authentication.
+
+### Changed
+- **`CORE_API_URL`**: Updated from `http://127.0.0.1:8080` (local) to `https://dotsuite-core-production.up.railway.app` (production Railway URL).
+- **`NEXTAUTH_URL`**: Updated from `http://localhost:3000` to `https://dotsuite.vercel.app` for production OAuth callback handling.
+- **`/dashboard/dotshare` page**: Scheduler connection status is now fetched live from the production Rust backend; platform icons show a green badge when OAuth credentials are synced.
+
+### Fixed
+- Duplicate `NEXTAUTH_URL` entry in `.env.local` removed.
+- `logAudit()` no longer crashes on sign-out when `userId` is a non-ObjectId string.
 
 ---
 

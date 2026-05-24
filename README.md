@@ -2,7 +2,7 @@
 
 > Developer tools built to make your workflow faster and smarter.
 
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.0-brightgreen)](./CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
 [![Rust](https://img.shields.io/badge/Rust-Axum-orange?logo=rust)](https://axum.rs)
@@ -55,6 +55,8 @@ It features a full authentication system, multi-language support, GitHub integra
 - 💳 **DotShare Billing** *(v1.0.0)* — Lemon Squeezy subscriptions via Rust backend; secure server-side checkout, webhook→MongoDB sync, pre-filled checkout form
 - 🦀 **Rust Core** *(v1.0.0)* — `dotsuite-core` (Axum) handles billing, scheduling, API key auth; internal routes protected by shared secret
 - 🔒 **OAuth ID Fix** *(v1.0.0)* — Google/GitHub users correctly mapped to MongoDB ObjectId in JWT
+- 🚀 **Production Rust Backend** *(v1.1.0)* — `dotsuite-core` now live on Railway; `CORE_API_URL` points to `dotsuite-core-production.up.railway.app`
+- 🔗 **OAuth Status API** *(v1.1.0)* — New proxy routes (`/api/oauth/connections`, `/api/oauth/disconnect`, `/api/oauth/status`) for the DotShare VS Code extension to query connected platforms securely
 
 ---
 
@@ -117,8 +119,8 @@ EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
 EMAIL_FROM="dotsuite <your_email@gmail.com>"
 
-# Rust Core (dotsuite-core/.env)
-CORE_API_URL=http://127.0.0.1:8080
+# Rust Core (dotsuite-core — production on Railway)
+CORE_API_URL=https://dotsuite-core-production.up.railway.app
 INTERNAL_API_SECRET=your_internal_shared_secret
 
 # Lemon Squeezy (Frontend — variant IDs only, not secrets)
