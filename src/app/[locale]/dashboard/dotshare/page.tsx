@@ -9,6 +9,7 @@ import QuotaBar from "@/components/dotshare/QuotaBar";
 import TierBadge from "@/components/dotshare/TierBadge";
 import PlatformBadge from "@/components/dotshare/PlatformBadge";
 import PostStatusIcon from "@/components/dotshare/PostStatusIcon";
+import ConnectedAccounts from "@/components/dotshare/ConnectedAccounts";
 import { formatQuota, UNLIMITED_QUOTA } from "@/lib/rust-api";
 
 interface BillingStatus {
@@ -206,7 +207,12 @@ export default function DotSharePage() {
           )}
         </div>
 
-        {/* ── Section B: API Keys ── */}
+        {/* ── Section B: Connected Accounts ── */}
+        <div className="mb-6">
+          <ConnectedAccounts />
+        </div>
+
+        {/* ── Section C: API Keys ── */}
         <div className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold">API Keys</h2>
@@ -222,7 +228,7 @@ export default function DotSharePage() {
           </p>
         </div>
 
-        {/* ── Section C: Recent Posts ── */}
+        {/* ── Section D: Recent Posts ── */}
         <div className="bg-(--card-bg) border border-(--card-border) rounded-xl">
           <div className="flex items-center justify-between p-6 border-b border-(--card-border)">
             <h2 className="text-lg font-bold">Recent Posts</h2>
@@ -258,8 +264,8 @@ export default function DotSharePage() {
             </div>
           ) : (
             <ul className="divide-y divide-(--card-border)">
-              {posts.map((post) => (
-                <li key={post._id} className="p-5 flex gap-4 items-start hover:bg-(--card-border)/20 transition-colors">
+              {posts.map((post, index) => (
+                <li key={post._id || `post-${index}`} className="p-5 flex gap-4 items-start hover:bg-(--card-border)/20 transition-colors">
                   <div className="mt-0.5">
                     <PostStatusIcon status={post.status} />
                   </div>

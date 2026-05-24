@@ -142,8 +142,8 @@ export default function PostsPage() {
             </div>
           ) : (
             <ul className="divide-y divide-(--card-border)">
-              {posts.map((post) => (
-                <li key={post._id} className="p-5 hover:bg-(--card-border)/20 transition-colors">
+              {posts.map((post, index) => (
+                <li key={post._id || `post-${index}`} className="p-5 hover:bg-(--card-border)/20 transition-colors">
                   <div className="flex gap-3 items-start">
                     <div className="mt-1">
                       <PostStatusIcon status={post.status} showLabel />

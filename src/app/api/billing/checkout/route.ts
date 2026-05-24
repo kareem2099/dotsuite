@@ -24,11 +24,17 @@ export async function POST(req: Request) {
       );
     }
 
+    const url = new URL(req.url);
+    const returnUrl = `${url.origin}/en/dashboard`;
+
     const res = await rustInternal(
       "/internal/billing/checkout",
       {
         method: "POST",
-        body: JSON.stringify({ variant_id: validation.data.variant_id }),
+        body: JSON.stringify({ 
+          variant_id: validation.data.variant_id,
+          return_url: returnUrl
+        }),
       },
       session.user.id
     );
