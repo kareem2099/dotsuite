@@ -16,6 +16,7 @@ const publicPages = [
   "/contact",
   "/terms",
   "/privacy",
+  "/banned",
 ];
 
 // Public page prefixes (allow sub-routes, e.g. /product/slug)
@@ -34,7 +35,20 @@ const intlMiddleware = createIntlMiddleware(routing);
 // 4. Auth proxy with NextAuth
 const authMiddleware = withAuth(
   function onSuccess(req: NextRequest) {
-    return intlMiddleware(req);
+    const res = intlMiddleware(req);
+    
+    // ── Ban check ─────────────────────────────────────────────────────────────
+    // We don't hit the DB here (Edge runtime) — instead we set a custom header
+    // and let the dashboard Server Layout do the actual ban check.
+    // The ban state is validated per-page-load in the layout server component.
+    const token = (req as any).nextauth?.token;
+    
+    // Forward the user's MongoDB ID to the layout for efficient server-side check
+    if (token?.sub) {
+      res.headers.set("x-user-id", token.sub);
+    }
+    
+    return res;
   },
   {
     callbacks: {

@@ -2,7 +2,7 @@
 
 > Developer tools built to make your workflow faster and smarter.
 
-[![Version](https://img.shields.io/badge/version-1.1.0-brightgreen)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.2.0-brightgreen)](./CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
 [![Rust](https://img.shields.io/badge/Rust-Axum-orange?logo=rust)](https://axum.rs)
@@ -57,6 +57,8 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🔒 **OAuth ID Fix** *(v1.0.0)* — Google/GitHub users correctly mapped to MongoDB ObjectId in JWT
 - 🚀 **Production Rust Backend** *(v1.1.0)* — `dotsuite-core` now live on Railway; `CORE_API_URL` points to `dotsuite-core-production.up.railway.app`
 - 🔗 **OAuth Status API** *(v1.1.0)* — New proxy routes (`/api/oauth/connections`, `/api/oauth/disconnect`, `/api/oauth/status`) for the DotShare VS Code extension to query connected platforms securely
+- ⚖️ **Legal Compliance** *(v1.2.0)* — Fully localized Terms of Service and Privacy Policy pages.
+- 🛠️ **Hydration Fixes** *(v1.2.0)* — Resolved React list key warnings and Next.js client-side rendering issues.
 
 ---
 

@@ -7,7 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.1.0] — 2026-05-24 — "Backend Goes Live"
+## [1.2.0] — 2026-05-25 — "Legal & Compliance"
+
+### Added
+- **Terms of Service & Privacy Policy** — Implemented legally-sound TOS and Privacy Policy pages across all supported locales.
+- **Secure Key Scheduling UI** — Upgraded the `/dashboard/dotshare` and `/dashboard/keys` pages to support user-consented workflow for platform keys, seamlessly integrating with the backend secure credential scheduling system.
+- **Cloudflare Image Integration** — Added full support for cover image uploads via the cloud scheduler to Cloudflare R2.
+
+### Fixed
+- **React Warnings** — Resolved a unique list key warning in the `DotSharePage` component by implementing a robust index-based fallback for `.map()` operations.
+- **Next.js Hydration** — Fixed client-side rendering mismatch warnings related to third-party script injection and router initialization.
+
+---
+
+## [1.1.0] — 2026-05-14 — "Backend Goes Live"
 
 ### Added
 - **Production Rust Backend on Railway**: `dotsuite-core` is now deployed to `https://dotsuite-core-production.up.railway.app` via Railway. All internal Next.js API routes point to the live backend instead of `localhost:8080`.
