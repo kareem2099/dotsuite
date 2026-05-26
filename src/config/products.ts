@@ -136,4 +136,20 @@ export const products: IProduct[] = [
       de: { title: "DotShare", description: "Code-Snippets aus VS Code teilen" },
     },
   },
+  {
+    _id: "prod_dotscramble",
+    slug: "dotscramble",
+    category: "python",
+    githubRepo: "kareem2099/DotScramble",
+    hasLicense: true,
+    price: 5,
+    order: 8,
+    translations: {
+      en: { title: "DotScramble", description: "Powerful image privacy protection tool" },
+      ar: { title: "DotScramble", description: "أداة قوية لحماية خصوصية الصور" },
+      fr: { title: "DotScramble", description: "Outil puissant de protection de la confidentialité des images" },
+      ru: { title: "DotScramble", description: "Мощный инструмент защиты изображений" },
+      de: { title: "DotScramble", description: "Leistungsstarkes Tool zum Schutz der Bildprivatsphäre" },
+    },
+  },
 ];

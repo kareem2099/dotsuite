@@ -62,6 +62,7 @@
     "back": "العودة",
     "installInVSCode": "تثبيت في VS Code",
     "viewOnMarketplace": "عرض على Marketplace",
+    "viewOnOpenDesktop": "عرض على OpenDesktop",
     "viewOnOpenVSX": "عرض على Open VSX",
     "viewOnGitHub": "عرض على GitHub",
     "readme": "README",

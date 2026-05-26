@@ -255,39 +255,57 @@ export default function ProductDetail() {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 min-w-48">
-              <a
-                href={`vscode:extension/FreeRave.${extensionName}`}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                {t("installInVSCode")}
-              </a>
+              {product.category === "vscode" && (
+                <>
+                  <a
+                    href={`vscode:extension/FreeRave.${extensionName}`}
+                    className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    {t("installInVSCode")}
+                  </a>
 
-              <a
-                href={`https://marketplace.visualstudio.com/items?itemName=FreeRave.${extensionName}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors text-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                {t("viewOnMarketplace")}
-              </a>
+                  <a
+                    href={`https://marketplace.visualstudio.com/items?itemName=FreeRave.${extensionName}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors text-sm"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    {t("viewOnMarketplace")}
+                  </a>
 
-              {openVsx && (
+                  {openVsx && (
+                    <a
+                      href={openVsx.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--purple-accent) hover:text-(--purple-accent) transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 13.5L9 3l3 5.25L15 3l6 10.5H3zM9 15.75L6 21h12l-3-5.25H9z" />
+                      </svg>
+                      {t("viewOnOpenVSX")}
+                    </a>
+                  )}
+                </>
+              )}
+
+              {product.category === "python" && (
                 <a
-                  href={openVsx.url}
+                  href="https://www.opendesktop.org/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--purple-accent) hover:text-(--purple-accent) transition-colors text-sm"
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3 13.5L9 3l3 5.25L15 3l6 10.5H3zM9 15.75L6 21h12l-3-5.25H9z" />
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
-                  {t("viewOnOpenVSX")}
+                  {t("viewOnOpenDesktop")}
                 </a>
               )}
 
@@ -334,13 +352,15 @@ export default function ProductDetail() {
             <div className="flex flex-col items-center justify-center py-12 gap-6 text-center">
               <div className="text-5xl">💎</div>
               <div>
-                <h3 className="text-2xl font-bold mb-2">DotShare Premium Plans</h3>
+                <h3 className="text-2xl font-bold mb-2">{title} Premium Plans</h3>
                 <p className="text-(--text-muted) max-w-md">
-                  Unlock more posts, image support, video posts, and faster scheduling windows.
+                  {product.slug === "dotshare" 
+                    ? "Unlock more posts, image support, video posts, and faster scheduling windows."
+                    : `Unlock premium features for ${title} to supercharge your workflow.`}
                 </p>
               </div>
               <Link
-                href={`/${locale}/dashboard/dotshare/upgrade`}
+                href={`/${locale}/dashboard/${product.slug}/upgrade`}
                 className="px-8 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-xl hover:bg-(--primary-hover) transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 View Plans & Pricing →

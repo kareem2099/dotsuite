@@ -62,6 +62,7 @@
     "back": "Back",
     "installInVSCode": "Install in VS Code",
     "viewOnMarketplace": "View on Marketplace",
+    "viewOnOpenDesktop": "View on OpenDesktop",
     "viewOnOpenVSX": "View on Open VSX",
     "viewOnGitHub": "View on GitHub",
     "readme": "README",
