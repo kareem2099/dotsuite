@@ -41,6 +41,7 @@ export default function Dashboard() {
 
   const [isRedirecting, setIsRedirecting] = useState(false);
   const intentProcessed = useRef(false);
+  const [vscodeFallbackUrl, setVscodeFallbackUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const checkIntent = async () => {
@@ -62,11 +63,6 @@ export default function Dashboard() {
             const data = await res.json();
             const token = data.plaintext_key;
 
-            console.log("[DotSuite] Raw token from API:", token);
-            console.log("[DotSuite] Token type:", typeof token);
-            console.log("[DotSuite] Token length:", token?.length);
-            console.log("[DotSuite] Token starts with ds_prod_:", token?.startsWith?.("ds_prod_"));
-
             if (!token) {
               throw new Error("No token received from API");
             }
@@ -74,14 +70,11 @@ export default function Dashboard() {
             // 1. Sanitization
             const safeToken = encodeURIComponent(token);
             
-            console.log("[DotSuite] After encodeURIComponent - token:", safeToken);
-            console.log("[DotSuite] After encoding - length:", safeToken.length);
-            
             // 2. Build link
             const scheme = localStorage.getItem("auth_scheme") || "vscode";
             const vscodeUrl = `${scheme}://freerave.dotshare/login?token=${safeToken}`;
             
-            console.log("[DotSuite] Full VS Code URL:", vscodeUrl);
+            setVscodeFallbackUrl(vscodeUrl);
             
             // 3. Small delay to ensure the UI is ready and intent is cleared
             localStorage.removeItem("auth_intent");
@@ -121,9 +114,14 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen">
-      {isRedirecting && (
-        <div className="bg-green-500 text-white p-4 text-center mb-4 animate-pulse">
-          Connecting to DotShare VS Code Extension... Please confirm the prompt.
+      {(isRedirecting || vscodeFallbackUrl) && (
+        <div className="bg-green-500 text-white p-6 text-center mb-4">
+          <p className="text-lg font-bold mb-2 animate-pulse">Connecting to DotShare VS Code Extension... Please confirm the prompt in your browser.</p>
+          {vscodeFallbackUrl && (
+            <p className="mt-4 text-sm bg-green-600/50 p-3 rounded-lg inline-block border border-green-400">
+              If VS Code didn't open automatically, <a href={vscodeFallbackUrl} className="underline font-bold hover:text-green-200">Click Here to Connect Manually</a>
+            </p>
+          )}
         </div>
       )}
       

@@ -53,8 +53,17 @@ export async function POST(req: Request) {
     if (!res.ok) {
       const errorText = await res.text();
       console.error("Rust backend error:", res.status, errorText);
+      
+      let errorMessage = "Failed to generate key. You might have reached the maximum limit.";
+      try {
+        const parsed = JSON.parse(errorText);
+        if (parsed.error && parsed.error.message) {
+          errorMessage = parsed.error.message;
+        }
+      } catch (e) {}
+
       return NextResponse.json(
-        { error: "Failed to generate key. You might have reached the maximum limit." },
+        { error: errorMessage },
         { status: res.status }
       );
     }
