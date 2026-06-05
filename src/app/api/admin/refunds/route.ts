@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { rustInternal } from "@/lib/rust-api";
 
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "")
   .split(",")
@@ -10,7 +11,7 @@ function isAdmin(email: string | null | undefined): boolean {
   return !!email && ADMIN_EMAILS.includes(email);
 }
 
-// ── GET /api/admin/posts ─────────────────────────────────────────────────────
+// ── GET /api/admin/refunds ───────────────────────────────────────────────────
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -23,7 +24,7 @@ export async function GET(req: NextRequest) {
   const limit = searchParams.get("limit") ?? "50";
 
   const res = await fetch(
-    `${process.env.CORE_API_URL}/v1/admin/posts?page=${page}&limit=${limit}`,
+    `${process.env.CORE_API_URL}/v1/admin/refunds?page=${page}&limit=${limit}`,
     {
       headers: {
         "X-Internal-Secret": process.env.INTERNAL_API_SECRET!,

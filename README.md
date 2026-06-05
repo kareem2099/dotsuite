@@ -2,7 +2,7 @@
 
 > Developer tools built to make your workflow faster and smarter.
 
-[![Version](https://img.shields.io/badge/version-1.2.0-brightgreen)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.2.1-brightgreen)](./CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
 [![Rust](https://img.shields.io/badge/Rust-Axum-orange?logo=rust)](https://axum.rs)
@@ -59,6 +59,8 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🔗 **OAuth Status API** *(v1.1.0)* — New proxy routes (`/api/oauth/connections`, `/api/oauth/disconnect`, `/api/oauth/status`) for the DotShare VS Code extension to query connected platforms securely
 - ⚖️ **Legal Compliance** *(v1.2.0)* — Fully localized Terms of Service and Privacy Policy pages.
 - 🛠️ **Hydration Fixes** *(v1.2.0)* — Resolved React list key warnings and Next.js client-side rendering issues.
+- 💰 **Dynamic Pricing API** *(v1.2.1)* — Frontend directly fetches active billing tiers and quotas from the `dotsuite-core` backend, ensuring consistency and seamless dynamic pricing display.
+- 🛡️ **Proxy Protection** *(v1.2.1)* — New MongoDB-backed rate limiting middleware intercepts traffic to backend proxies to prevent abuse.
 
 ---
 

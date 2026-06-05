@@ -21,6 +21,7 @@ export interface IUser extends Document {
   lockoutUntil?: Date;
   passwordHistory: string[];
   sessionVersion: number;
+  referral_code?: string;
   createdAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
   isLockedOut(): boolean;
@@ -56,12 +57,18 @@ const UserSchema = new Schema<IUser>(
     lockoutUntil: { type: Date },
     passwordHistory: { type: [String], default: [], select: false },
     sessionVersion: { type: Number, default: 1 },
+    referral_code: { type: String, unique: true },
   },
   { timestamps: true }
 );
 
 // Hash password before saving + password history
 UserSchema.pre("save", async function (this: IUser) {
+  // Generate referral code if it doesn't exist
+  if (!this.referral_code) {
+    this.referral_code = crypto.randomBytes(4).toString("hex");
+  }
+
   if (!this.isModified("password") || !this.password) {
     return;
   }

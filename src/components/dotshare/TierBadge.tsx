@@ -1,6 +1,6 @@
 "use client";
 
-type Tier = "free" | "basic" | "pro" | "max";
+type Tier = "free" | "pro" | "max";
 
 interface TierBadgeProps {
   tier: Tier;
@@ -9,14 +9,12 @@ interface TierBadgeProps {
 
 const TIER_STYLES: Record<Tier, string> = {
   free:  "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
-  basic: "bg-blue-500/15 text-blue-400 border-blue-500/20",
   pro:   "bg-purple-500/15 text-purple-400 border-purple-500/20",
   max:   "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/30",
 };
 
 const TIER_LABELS: Record<Tier, string> = {
   free:  "Free",
-  basic: "Basic",
   pro:   "Pro",
   max:   "Max ⚡",
 };

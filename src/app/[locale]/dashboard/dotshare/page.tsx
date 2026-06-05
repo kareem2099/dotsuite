@@ -13,7 +13,7 @@ import ConnectedAccounts from "@/components/dotshare/ConnectedAccounts";
 import { formatQuota, UNLIMITED_QUOTA } from "@/lib/rust-api";
 
 interface BillingStatus {
-  tier: "free" | "basic" | "pro" | "max";
+  tier: "free" | "pro" | "max";
   is_paid: boolean;
   posts_used: number;
   posts_quota: number;

@@ -17,7 +17,7 @@ import { authOptions } from "@/lib/auth";
 import { rustInternal } from "@/lib/rust-api";
 
 export interface ConnectOAuthBody {
-  platform: "telegram" | "x" | "linkedin" | "reddit";
+  platform: "telegram" | "x" | "linkedin";
   access_token: string;
   refresh_token?: string;
   /** Seconds until access_token expires — defaults to 3600 in Rust if omitted */
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     // 2. Validate the request body
     const body: ConnectOAuthBody = await req.json();
 
-    const allowedPlatforms = ["telegram", "x", "linkedin", "reddit"];
+    const allowedPlatforms = ["telegram", "x", "linkedin"];
     if (!allowedPlatforms.includes(body.platform)) {
       return NextResponse.json(
         { error: `Invalid platform. Allowed: ${allowedPlatforms.join(", ")}` },

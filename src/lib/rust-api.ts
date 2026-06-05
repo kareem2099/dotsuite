@@ -56,7 +56,6 @@ export function formatQuota(quota: number): string {
 /** Tier display config */
 export const TIER_CONFIG = {
   free:  { label: "Free",  color: "gray",   posts: 100,          images: 10           },
-  basic: { label: "Basic", color: "blue",   posts: 300,          images: 100          },
   pro:   { label: "Pro",   color: "purple", posts: UNLIMITED_QUOTA, images: UNLIMITED_QUOTA },
   max:   { label: "Max",   color: "gold",   posts: UNLIMITED_QUOTA, images: UNLIMITED_QUOTA },
 } as const;

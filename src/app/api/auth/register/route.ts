@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import { sendEmail } from "@/lib/email";
 import { getVerifyEmailTemplate } from "@/lib/emailTemplates";
+import crypto from "crypto";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { logAudit } from "@/lib/audit";
 import { z } from "zod";
@@ -59,7 +60,12 @@ export async function POST(req: Request) {
     }
 
     // ✅ Create user instance and generate token
-    const user = new User({ name, email, password });
+    const user = new User({ 
+      name, 
+      email, 
+      password,
+      referral_code: crypto.randomBytes(4).toString("hex")
+    });
     const rawToken = user.getVerificationToken();
     await user.save();
 

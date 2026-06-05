@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Internal-Secret": process.env.INTERNAL_SECRET!,
+      "X-Internal-Secret": process.env.INTERNAL_API_SECRET!,
       "X-User-Id": "admin",
     },
     body: JSON.stringify({
@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
     `${process.env.CORE_API_URL}/v1/admin/banned?page=${page}&limit=${limit}`,
     {
       headers: {
-        "X-Internal-Secret": process.env.INTERNAL_SECRET!,
+        "X-Internal-Secret": process.env.INTERNAL_API_SECRET!,
         "X-User-Id": "admin",
       },
     }
@@ -83,7 +83,7 @@ export async function DELETE(req: NextRequest) {
     {
       method: "DELETE",
       headers: {
-        "X-Internal-Secret": process.env.INTERNAL_SECRET!,
+        "X-Internal-Secret": process.env.INTERNAL_API_SECRET!,
         "X-User-Id": "admin",
       },
     }

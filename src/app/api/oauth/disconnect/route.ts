@@ -10,7 +10,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { rustInternal } from "@/lib/rust-api";
 
-const ALLOWED_PLATFORMS = ["telegram", "x", "linkedin", "reddit"] as const;
+const ALLOWED_PLATFORMS = ["telegram", "x", "linkedin"] as const;
 
 export async function DELETE(req: NextRequest) {
   try {

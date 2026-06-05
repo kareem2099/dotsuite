@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.1] — 2026-06-05 — "Pricing API Proxy & Security"
+
+### Added
+- **`GET /api/pricing` Proxy Route** — Created a Next.js proxy route to securely fetch dynamic pricing tiers from the `dotsuite-core` backend, serving as a single source of truth for features and quotas.
+- **Proxy Rate Limiting** — Added `checkRateLimit` middleware (30 requests/minute per IP) to `/api/pricing` to prevent abuse and DDoS attacks against the backend.
+
+### Changed
+- **Dynamic Pricing Integration** — Upgraded the `PricingTiers.tsx` component to fetch and display dynamic tier data (`tier`, `price_usd_cents`, `post_quota`, `scheduler_interval_minutes`) from the backend instead of hardcoding limits. Added a pulse skeleton loader for seamless loading states.
+
+### Fixed
+- **Next-Intl Formatting Error** — Fixed the `FORMATTING_ERROR: The intl string context variable "count" was not provided` crash that occurred when passing `{count}` variables in `PricingTiers.tsx`.
+- **Locale Translations** — Injected missing keys (`featPosts`, `featImages`, `featCron`) into all 5 language files (`en`, `ar`, `de`, `fr`, `ru`).
+
+---
+
 ## [1.2.0] — 2026-05-25 — "Legal & Compliance"
 
 ### Added

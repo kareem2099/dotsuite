@@ -7,9 +7,10 @@ import PricingTiers from "@/components/pricing/PricingTiers";
 
 // LemonSqueezy variant IDs — set these in .env.local
 const VARIANT_IDS: Record<string, number> = {
-  basic: Number(process.env.NEXT_PUBLIC_LS_VARIANT_BASIC || 0),
-  pro:   Number(process.env.NEXT_PUBLIC_LS_VARIANT_PRO   || 0),
-  max:   Number(process.env.NEXT_PUBLIC_LS_VARIANT_MAX   || 0),
+  pro_monthly:  Number(process.env.NEXT_PUBLIC_LS_VARIANT_PRO_MONTHLY   || process.env.NEXT_PUBLIC_LS_VARIANT_PRO || 0),
+  pro_annually: Number(process.env.NEXT_PUBLIC_LS_VARIANT_PRO_ANNUALLY  || 0),
+  max_monthly:  Number(process.env.NEXT_PUBLIC_LS_VARIANT_MAX_MONTHLY   || process.env.NEXT_PUBLIC_LS_VARIANT_MAX || 0),
+  max_annually: Number(process.env.NEXT_PUBLIC_LS_VARIANT_MAX_ANNUALLY  || 0),
 };
 
 export default function UpgradePage() {
@@ -26,10 +27,11 @@ export default function UpgradePage() {
       .catch(() => {});
   }, []);
 
-  const handleUpgrade = async (tier: "basic" | "pro" | "max") => {
-    const variantId = VARIANT_IDS[tier];
+  const handleUpgrade = async (tier: "pro" | "max", cycle: "monthly" | "annually") => {
+    const variantKey = `${tier}_${cycle}`;
+    const variantId = VARIANT_IDS[variantKey];
     if (!variantId) {
-      setError(`Checkout not configured for ${tier} tier. Set NEXT_PUBLIC_LS_VARIANT_${tier.toUpperCase()} in .env.local`);
+      setError(`Checkout not configured for ${tier} tier (${cycle}). Set NEXT_PUBLIC_LS_VARIANT_${tier.toUpperCase()}_${cycle.toUpperCase()} in .env.local`);
       return;
     }
 
