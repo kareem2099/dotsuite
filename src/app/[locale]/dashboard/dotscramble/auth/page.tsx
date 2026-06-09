@@ -57,9 +57,9 @@ export default function DotScrambleDesktopAuth() {
         }
         const keysData = await keysRes.json();
 
-        const existingDsKey = keysData.keys?.find(
+        const existingDsKey = Array.isArray(keysData) ? keysData.find(
           (k: { label: string }) => k.label === "DotScramble Desktop"
-        );
+        ) : undefined;
         if (existingDsKey) {
           // Revoke old key so we can generate a fresh one with plaintext
           await fetch(`/api/keys/${existingDsKey.key_prefix}`, { method: "DELETE" });
