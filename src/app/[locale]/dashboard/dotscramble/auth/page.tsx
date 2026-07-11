@@ -34,7 +34,7 @@ export default function DotScrambleDesktopAuth() {
         const sessionData = await sessionRes.json();
         if (!sessionData?.user) {
           const callbackUrl = encodeURIComponent(window.location.href);
-          window.location.href = `/${locale}/auth/login?callbackUrl=${callbackUrl}`;
+          window.location.href = `/${locale}/login?callbackUrl=${callbackUrl}`;
           return;
         }
 
