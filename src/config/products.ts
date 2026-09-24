@@ -152,4 +152,20 @@ export const products: IProduct[] = [
       de: { title: "DotScramble", description: "Leistungsstarkes Tool zum Schutz der Bildprivatsphäre" },
     },
   },
+  {
+    _id: "prod_dotaegis",
+    slug: "dotaegis",
+    category: "python",
+    githubRepo: "kareem2099/DotAegis",
+    hasLicense: false,
+    price: 0,
+    order: 9,
+    translations: {
+      en: { title: "DotAegis", description: "AI-powered secret detection & credential leak prevention" },
+      ar: { title: "DotAegis", description: "محرك ذكي لكشف تسريب المفاتيح والبيانات الحساسة بالذكاء الاصطناعي" },
+      fr: { title: "DotAegis", description: "Détection des fuites de clés secrètes propulsée par l'IA" },
+      ru: { title: "DotAegis", description: "ИИ-обнаружение утечек секретов и учетных данных в реальном времени" },
+      de: { title: "DotAegis", description: "KI-gestützte Erkennung von Secret- und Credential-Leaks" },
+    },
+  },
 ];

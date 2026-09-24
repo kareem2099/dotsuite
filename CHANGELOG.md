@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.0] — 2026-09-24 — "DotAegis AI Security & Live Secret Scanner"
+
+### Added
+- **DotAegis Product Integration (`prod_dotaegis`)** — Added DotAegis to the central product catalog (`products.ts`) under the Python / AI Security category with full 5-language localization (EN, AR, FR, DE, RU), live GitHub repo sync, and automated star/release display.
+- **Interactive Secret Scanner & Dashboard (`/dashboard/dotaegis`)** — Built a dedicated interactive dashboard featuring:
+  - Live service connectivity indicator displaying latency and release version (`v2.1.3`).
+  - Real-time in-browser code and `.env` scanner with preloaded test templates (leaked AWS, Stripe, GitHub, database credentials vs. clean config).
+  - Shannon entropy calculator, instant heuristic signature pattern matching, and confidential secret masking (`sk_live_•••••••1234`).
+  - Integration guides and code snippets for DotEnvy VS Code extension, CI/CD pipelines (GitHub Actions), and API Key generation.
+- **Server-Side Scan API Route (`/api/dotaegis/scan`)** — High-performance API route handling code analysis, entropy calculations, and health monitoring.
+- **DotAegis API Key Preset (`/dashboard/keys`)** — Added dedicated `DotAegis` key preset in the API Key manager with tailored styling, cyan badges, and full localization.
+- **Dashboard Quick Access Card** — Added prominent Emerald Shield card for DotAegis in `src/app/[locale]/dashboard/page.tsx`.
+
+### Changed
+- **Upgraded Version References** — Bumped project version to `1.4.0` across `package.json`, `README.md`, and `CHANGELOG.md`.
+
+---
+
+## [1.3.0] — 2026-08-22 — "Interactive Live Docs & Asset Proxy"
+
+### Added
+- **Interactive Live Markdown Renderer (`MarkdownRenderer.tsx`)** — Re-architected documentation reader for product detail pages supporting live GitHub README and Changelog rendering with:
+  - Multi-language Prism.js syntax highlighting with language labels and one-click clipboard copying.
+  - GitHub-style alert callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) with distinctive color coding and icons.
+  - Interactive Preview vs. Raw Markdown view mode toggle with estimated reading time calculation.
+  - Custom table and image container formatting with shadow styling and subtle hover transitions.
+- **Server-Side Image Proxy (`/api/proxy-image`)** — Added a dedicated Next.js API proxy to securely fetch, cache, and serve remote GitHub assets, shields.io badges, and marketplace images:
+  - Completely bypasses regional ISP blocks on `raw.githubusercontent.com` and `img.shields.io`.
+  - Employs 24-hour HTTP cache headers (`Cache-Control: public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800`) to accelerate asset delivery.
+  - Implements multi-tier fallback mechanism (Server Proxy → jsDelivr CDN → Direct URL).
+- **Dynamic Branch Resolution in Product API** — Updated `/api/products/[slug]` to retrieve `default_branch` directly from GitHub API and route asset and changelog queries seamlessly across repositories using `main` or `master`.
+
+### Changed
+- **Inline Badge Links** — Enhanced markdown link renderer to detect badges and shields, preventing intrusive external link icons (`↗`) on image-only links.
+- **Upgraded Version References** — Bumped project version to `1.3.0` across `package.json`, `README.md`, and `CHANGELOG.md`.
+
+### Fixed
+- **Lucide-React Missing Github Export** — Replaced removed `Github` export from `lucide-react` with a clean, inline SVG component (`GitHubIcon`).
+- **TypeScript Strict Element Typing** — Resolved React 19 JSX element children type check errors in `parseGitHubAlert` and image src string conversions.
+
+---
+
 ## [1.2.1] — 2026-06-05 — "Pricing API Proxy & Security"
 
 ### Added

@@ -2,7 +2,7 @@
 
 > Developer tools built to make your workflow faster and smarter.
 
-[![Version](https://img.shields.io/badge/version-1.2.1-brightgreen)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.4.0-brightgreen)](./CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
 [![Rust](https://img.shields.io/badge/Rust-Axum-orange?logo=rust)](https://axum.rs)
@@ -38,7 +38,7 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🌍 **Multi-language** — English, Arabic, French, German, Russian with RTL support
 - 🌙 **Dark / Light Theme** — System-aware with manual toggle
 - 📦 **Product Catalog** — VS Code, Next.js, Python tools with live GitHub data
-- 📖 **Live README & Changelog** — Fetched directly from GitHub repos
+- 📖 **Live README & Changelog** — Fetched directly from GitHub repos with interactive viewer
 - ⭐ **Product Reviews & Ratings** — 5-star ratings, written reviews, avg rating, one review per user
 - 🔔 **Toast Notifications** — Animated toast system + async confirm modal
 - 🔄 **GitHub Webhooks** — Auto cache revalidation on push/release
@@ -61,6 +61,10 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🛠️ **Hydration Fixes** *(v1.2.0)* — Resolved React list key warnings and Next.js client-side rendering issues.
 - 💰 **Dynamic Pricing API** *(v1.2.1)* — Frontend directly fetches active billing tiers and quotas from the `dotsuite-core` backend, ensuring consistency and seamless dynamic pricing display.
 - 🛡️ **Proxy Protection** *(v1.2.1)* — New MongoDB-backed rate limiting middleware intercepts traffic to backend proxies to prevent abuse.
+- 📝 **Interactive Markdown & Live Docs** *(v1.3.0)* — Modern documentation viewer with Prism syntax highlighting, one-click code copying, GitHub alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`), and preview/raw modes.
+- 🖼️ **Image Proxy & Asset Relay** *(v1.3.0)* — Dedicated `/api/proxy-image` route with 24h caching and jsDelivr CDN fallback, completely bypassing regional ISP blocks on `raw.githubusercontent.com` and `img.shields.io`.
+- 🌿 **Dynamic Branch Resolution** *(v1.3.0)* — Automatically detects and queries repository default branches (`main` / `master`) for reliable README, changelog, and asset rendering.
+- 🛡️ **DotAegis AI Security & Live Scanner** *(v1.4.0)* — Real-time secret and credential leak detection engine, interactive in-browser playground on `/dashboard/dotaegis`, Shannon entropy calculations, and dedicated API key presets.
 
 ---
 

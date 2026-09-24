@@ -2,21 +2,30 @@
 
 import Link from "next/link";
 
+interface ActionItem {
+  label: string;
+  onClick?: () => void;
+  href?: string;
+}
+
 interface ErrorDisplayProps {
   title: string;
   message: string;
-  primaryAction: {
-    label: string;
-    onClick?: () => void;
-    href?: string;
-  };
-  secondaryAction?: {
-    label: string;
-    onClick?: () => void;
-    href?: string;
-  };
+  primaryAction: ActionItem;
+  secondaryAction?: ActionItem;
   type?: "error" | "notfound";
   code?: string;
+}
+
+function ActionButton({ action, isPrimary }: { action: ActionItem; isPrimary: boolean }) {
+  const className = isPrimary
+    ? "px-6 py-2.5 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
+    : "px-6 py-2.5 bg-(--card-bg) border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors";
+
+  if (action.href) {
+    return <Link href={action.href} className={className}>{action.label}</Link>;
+  }
+  return <button onClick={action.onClick} className={className}>{action.label}</button>;
 }
 
 export default function ErrorDisplay({
@@ -28,17 +37,6 @@ export default function ErrorDisplay({
   code,
 }: ErrorDisplayProps) {
   const isNotFound = type === "notfound";
-
-  const ActionButton = ({ action, isPrimary }: { action: typeof primaryAction; isPrimary: boolean }) => {
-    const className = isPrimary
-      ? "px-6 py-2.5 bg-(--primary) text-(--background) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors"
-      : "px-6 py-2.5 bg-(--card-bg) border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors";
-
-    if (action.href) {
-      return <Link href={action.href} className={className}>{action.label}</Link>;
-    }
-    return <button onClick={action.onClick} className={className}>{action.label}</button>;
-  };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">

@@ -107,32 +107,62 @@ textarea:focus-visible {
   text-align: left;
   unicode-bidi: isolate;
   color: var(--foreground);
-  line-height: 1.6;
-  font-size: 1rem;
+  line-height: 1.7;
+  font-size: 0.975rem;
+}
+
+/* Centered HTML wrappers from READMEs */
+.prose [align="center"],
+.prose div[align="center"],
+.prose p[align="center"] {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose [align="center"] > * {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose [align="center"] img {
+  display: inline-block;
+  margin: 0.25rem 0.25rem;
+  vertical-align: middle;
+}
+
+.prose [align="center"] p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
 }
 
 .prose h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  padding-bottom: 0.5rem;
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--card-border);
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1.25rem;
   color: var(--foreground);
 }
 
 .prose h2 {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 600;
-  padding-bottom: 0.4rem;
+  letter-spacing: -0.015em;
+  padding-bottom: 0.45rem;
   border-bottom: 1px solid var(--card-border);
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
   margin-bottom: 1rem;
   color: var(--foreground);
 }
 
 .prose h3 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
@@ -144,137 +174,68 @@ textarea:focus-visible {
 .prose h6 {
   font-size: 1rem;
   font-weight: 600;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   margin-bottom: 0.5rem;
   color: var(--foreground);
 }
 
 .prose p {
-  margin-bottom: 1rem;
+  margin-bottom: 1.15rem;
   line-height: 1.75;
   color: var(--foreground);
 }
 
 .prose ul {
   list-style-type: disc;
-  padding-left: 2rem;
-  margin-bottom: 1rem;
+  padding-left: 1.75rem;
+  margin-bottom: 1.15rem;
 }
 
 .prose ol {
   list-style-type: decimal;
-  padding-left: 2rem;
-  margin-bottom: 1rem;
+  padding-left: 1.75rem;
+  margin-bottom: 1.15rem;
 }
 
 .prose li {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
   line-height: 1.75;
 }
 
-.prose li>ul,
-.prose li>ol {
+.prose li > ul,
+.prose li > ol {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
-}
-
-.prose code {
-  background: var(--card-border);
-  padding: 0.2em 0.4em;
-  border-radius: 6px;
-  font-size: 85%;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace;
-  white-space: nowrap;
-  color: var(--foreground);
-}
-
-.prose pre {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  padding: 1rem;
-  overflow-x: auto;
-  margin-bottom: 1rem;
-  line-height: 1.45;
-}
-
-.prose pre code {
-  background: none;
-  padding: 0;
-  font-size: 85%;
-  white-space: pre;
-  word-break: normal;
-  overflow-wrap: normal;
-  color: var(--foreground);
+  padding-left: 1.25rem;
 }
 
 .prose blockquote {
-  border-left: 4px solid var(--card-border);
-  padding: 0 1rem;
+  border-left: 4px solid var(--primary);
+  padding: 0.5rem 1rem;
   color: var(--text-muted);
-  margin: 0 0 1rem 0;
+  background: var(--card-bg);
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin: 1.25rem 0;
 }
 
 .prose blockquote p {
   margin-bottom: 0;
 }
 
-.prose table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1rem;
-  display: block;
-  overflow-x: auto;
-}
-
-.prose thead {
-  background: var(--card-bg);
-}
-
-.prose th {
-  padding: 0.5rem 0.75rem;
-  font-weight: 600;
-  border: 1px solid var(--card-border);
-  text-align: left;
-  color: var(--foreground);
-}
-
-.prose td {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--card-border);
-  color: var(--foreground);
-}
-
-.prose tr:nth-child(even) {
-  background: var(--card-bg);
-}
-
 .prose a {
   color: var(--primary);
   text-decoration: none;
+  font-weight: 500;
 }
 
 .prose a:hover {
   text-decoration: underline;
 }
 
-.prose img {
-  max-width: 100%;
-  border-radius: 6px;
-  margin: 1rem auto;
-  display: block;
-}
-
-.prose p>img {
-  display: inline;
-  margin: 0 0.25rem;
-  vertical-align: middle;
-}
-
 .prose hr {
   border: none;
   border-top: 1px solid var(--card-border);
-  margin: 1.5rem 0;
+  margin: 2rem 0;
 }
 
 .prose strong {
@@ -288,4 +249,73 @@ textarea:focus-visible {
 
 .prose input[type="checkbox"] {
   margin-right: 0.5rem;
+  accent-color: var(--primary);
+  vertical-align: middle;
+}
+
+/* ─── Prism Syntax Highlighting Tokens ─── */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #c9d1d9;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #79c0ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #a5d6ff;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #d2a8ff;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #ff7b72;
+  font-weight: 600;
+}
+
+.token.function,
+.token.class-name {
+  color: #d2a8ff;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #ffa657;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
 }

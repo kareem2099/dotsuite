@@ -85,17 +85,48 @@ export async function GET(
     const repoData = repoRes.status === "fulfilled" && repoRes.value.ok
       ? await repoRes.value.json() : {};
 
+    const defaultBranch = repoData.default_branch || "main";
+
     const readmeData = readmeRes.status === "fulfilled" && readmeRes.value.ok
       ? await readmeRes.value.json() : null;
 
     const releaseData = releasesRes.status === "fulfilled" && releasesRes.value.ok
       ? await releasesRes.value.json() : null;
 
-    const changelogText = changelogRes.status === "fulfilled" && changelogRes.value.ok
+    let changelogText = changelogRes.status === "fulfilled" && changelogRes.value.ok
       ? await changelogRes.value.text() : null;
 
-    const packageData = packageRes.status === "fulfilled" && packageRes.value.ok
+    // If changelog failed on /main/ and default branch is different (e.g. master), fetch from default branch
+    if (!changelogText && defaultBranch !== "main") {
+      try {
+        const fallbackRes = await fetch(
+          `https://raw.githubusercontent.com/${repo}/${defaultBranch}/CHANGELOG.md`,
+          getNoTokenOptions(repo)
+        );
+        if (fallbackRes.ok) {
+          changelogText = await fallbackRes.text();
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    let packageData = packageRes.status === "fulfilled" && packageRes.value.ok
       ? await packageRes.value.json() : null;
+
+    if (!packageData && defaultBranch !== "main") {
+      try {
+        const fallbackPkg = await fetch(
+          `https://raw.githubusercontent.com/${repo}/${defaultBranch}/package.json`,
+          getNoTokenOptions(repo)
+        );
+        if (fallbackPkg.ok) {
+          packageData = await fallbackPkg.json();
+        }
+      } catch {
+        // ignore
+      }
+    }
 
     const openVsxData = openVsxRes.status === "fulfilled" && openVsxRes.value.ok
       ? await openVsxRes.value.json() : null;
@@ -114,6 +145,7 @@ export async function GET(
         issues: repoData.open_issues_count ?? 0,
         description: repoData.description ?? "",
         version,
+        defaultBranch,
         readme,
         changelog: changelogText,
       },

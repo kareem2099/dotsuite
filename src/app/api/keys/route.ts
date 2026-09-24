@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { rustInternal } from "@/lib/rust-api";
+import { rustInternal, parseRustError } from "@/lib/rust-api";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
@@ -18,7 +18,10 @@ export async function GET(req: Request) {
     if (!res.ok) {
       const errorText = await res.text();
       console.error("Rust backend error:", res.status, errorText);
-      return NextResponse.json({ error: "Failed to fetch keys" }, { status: res.status });
+      return NextResponse.json(
+        { error: parseRustError(errorText, "Failed to fetch keys") },
+        { status: res.status }
+      );
     }
 
     const data = await res.json();
@@ -36,17 +39,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { label } = await req.json();
+    const { label, scopes, expires_in_days } = await req.json();
 
-    if (!label || typeof label !== "string") {
-      return NextResponse.json({ error: "Invalid label" }, { status: 400 });
+    if (
+      typeof label !== "string" ||
+      !label.trim() ||
+      label.trim().length > 100
+    ) {
+      return NextResponse.json(
+        { error: "Key label must be between 1 and 100 characters" },
+        { status: 400 }
+      );
     }
 
     // Call Rust backend server-to-server
     const res = await rustInternal("/internal/keys/generate", {
       method: "POST",
       body: JSON.stringify({
-        label,
+        label: label.trim(),
+        scopes: Array.isArray(scopes) ? scopes : undefined,
+        expires_in_days: typeof expires_in_days === "number" ? expires_in_days : undefined,
       }),
     }, session.user.id);
 
@@ -54,13 +66,7 @@ export async function POST(req: Request) {
       const errorText = await res.text();
       console.error("Rust backend error:", res.status, errorText);
       
-      let errorMessage = "Failed to generate key. You might have reached the maximum limit.";
-      try {
-        const parsed = JSON.parse(errorText);
-        if (parsed.error && parsed.error.message) {
-          errorMessage = parsed.error.message;
-        }
-      } catch (e) {}
+      const errorMessage = parseRustError(errorText, "Failed to generate key.");
 
       return NextResponse.json(
         { error: errorMessage },

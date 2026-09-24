@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import ProductDetailSkeleton from "@/components/skeletons/ProductDetailSkeleton";
 import ReviewList from "@/components/reviews/ReviewList";
 import ReviewSkeleton from "@/components/skeletons/ReviewSkeleton";
 import RelatedProducts from "@/components/RelatedProducts";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 
 interface ProductData {
@@ -29,6 +28,7 @@ interface ProductData {
     issues: number;
     version: string;
     description: string;
+    defaultBranch?: string;
     readme: string | null;
     changelog: string | null;
   };
@@ -368,21 +368,25 @@ export default function ProductDetail() {
             </div>
           ) : tab === "readme" ? (
             github.readme ? (
-              <div className="prose max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {github.readme}
-                </ReactMarkdown>
-              </div>
+              <MarkdownRenderer
+                content={github.readme}
+                githubRepo={product.githubRepo}
+                branch={github.defaultBranch || "main"}
+                docTitle={`${title} • README`}
+                showToolbar={true}
+              />
             ) : (
               <p className="text-(--text-muted)">{t("noReadme")}</p>
             )
           ) : tab === "changelog" ? (
             github.changelog ? (
-              <div className="prose max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {github.changelog}
-                </ReactMarkdown>
-              </div>
+              <MarkdownRenderer
+                content={github.changelog}
+                githubRepo={product.githubRepo}
+                branch={github.defaultBranch || "main"}
+                docTitle={`${title} • Changelog`}
+                showToolbar={true}
+              />
             ) : (
               <p className="text-(--text-muted)">{t("noChangelog")}</p>
             )
