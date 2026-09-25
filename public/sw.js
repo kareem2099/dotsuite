@@ -1,6 +1,5 @@
-const CACHE_NAME = 'dotsuite-cache-v1';
+const CACHE_NAME = 'dotsuite-cache-v2';
 const STATIC_ASSETS = [
-  '/',
   '/manifest.json',
   '/icon.png',
   '/apple-icon.png'
@@ -31,14 +30,19 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
-  // Ignore API calls for caching
-  if (event.request.url.includes('/api/')) return;
+  
+  // Ignore API calls and internal Next.js chunks
+  if (event.request.url.includes('/api/') || event.request.url.includes('/_next/')) return;
+
+  // Let browser handle page navigations natively to properly follow Next.js i18n redirects (e.g. / -> /en)
+  if (event.request.mode === 'navigate') {
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       // Return cached response if found
       if (cachedResponse) {
-        // Fetch from network in the background to update cache
         event.waitUntil(
           fetch(event.request).then((networkResponse) => {
             if (networkResponse && networkResponse.status === 200) {
@@ -57,7 +61,6 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         }
         
-        // Cache the new response
         const responseToCache = networkResponse.clone();
         caches.open(CACHE_NAME).then((cache) => {
           cache.put(event.request, responseToCache);
@@ -65,8 +68,8 @@ self.addEventListener('fetch', (event) => {
 
         return networkResponse;
       }).catch(() => {
-        // Basic offline fallback could go here
-        // For example: return caches.match('/offline.html');
+        // Return empty or fallback
+        return cachedResponse;
       });
     })
   );
