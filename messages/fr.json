@@ -125,7 +125,20 @@
     "featureSupDesc": "Accès direct au créateur — pas un bot. Des réponses du développeur qui a écrit le code.",
     "ctaLabel": "Commencez aujourd'hui",
     "ctaTitle": "Commencez à construire plus intelligemment",
-    "ctaDescription": "Rejoignez des milliers de développeurs qui utilisent dotsuite chaque jour. Gratuit pour commencer."
+    "ctaDescription": "Rejoignez des milliers de développeurs qui utilisent dotsuite chaque jour. Gratuit pour commencer.",
+    "faqLabel": "FAQ",
+    "faqTitle": "Foire Aux Questions",
+    "faqSubtitle": "Tout ce que vous devez savoir sur les outils dotsuite, la sécurité et l'installation.",
+    "faqQ1": "Les outils dotsuite sont-ils gratuits et open-source ?",
+    "faqA1": "Oui, absolument ! Toutes les extensions VS Code et outils dotsuite sont 100 % open-source sous licence MIT sur GitHub, gratuits à télécharger et à utiliser.",
+    "faqQ2": "Comment installer les extensions VS Code de dotsuite ?",
+    "faqA2": "Vous pouvez les installer directement dans VS Code en appuyant sur Ctrl+Shift+X (ou Cmd+Shift+X sur macOS), en recherchant le nom de l'extension (comme CodeTune ou DotAegis) et en cliquant sur Installer.",
+    "faqQ3": "Les outils dotsuite collectent-ils des données personnelles ?",
+    "faqA3": "Non. La sécurité et la confidentialité sont notre priorité. Tous les outils s'exécutent localement dans votre IDE sans télémétrie cachée ni requêtes externes non autorisées.",
+    "faqQ4": "Comment dotsuite maintient-il les outils à jour ?",
+    "faqA4": "Nous utilisons des webhooks GitHub et des pipelines d'intégration continue pour mettre à jour automatiquement la documentation et les journaux de modifications dès qu'une nouvelle version sort.",
+    "faqQ5": "Puis-je contribuer ou suggérer des fonctionnalités ?",
+    "faqA5": "Oui, les contributions sont les bienvenues ! Vous pouvez signaler des bogues ou ouvrir des pull requests sur nos dépôts GitHub publics à github.com/kareem2099."
   },
   "About": {
     "title": "À propos de dotsuite",

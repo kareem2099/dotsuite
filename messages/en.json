@@ -126,7 +126,20 @@
     "featureSupDesc": "Direct access to the creator — not a bot. Get answers from the developer who wrote the code.",
     "ctaLabel": "Get started today",
     "ctaTitle": "Start building smarter",
-    "ctaDescription": "Join thousands of developers who use dotsuite tools every day. Free to start, open to explore."
+    "ctaDescription": "Join thousands of developers who use dotsuite tools every day. Free to start, open to explore.",
+    "faqLabel": "FAQ",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Everything you need to know about dotsuite tools, security, and installation.",
+    "faqQ1": "Are dotsuite developer tools free and open source?",
+    "faqA1": "Yes, absolutely! All dotsuite VS Code extensions and developer tools are 100% open source under the MIT license on GitHub, free to download, use, and inspect.",
+    "faqQ2": "How do I install dotsuite VS Code extensions?",
+    "faqA2": "You can install any extension directly within VS Code by pressing Ctrl+Shift+X (or Cmd+Shift+X on macOS), searching for the extension name (like CodeTune or DotAegis), and clicking Install.",
+    "faqQ3": "Do dotsuite tools collect any personal telemetry or tracking?",
+    "faqA3": "No. Security and developer privacy come first. All tools run locally in your IDE or environment without hidden telemetry, intrusive tracking, or unauthorized external requests.",
+    "faqQ4": "How does dotsuite maintain and update tools?",
+    "faqA4": "We employ automated GitHub webhooks and continuous integration pipelines. Whenever an update is published, documentation, release notes, and changelogs are updated automatically.",
+    "faqQ5": "Can I contribute or suggest features to dotsuite?",
+    "faqA5": "Yes, contributions are welcome! You can report bugs, request features, or open pull requests directly on our public GitHub repositories at github.com/kareem2099."
   },
   "About": {
     "title": "About dotsuite",

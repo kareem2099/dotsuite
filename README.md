@@ -65,8 +65,8 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🖼️ **Image Proxy & Asset Relay** *(v1.3.0)* — Dedicated `/api/proxy-image` route with 24h caching and jsDelivr CDN fallback, completely bypassing regional ISP blocks on `raw.githubusercontent.com` and `img.shields.io`.
 - 🌿 **Dynamic Branch Resolution** *(v1.3.0)* — Automatically detects and queries repository default branches (`main` / `master`) for reliable README, changelog, and asset rendering.
 - 🛡️ **DotAegis AI Security & Live Scanner** *(v1.4.0)* — Real-time secret and credential leak detection engine, interactive in-browser playground on `/dashboard/dotaegis`, Shannon entropy calculations, and dedicated API key presets.
-- 🔍 **Advanced SEO Engine & Social Graph** *(v1.5.0)* — Dynamic multi-language sitemap (`/sitemap.xml`), automated `robots.txt` with AI scraper protection, Edge-rendered dynamic Open Graph images (`/api/og`), and rich JSON-LD schemas (`Organization`, `WebSite`, `BreadcrumbList`, `SoftwareApplication`).
-- ⚡ **Decoupled SSR Architecture** *(v1.5.0)* — Direct server-side data extraction via `productData.ts`, eliminating local HTTP loopbacks during build and accelerating TTFB across product detail pages.
+- 🔍 **Advanced SEO Engine & Social Graph** *(v1.5.0)* — Dynamic multi-language sitemap (`/sitemap.xml`), automated `robots.txt` with AI scraper protection, Edge-rendered dynamic Open Graph images (`/api/og`), rich JSON-LD schemas (`Organization`, `WebSite`, `BreadcrumbList`, `FAQPage`, and `SoftwareApplication` with `AggregateRating` ⭐⭐⭐⭐⭐), and interactive localized FAQ accordion.
+- ⚡ **Decoupled SSR & Web Analytics** *(v1.5.0)* — Direct server-side data extraction via `productData.ts` eliminating local HTTP loopbacks, coupled with privacy-friendly `@vercel/analytics` and `@vercel/speed-insights`.
 
 ---
 

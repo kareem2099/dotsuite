@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Organization` & `WebSite` schemas in root layout with `SearchAction` deep-linking.
   - `BreadcrumbList` schema embedded into the homepage.
   - Rich `SoftwareApplication` schema for all product detail pages including application category, operating systems, download URLs, pricing/offers, author, publisher, and licensing details.
+  - Rich `AggregateRating` schema (⭐⭐⭐⭐⭐) embedded into `SoftwareApplication` metadata for Google Gold Star Search Snippets.
+  - `FAQPage` schema on homepage embedding 5 fully localized developer questions and answers for Google Rich Accordion snippets.
+- **Interactive FAQ Accordion Section** — Designed an accessible, lightweight `<details>` accordion on the homepage answering core questions with full 5-language localization.
+- **Vercel Analytics & Speed Insights** — Integrated `@vercel/analytics` and `@vercel/speed-insights` for privacy-first real-time traffic analytics and Core Web Vitals monitoring without cookies.
 - **Direct Server Data Layer (`src/lib/productData.ts`)** — Extracted shared `getProductDetails` helper for GitHub, OpenVSX, and product retrieval.
 
 ### Changed

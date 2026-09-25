@@ -118,12 +118,65 @@ export default async function HomePage({ params }: Props) {
     ],
   };
 
+  // FAQ Schema JSON-LD
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: t("faqQ1"),
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: t("faqA1"),
+        },
+      },
+      {
+        "@type": "Question",
+        name: t("faqQ2"),
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: t("faqA2"),
+        },
+      },
+      {
+        "@type": "Question",
+        name: t("faqQ3"),
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: t("faqA3"),
+        },
+      },
+      {
+        "@type": "Question",
+        name: t("faqQ4"),
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: t("faqA4"),
+        },
+      },
+      {
+        "@type": "Question",
+        name: t("faqQ5"),
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: t("faqA5"),
+        },
+      },
+    ],
+  };
+
   return (
     <>
       <Script
         id="schema-breadcrumb-home"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="schema-faq-home"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <div className="min-h-screen">
@@ -321,6 +374,46 @@ export default async function HomePage({ params }: Props) {
                   <h3 className="font-semibold text-lg mb-2">{t(feat.titleKey)}</h3>
                   <p className="text-sm text-(--text-muted) leading-relaxed">{t(feat.descKey)}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            FAQ SECTION (Rich Snippets for Search Engines)
+        ═══════════════════════════════════════════════════════════════════ */}
+        <section className="border-t border-(--card-border)/50 bg-(--card-bg)/30">
+          <div className="max-w-4xl mx-auto px-6 py-24" aria-labelledby="faq-heading">
+            <div className="text-center mb-14">
+              <span className="text-xs font-semibold uppercase tracking-widest text-(--primary) mb-3 block">
+                {t("faqLabel")}
+              </span>
+              <h2 id="faq-heading" className="text-3xl md:text-4xl font-bold mb-4">
+                {t("faqTitle")}
+              </h2>
+              <p className="text-(--text-muted) max-w-xl mx-auto">
+                {t("faqSubtitle")}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {[1, 2, 3, 4, 5].map((idx) => (
+                <details
+                  key={idx}
+                  className="group bg-(--background) border border-(--card-border) rounded-xl p-6 transition-all duration-200 open:border-(--primary)/50 open:shadow-sm"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer list-none font-semibold text-lg text-(--foreground) hover:text-(--primary) transition-colors">
+                    <span>{t(`faqQ${idx}` as any)}</span>
+                    <span className="ml-4 flex-shrink-0 text-(--primary) transition-transform duration-200 group-open:rotate-180">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="mt-4 text-(--text-muted) leading-relaxed text-sm md:text-base border-t border-(--card-border)/60 pt-4">
+                    {t(`faqA${idx}` as any)}
+                  </p>
+                </details>
               ))}
             </div>
           </div>
