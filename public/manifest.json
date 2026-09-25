@@ -1,21 +1,67 @@
 {
-  "name": "DotSuite",
-  "short_name": "DotSuite",
-  "description": "Discover, Review, and Share the best software products.",
-  "start_url": "/",
+  "name": "dotsuite — Developer Productivity Tools",
+  "short_name": "dotsuite",
+  "description": "VS Code extensions, Python tools, and web solutions trusted by 13,000+ developers worldwide. Open-source, actively maintained.",
+  "start_url": "/en",
+  "scope": "/",
+  "id": "/en",
   "display": "standalone",
-  "background_color": "#09090b",
-  "theme_color": "#09090b",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0a0a",
+  "theme_color": "#10b981",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["developer tools", "productivity", "utilities"],
   "icons": [
     {
       "src": "/icon.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "dotsuite Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Products",
+      "short_name": "Products",
+      "description": "View all developer tools",
+      "url": "/en/product",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Search Tools",
+      "short_name": "Search",
+      "description": "Search for developer tools",
+      "url": "/en/search",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://dotsuite.dev"
+    }
+  ],
+  "prefer_related_applications": false
 }

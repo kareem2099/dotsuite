@@ -3,144 +3,285 @@ import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
+// ─── Brand palette ────────────────────────────────────────────────────────────
+const COLORS = {
+  bg: "#0a0a0a",
+  card: "#111111",
+  border: "rgba(255,255,255,0.08)",
+  primary: "#10b981",       // emerald-500
+  primaryGlow: "rgba(16,185,129,0.15)",
+  primaryDim: "rgba(16,185,129,0.6)",
+  white: "#ffffff",
+  muted: "#a1a1aa",
+  mutedDark: "#52525b",
+  vscode: "#007acc",
+  python: "#f7c948",
+  nextjs: "#ffffff",
+};
+
+// ─── Category badge config ────────────────────────────────────────────────────
+const CATEGORY_CONFIG: Record<
+  string,
+  { label: string; color: string; bg: string; icon: string }
+> = {
+  vscode: {
+    label: "VS Code Extension",
+    color: "#60a5fa",
+    bg: "rgba(96,165,250,0.12)",
+    icon: "⚡",
+  },
+  python: {
+    label: "Python Tool",
+    color: "#fbbf24",
+    bg: "rgba(251,191,36,0.12)",
+    icon: "🐍",
+  },
+  nextjs: {
+    label: "Next.js Solution",
+    color: "#e2e8f0",
+    bg: "rgba(226,232,240,0.10)",
+    icon: "▲",
+  },
+  default: {
+    label: "Developer Tool",
+    color: COLORS.primary,
+    bg: COLORS.primaryGlow,
+    icon: "🛠",
+  },
+};
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
-    // Dynamic params
-    const title = searchParams.get("title") || "DotSuite Product";
-    const rating = searchParams.get("rating") || "0.0";
-    const brand = searchParams.get("brand") || "DotSuite";
-    const image = searchParams.get("image");
+    const title    = searchParams.get("title")    || "dotsuite";
+    const subtitle = searchParams.get("subtitle") || "Developer Productivity Tools";
+    const category = searchParams.get("category") || "default";
+    const brand    = searchParams.get("brand")    || "dotsuite.dev";
+
+    const cat = CATEGORY_CONFIG[category] ?? CATEGORY_CONFIG.default;
 
     return new ImageResponse(
       (
         <div
           style={{
-            height: "100%",
             width: "100%",
+            height: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#09090b", // zinc-950
-            backgroundImage: "radial-gradient(circle at 25px 25px, #27272a 2%, transparent 0%), radial-gradient(circle at 75px 75px, #27272a 2%, transparent 0%)",
-            backgroundSize: "100px 100px",
-            fontFamily: "Inter, sans-serif",
-            color: "white",
+            backgroundColor: COLORS.bg,
+            position: "relative",
+            overflow: "hidden",
+            fontFamily: "sans-serif",
           }}
         >
+          {/* ── Background grid pattern ── */}
           <div
             style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: `
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+              display: "flex",
+            }}
+          />
+
+          {/* ── Primary glow top-left ── */}
+          <div
+            style={{
+              position: "absolute",
+              top: "-120px",
+              left: "-80px",
+              width: "500px",
+              height: "500px",
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${COLORS.primaryGlow} 0%, transparent 70%)`,
+              display: "flex",
+            }}
+          />
+
+          {/* ── Secondary glow bottom-right ── */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "-100px",
+              right: "-60px",
+              width: "400px",
+              height: "400px",
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)",
+              display: "flex",
+            }}
+          />
+
+          {/* ── Main card ── */}
+          <div
+            style={{
+              position: "relative",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "40px 80px",
-              background: "rgba(24, 24, 27, 0.8)", // zinc-900 with opacity
-              border: "1px solid rgba(63, 63, 70, 0.5)", // zinc-700
-              borderRadius: "24px",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
-              maxWidth: "80%",
+              justifyContent: "space-between",
+              width: "100%",
+              height: "100%",
+              padding: "56px 72px",
             }}
           >
-            {image ? (
-              <img
-                src={image}
-                alt="Product"
-                style={{
-                  width: "120px",
-                  height: "120px",
-                  borderRadius: "20px",
-                  marginBottom: "30px",
-                  objectFit: "cover",
-                }}
-              />
-            ) : (
-              <div
-                style={{
-                  width: "120px",
-                  height: "120px",
-                  borderRadius: "20px",
-                  background: "linear-gradient(to bottom right, #3b82f6, #8b5cf6)", // blue-500 to violet-500
-                  marginBottom: "30px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "48px",
-                  fontWeight: "bold",
-                }}
-              >
-                {title.charAt(0)}
-              </div>
-            )}
-            
-            <h1
-              style={{
-                fontSize: "64px",
-                fontWeight: "bold",
-                textAlign: "center",
-                margin: "0 0 20px 0",
-                lineHeight: 1.1,
-                background: "linear-gradient(to right, #ffffff, #a1a1aa)", // white to zinc-400
-                backgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              {title}
-            </h1>
-            
+            {/* Top row: Brand logo + badge */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "20px",
-                fontSize: "32px",
-                color: "#a1a1aa", // zinc-400
+                justifyContent: "space-between",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="#eab308" // yellow-500
-                  stroke="#eab308"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ marginRight: "10px" }}
+              {/* Brand */}
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div
+                  style={{
+                    width: "44px",
+                    height: "44px",
+                    borderRadius: "10px",
+                    background: COLORS.primary,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "22px",
+                    fontWeight: "800",
+                    color: "#000",
+                  }}
                 >
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-                {rating}
+                  d
+                </div>
+                <span
+                  style={{
+                    fontSize: "26px",
+                    fontWeight: "700",
+                    color: COLORS.white,
+                    letterSpacing: "-0.5px",
+                  }}
+                >
+                  {brand}
+                </span>
               </div>
-              <span style={{ color: "#3f3f46" }}>•</span>
-              <span style={{ color: "#3b82f6", fontWeight: "600" }}>{brand}</span>
+
+              {/* Category badge */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "8px 18px",
+                  borderRadius: "999px",
+                  background: cat.bg,
+                  border: `1px solid ${cat.color}30`,
+                  fontSize: "18px",
+                  color: cat.color,
+                  fontWeight: "600",
+                }}
+              >
+                <span style={{ fontSize: "16px" }}>{cat.icon}</span>
+                {cat.label}
+              </div>
             </div>
-          </div>
-          
-          <div
-            style={{
-              position: "absolute",
-              bottom: "40px",
-              display: "flex",
-              alignItems: "center",
-              fontSize: "24px",
-              fontWeight: "600",
-              color: "#a1a1aa",
-            }}
-          >
+
+            {/* Center: Main title + subtitle */}
             <div
               style={{
-                width: "32px",
-                height: "32px",
-                borderRadius: "8px",
-                background: "#3b82f6",
-                marginRight: "12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+                flex: 1,
+                justifyContent: "center",
+                paddingTop: "20px",
               }}
-            />
-            DotSuite
+            >
+              {/* Title */}
+              <div
+                style={{
+                  fontSize: title.length > 20 ? "64px" : "80px",
+                  fontWeight: "800",
+                  color: COLORS.white,
+                  lineHeight: 1.05,
+                  letterSpacing: "-2px",
+                  maxWidth: "900px",
+                }}
+              >
+                {title}
+              </div>
+
+              {/* Subtitle */}
+              <div
+                style={{
+                  fontSize: "28px",
+                  color: COLORS.muted,
+                  fontWeight: "400",
+                  lineHeight: 1.4,
+                  maxWidth: "700px",
+                }}
+              >
+                {subtitle}
+              </div>
+            </div>
+
+            {/* Bottom row: Stats pills */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {/* Left pills */}
+              <div style={{ display: "flex", gap: "12px" }}>
+                {[
+                  { label: "13,000+ Downloads", color: COLORS.primary },
+                  { label: "Open Source", color: "#818cf8" },
+                  { label: "MIT License", color: COLORS.muted },
+                ].map((pill) => (
+                  <div
+                    key={pill.label}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "6px 16px",
+                      borderRadius: "999px",
+                      border: `1px solid ${COLORS.border}`,
+                      background: "rgba(255,255,255,0.04)",
+                      fontSize: "16px",
+                      color: pill.color,
+                      fontWeight: "500",
+                    }}
+                  >
+                    {pill.label}
+                  </div>
+                ))}
+              </div>
+
+              {/* Right: Primary accent line */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  fontSize: "18px",
+                  color: COLORS.mutedDark,
+                  fontWeight: "500",
+                }}
+              >
+                <div
+                  style={{
+                    width: "32px",
+                    height: "2px",
+                    background: COLORS.primary,
+                    display: "flex",
+                  }}
+                />
+                Built for developers
+              </div>
+            </div>
           </div>
         </div>
       ),
@@ -149,9 +290,10 @@ export async function GET(req: NextRequest) {
         height: 630,
       }
     );
-  } catch (e: any) {
-    console.log(`${e.message}`);
-    return new Response(`Failed to generate the image`, {
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    console.error("OG image generation failed:", message);
+    return new Response(`Failed to generate OG image: ${message}`, {
       status: 500,
     });
   }

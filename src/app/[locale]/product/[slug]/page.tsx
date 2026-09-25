@@ -1,419 +1,184 @@
-"use client";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { products as staticProducts } from "@/config/products";
+import { getProductDetails } from "@/lib/productData";
+import ProductClient from "./ProductClient";
+import Script from "next/script";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import ProductDetailSkeleton from "@/components/skeletons/ProductDetailSkeleton";
-import ReviewList from "@/components/reviews/ReviewList";
-import ReviewSkeleton from "@/components/skeletons/ReviewSkeleton";
-import RelatedProducts from "@/components/RelatedProducts";
-import MarkdownRenderer from "@/components/MarkdownRenderer";
+const BASE_URL = process.env.NEXTAUTH_URL || "https://dotsuite.dev";
+const locales = ["en", "ar", "fr", "de", "ru"] as const;
 
+// ─── Category labels for SEO ─────────────────────────────────────────────────
+const categoryLabels: Record<string, string> = {
+  vscode: "VS Code Extension",
+  python: "Python Tool",
+  nextjs: "Next.js Solution",
+};
 
-interface ProductData {
-  product: {
-    _id: string;
-    slug: string;
-    extensionId?: string;
-    category: string;
-    githubRepo: string;
-    hasLicense: boolean;
-    translations: Record<string, { title: string; description: string }>;
-  };
-  github: {
-    stars: number;
-    forks: number;
-    issues: number;
-    version: string;
-    description: string;
-    defaultBranch?: string;
-    readme: string | null;
-    changelog: string | null;
-  };
-  openVsx: {
-    version: string | null;
-    downloads: number;
-    description: string;
-    url: string;
-  } | null;
+// ─── generateStaticParams — pre-render all product+locale combos ──────────────
+export async function generateStaticParams() {
+  return staticProducts.flatMap((product) =>
+    locales.map((locale) => ({
+      locale,
+      slug: product.slug,
+    }))
+  );
 }
 
-interface Review {
-  _id: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-  userId: {
-    _id: string;
-    name: string;
-    image?: string;
+// ─── generateMetadata ─────────────────────────────────────────────────────────
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+
+  const product = staticProducts.find((p) => p.slug === slug);
+  if (!product) return {};
+
+  const translation =
+    product.translations[locale as keyof typeof product.translations] ??
+    product.translations.en;
+
+  const title = translation.title;
+  const description = translation.description;
+  const categoryLabel = categoryLabels[product.category] ?? "Developer Tool";
+
+  const seoTitle = `${title} — ${categoryLabel} | dotsuite`;
+  const seoDescription = `${description}. Free and open-source ${categoryLabel.toLowerCase()} by dotsuite. Trusted by 13,000+ developers. Install directly from VS Code Marketplace.`;
+
+  const keywords = [
+    title,
+    `${title} VS Code`,
+    `${title} extension`,
+    `${title} download`,
+    categoryLabel,
+    "VS Code extension",
+    "developer productivity",
+    "dotsuite",
+    "open source developer tools",
+  ].filter(Boolean);
+
+  const ogImageUrl = `${BASE_URL}/api/og?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(description)}&category=${encodeURIComponent(product.category)}&brand=dotsuite`;
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    keywords,
+    alternates: {
+      canonical: `${BASE_URL}/${locale}/product/${slug}`,
+      languages: Object.fromEntries(
+        locales.map((l) => [l, `${BASE_URL}/${l}/product/${slug}`])
+      ),
+    },
+    openGraph: {
+      type: "website",
+      title: seoTitle,
+      description: seoDescription,
+      url: `${BASE_URL}/${locale}/product/${slug}`,
+      siteName: "dotsuite",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${title} — ${categoryLabel} by dotsuite`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seoTitle,
+      description: seoDescription,
+      creator: "@FreeRave2",
+      site: "@FreeRave2",
+      images: [ogImageUrl],
+    },
   };
 }
 
-type Tab = "readme" | "changelog" | "reviews" | "pricing";
+// ─── Server Component — fetches product data server-side ─────────────────────
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
 
-export default function ProductDetail() {
-  const t = useTranslations("ProductDetail");
-  const tProduct = useTranslations("Product");
-  const params = useParams();
-  const locale = (params.locale as string) || "en";
-  const slug = params.slug as string;
-  const { data: session } = useSession();
+  // Find product in static config
+  const product = staticProducts.find((p) => p.slug === slug);
+  if (!product) notFound();
 
-  const [data, setData] = useState<ProductData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<Tab>("readme");
+  // Fetch GitHub + OpenVSX data directly on the server (fully SSR — Google sees all content)
+  const productData = await getProductDetails(slug);
+  if (!productData) notFound();
 
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [averageRating, setAverageRating] = useState(0);
-  const [totalReviews, setTotalReviews] = useState(0);
-  const [userHasReview, setUserHasReview] = useState(false);
-  const [reviewsLoading, setReviewsLoading] = useState(false);
+  // ─── JSON-LD: SoftwareApplication Schema ─────────────────────────────────
+  const translation =
+    product.translations[locale as keyof typeof product.translations] ??
+    product.translations.en;
 
-  const fetchReviews = async (productId: string) => {
-    setReviewsLoading(true);
-    try {
-      const res = await fetch(`/api/reviews/${productId}`);
-      const d = await res.json();
-      if (d.reviews) {
-        setReviews(d.reviews);
-        setAverageRating(d.averageRating || 0);
-        setTotalReviews(d.totalReviews || 0);
-        if (session?.user?.id) {
-          setUserHasReview(
-            d.reviews.some((r: Review) => r.userId._id === session.user.id)
-          );
-        }
-      }
-    } catch (error) {
-      console.error("Failed to fetch reviews:", error);
-    } finally {
-      setReviewsLoading(false);
-    }
+  const softwareAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: translation.title,
+    description: translation.description,
+    applicationCategory: product.category === "vscode"
+      ? "DeveloperApplication"
+      : "UtilitiesApplication",
+    operatingSystem: product.category === "vscode"
+      ? "Windows, macOS, Linux"
+      : "Windows, macOS, Linux",
+    url: `${BASE_URL}/${locale}/product/${product.slug}`,
+    downloadUrl: product.extensionId
+      ? `https://marketplace.visualstudio.com/items?itemName=FreeRave.${product.extensionId}`
+      : `https://github.com/${product.githubRepo}`,
+    offers: {
+      "@type": "Offer",
+      price: product.price ?? 0,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+    softwareVersion: productData.github?.version ?? "N/A",
+    author: {
+      "@type": "Organization",
+      "@id": `${BASE_URL}/#organization`,
+      name: "dotsuite",
+      url: BASE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${BASE_URL}/#organization`,
+      name: "dotsuite",
+    },
+    aggregateRating: productData.github?.stars > 0
+      ? undefined
+      : undefined,
+    codeRepository: `https://github.com/${product.githubRepo}`,
+    license: "https://opensource.org/licenses/MIT",
+    keywords: [
+      translation.title,
+      categoryLabels[product.category] ?? "Developer Tool",
+      "dotsuite",
+      "developer tools",
+    ].join(", "),
   };
-
-  useEffect(() => {
-    fetch(`/api/products/${slug}`)
-      .then((r) => r.json())
-      .then((d) => {
-        setData(d);
-        setLoading(false);
-      });
-  }, [slug]);
-
-  // refresh reviews when product data is loaded or when user session changes (to check if user has a review)
-  useEffect(() => {
-    if (data?.product?._id) {
-      fetchReviews(data.product._id);
-    }
-  }, [data?.product?._id]);
-
-  const handleSubmitReview = async (reviewData: { rating: number; comment: string }) => {
-    if (!data?.product?._id) return;
-    const res = await fetch("/api/reviews", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...reviewData, productId: data.product._id }),
-    });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || "Failed to submit review");
-    }
-    await fetchReviews(data.product._id);
-  };
-
-  const handleUpdateReview = async (reviewData: { rating: number; comment: string }) => {
-    if (!data?.product?._id) return;
-    const res = await fetch(`/api/reviews/${data.product._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewData),
-    });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || "Failed to update review");
-    }
-    await fetchReviews(data.product._id);
-  };
-
-  const handleDeleteReview = async () => {
-    if (!data?.product?._id) return;
-    const res = await fetch(`/api/reviews/${data.product._id}`, {
-      method: "DELETE",
-    });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || "Failed to delete review");
-    }
-    await fetchReviews(data.product._id);
-  };
-
-  if (loading) return <ProductDetailSkeleton />;
-
-  if (!data || !data.product) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-(--text-muted)">{t("productNotFound")}</p>
-      </div>
-    );
-  }
-
-  const { product, github, openVsx } = data;
-  const title = product.translations[locale]?.title || product.translations.en?.title;
-  const description = product.translations[locale]?.description || product.translations.en?.description;
-  const extensionName = product.extensionId || product.slug;
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-6 py-16">
+    <>
+      {/* SoftwareApplication JSON-LD */}
+      <Script
+        id={`schema-product-${slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
+      />
 
-        {/* Back */}
-        <Link
-          href={`/${locale}/product`}
-          className="inline-flex items-center gap-2 text-sm text-(--text-muted) hover:text-(--primary) transition-colors mb-8"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          {tProduct("backToProducts")}
-        </Link>
-
-        {/* Header */}
-        <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl mb-6">
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-            <div className="flex-1">
-              <span className="inline-block text-xs px-2 py-1 bg-(--primary)/10 text-(--primary) border border-(--primary)/20 rounded-full capitalize mb-3">
-                {product.category}
-              </span>
-              <h1 className="text-3xl font-bold mb-3">{title}</h1>
-              <p className="text-(--text-muted)">{description}</p>
-
-              {/* Stats */}
-              <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-(--text-muted)">
-                {/* GitHub Stars */}
-                <span className="flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  {github.stars.toLocaleString()} {t("stars")}
-                </span>
-
-                {/* Forks */}
-                <span className="flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                  </svg>
-                  {github.forks.toLocaleString()} {t("forks")}
-                </span>
-
-                {/* Issues */}
-                <span className="flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {github.issues} {t("issues")}
-                </span>
-
-                {/* Open VSX Downloads */}
-                {openVsx && (
-                  <span className="flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    {openVsx.downloads.toLocaleString()} {t("downloads")}
-                  </span>
-                )}
-
-                {/* Version */}
-                <span className="px-2 py-0.5 bg-(--primary)/10 text-(--primary) border border-(--primary)/20 rounded-full text-xs">
-                  {t("version")} {github.version}
-                </span>
-
-                {/* Open VSX Version */}
-                {openVsx?.version && (
-                  <span className="px-2 py-0.5 bg-(--purple-accent-bg) text-(--purple-accent) border border-(--purple-accent-border) rounded-full text-xs">
-                    VSX {openVsx.version}
-                  </span>
-                )}
-
-                {/* ✅ Average Rating */}
-                {totalReviews > 0 && (
-                  <button
-                    onClick={() => setTab("reviews")}
-                    className="flex items-center gap-1 hover:text-(--primary) transition-colors"
-                  >
-                    <svg className="w-4 h-4 fill-(--star-color) text-(--star-color)" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                    {averageRating.toFixed(1)} ({totalReviews} {t("reviews")})
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col gap-3 min-w-48">
-              {product.category === "vscode" && (
-                <>
-                  <a
-                    href={`vscode:extension/FreeRave.${extensionName}`}
-                    className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    {t("installInVSCode")}
-                  </a>
-
-                  <a
-                    href={`https://marketplace.visualstudio.com/items?itemName=FreeRave.${extensionName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors text-sm"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    {t("viewOnMarketplace")}
-                  </a>
-
-                  {openVsx && (
-                    <a
-                      href={openVsx.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--purple-accent) hover:text-(--purple-accent) transition-colors text-sm"
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M3 13.5L9 3l3 5.25L15 3l6 10.5H3zM9 15.75L6 21h12l-3-5.25H9z" />
-                      </svg>
-                      {t("viewOnOpenVSX")}
-                    </a>
-                  )}
-                </>
-              )}
-
-              {product.category === "python" && (
-                <a
-                  href="https://www.opendesktop.org/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                  {t("viewOnOpenDesktop")}
-                </a>
-              )}
-
-              <a
-                href={`https://github.com/${product.githubRepo}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-4 py-3 border border-(--card-border) rounded-lg hover:border-(--primary) hover:text-(--primary) transition-colors text-sm"
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-                {t("viewOnGitHub")}
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-1 mb-6 p-1 bg-(--card-bg) border border-(--card-border) rounded-xl w-fit">
-          {(["readme", "changelog", "reviews", ...(product.hasLicense ? ["pricing"] : [])] as Tab[]).map((tabKey) => (
-            <button
-              key={tabKey}
-              onClick={() => setTab(tabKey)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === tabKey
-                ? "bg-(--primary) text-(--primary-text)"
-                : "text-(--text-muted) hover:text-(--foreground)"
-                }`}
-            >
-              {tabKey === "readme"
-                ? `📖 ${t("readme")}`
-                : tabKey === "changelog"
-                  ? `📋 ${t("changelog")}`
-                  : tabKey === "pricing"
-                    ? `💎 ${t("pricing", { defaultMessage: "Pricing" })}`
-                    : `⭐ ${t("reviews")}${totalReviews > 0 ? ` (${totalReviews})` : ""}`}
-            </button>
-          ))}
-        </div>
-
-        {/* Content */}
-        <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl overflow-hidden">
-          {tab === "pricing" ? (
-            <div className="flex flex-col items-center justify-center py-12 gap-6 text-center">
-              <div className="text-5xl">💎</div>
-              <div>
-                <h3 className="text-2xl font-bold mb-2">{title} Premium Plans</h3>
-                <p className="text-(--text-muted) max-w-md">
-                  {product.slug === "dotshare" 
-                    ? "Unlock more posts, image support, video posts, and faster scheduling windows."
-                    : `Unlock premium features for ${title} to supercharge your workflow.`}
-                </p>
-              </div>
-              <Link
-                href={`/${locale}/dashboard/${product.slug}/upgrade`}
-                className="px-8 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-xl hover:bg-(--primary-hover) transition-all duration-200 shadow-md hover:shadow-lg"
-              >
-                View Plans & Pricing →
-              </Link>
-            </div>
-          ) : tab === "readme" ? (
-            github.readme ? (
-              <MarkdownRenderer
-                content={github.readme}
-                githubRepo={product.githubRepo}
-                branch={github.defaultBranch || "main"}
-                docTitle={`${title} • README`}
-                showToolbar={true}
-              />
-            ) : (
-              <p className="text-(--text-muted)">{t("noReadme")}</p>
-            )
-          ) : tab === "changelog" ? (
-            github.changelog ? (
-              <MarkdownRenderer
-                content={github.changelog}
-                githubRepo={product.githubRepo}
-                branch={github.defaultBranch || "main"}
-                docTitle={`${title} • Changelog`}
-                showToolbar={true}
-              />
-            ) : (
-              <p className="text-(--text-muted)">{t("noChangelog")}</p>
-            )
-          ) : reviewsLoading ? (
-            <ReviewSkeleton count={3} />
-          ) : (
-            <ReviewList
-              reviews={reviews}
-              averageRating={averageRating}
-              totalReviews={totalReviews}
-              currentUserId={session?.user?.id}
-              userHasReview={userHasReview}
-              onSubmitReview={handleSubmitReview}
-              onUpdateReview={handleUpdateReview}
-              onDeleteReview={handleDeleteReview}
-            />
-          )}
-        </div>
-
-        {/* Related Products */}
-        <RelatedProducts 
-          currentProductId={product._id} 
-          category={product.category} 
-          locale={locale} 
-        />
-
-      </div>
-    </div>
+      {/* Hand off to Client Component for interactive parts */}
+      <ProductClient
+        initialData={productData}
+        locale={locale}
+        slug={slug}
+      />
+    </>
   );
 }

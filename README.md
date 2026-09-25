@@ -2,7 +2,7 @@
 
 > Developer tools built to make your workflow faster and smarter.
 
-[![Version](https://img.shields.io/badge/version-1.4.0-brightgreen)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.5.0-brightgreen)](./CHANGELOG.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
 [![Rust](https://img.shields.io/badge/Rust-Axum-orange?logo=rust)](https://axum.rs)
@@ -65,6 +65,8 @@ It features a full authentication system, multi-language support, GitHub integra
 - 🖼️ **Image Proxy & Asset Relay** *(v1.3.0)* — Dedicated `/api/proxy-image` route with 24h caching and jsDelivr CDN fallback, completely bypassing regional ISP blocks on `raw.githubusercontent.com` and `img.shields.io`.
 - 🌿 **Dynamic Branch Resolution** *(v1.3.0)* — Automatically detects and queries repository default branches (`main` / `master`) for reliable README, changelog, and asset rendering.
 - 🛡️ **DotAegis AI Security & Live Scanner** *(v1.4.0)* — Real-time secret and credential leak detection engine, interactive in-browser playground on `/dashboard/dotaegis`, Shannon entropy calculations, and dedicated API key presets.
+- 🔍 **Advanced SEO Engine & Social Graph** *(v1.5.0)* — Dynamic multi-language sitemap (`/sitemap.xml`), automated `robots.txt` with AI scraper protection, Edge-rendered dynamic Open Graph images (`/api/og`), and rich JSON-LD schemas (`Organization`, `WebSite`, `BreadcrumbList`, `SoftwareApplication`).
+- ⚡ **Decoupled SSR Architecture** *(v1.5.0)* — Direct server-side data extraction via `productData.ts`, eliminating local HTTP loopbacks during build and accelerating TTFB across product detail pages.
 
 ---
 

@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] — 2026-09-26 — "Advanced SEO Engine & Decoupled SSR Infrastructure"
+
+### Added
+- **Dynamic Multi-Language Sitemap (`src/app/sitemap.ts`)** — Automated generation of `/sitemap.xml` indexing all static routes and 9 product entries across all 5 supported locales (`en`, `ar`, `fr`, `de`, `ru`) with `alternates` language mapping, dynamic priorities (`1.0` to `0.4`), and appropriate `changeFrequency`.
+- **Crawler Directives & Bot Protection (`src/app/robots.ts`)** — Production-ready `/robots.txt` configuration:
+  - Whitelists public pages and `/api/og` endpoint for search engine indexing.
+  - Blacklists private, administrative, authentication, and internal API routes.
+  - Blocks disruptive AI scraper bots (`GPTBot`, `CCBot`, `Claude-Web`, `anthropic-ai`, `ChatGPT-User`) from unapproved content harvesting.
+  - Automatically associates and points to `${BASE_URL}/sitemap.xml`.
+- **Edge-Powered Dynamic Open Graph Generator (`/api/og`)** — High-performance Edge runtime image generator producing branded, dynamic 1200x630 social preview banners featuring product categories, custom badge colors, dark palette styling, and typography.
+- **Default Social Image Fallback (`src/app/[locale]/opengraph-image.tsx`)** — Static, edge-rendered default OpenGraph preview banner for root and sharing fallbacks.
+- **Structured Data (JSON-LD Schemas)**:
+  - `Organization` & `WebSite` schemas in root layout with `SearchAction` deep-linking.
+  - `BreadcrumbList` schema embedded into the homepage.
+  - Rich `SoftwareApplication` schema for all product detail pages including application category, operating systems, download URLs, pricing/offers, author, publisher, and licensing details.
+- **Direct Server Data Layer (`src/lib/productData.ts`)** — Extracted shared `getProductDetails` helper for GitHub, OpenVSX, and product retrieval.
+
+### Changed
+- **Decoupled Server Component Architecture** — Refactored `ProductDetailPage` from an internal HTTP loopback (`fetch(/api/...)`) to direct server-side data fetching via `getProductDetails()`, preventing `ECONNREFUSED` build failures and boosting SSR performance.
+- **Decoupled Client Interactions (`ProductClient.tsx`)** — Separated client-only state (tabs, reviews, ratings) from SSR shell, enabling search engine crawlers to parse complete HTML without hydration dependency.
+- **PWA Web App Manifest (`public/manifest.json`)** — Updated manifest with standalone display properties, app shortcuts (Browse, Search), screenshots, categories, and theme colors.
+- **Localized Metadata & Social Cards** — Enhanced metadata across all 5 languages with canonical URLs, hreflang alternates, and Twitter `summary_large_image` cards in root, home, product listing, and product detail layouts.
+- **Upgraded Version References** — Bumped project version to `1.5.0` across `package.json`, `README.md`, and `CHANGELOG.md`.
+
+---
+
 ## [1.4.0] — 2026-09-24 — "DotAegis AI Security & Live Secret Scanner"
 
 ### Added
