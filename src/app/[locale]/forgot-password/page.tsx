@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/components/Toast";
 
@@ -10,7 +10,6 @@ export default function ForgotPassword() {
   const t = useTranslations("Auth");
   const { toast } = useToast();
   const params = useParams();
-  const router = useRouter();
   const locale = params.locale as string || "en";
 
   const [email, setEmail] = useState("");
@@ -36,7 +35,7 @@ export default function ForgotPassword() {
       } else {
         toast.error(data.message);
       }
-    } catch (err) {
+    } catch {
       toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);

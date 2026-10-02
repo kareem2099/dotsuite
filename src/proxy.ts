@@ -1,4 +1,4 @@
-import { withAuth } from "next-auth/middleware";
+import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
 import createIntlMiddleware from "next-intl/middleware";
 import { NextRequest } from "next/server";
 import { routing } from "./i18n/routing";
@@ -34,14 +34,14 @@ const intlMiddleware = createIntlMiddleware(routing);
 
 // 4. Auth proxy with NextAuth
 const authMiddleware = withAuth(
-  function onSuccess(req: NextRequest) {
+  function onSuccess(req: NextRequestWithAuth) {
     const res = intlMiddleware(req);
     
     // ── Ban check ─────────────────────────────────────────────────────────────
     // We don't hit the DB here (Edge runtime) — instead we set a custom header
     // and let the dashboard Server Layout do the actual ban check.
     // The ban state is validated per-page-load in the layout server component.
-    const token = (req as any).nextauth?.token;
+    const token = req.nextauth?.token;
     
     // Forward the user's MongoDB ID to the layout for efficient server-side check
     if (token?.sub) {
@@ -59,6 +59,8 @@ const authMiddleware = withAuth(
     },
   }
 );
+
+const handleAuth = authMiddleware as unknown as (req: NextRequest) => ReturnType<typeof intlMiddleware>;
 
 // ─── Pre-compiled Regex Patterns (performance: compile once, match many) ───
 
@@ -106,7 +108,7 @@ export default function proxy(req: NextRequest) {
 
   // 1. Check protected pages first (auth required)
   if (protectedPathnameRegex.test(pathname)) {
-    return (authMiddleware as any)(req);
+    return handleAuth(req);
   }
 
   // 2. Check exact public pages
@@ -120,7 +122,7 @@ export default function proxy(req: NextRequest) {
   }
 
   // 4. Default: treat unknown routes as protected (secure by default)
-  return (authMiddleware as any)(req);
+  return handleAuth(req);
 }
 
 export const config = {

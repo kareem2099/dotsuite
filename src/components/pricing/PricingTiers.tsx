@@ -11,7 +11,15 @@ interface PricingTiersProps {
   currentTier?: string | null;
 }
 
-const DEFAULT_PRICING = [
+interface PricingTierItem {
+  name: string;
+  price_usd_cents: number;
+  post_quota: number;
+  image_quota: number;
+  scheduler_interval_minutes: number;
+}
+
+const DEFAULT_PRICING: PricingTierItem[] = [
   { name: "free", price_usd_cents: 0, post_quota: 100, image_quota: 10, scheduler_interval_minutes: 60 },
   { name: "pro", price_usd_cents: 1500, post_quota: 4294967295, image_quota: 4294967295, scheduler_interval_minutes: 5 },
   { name: "max", price_usd_cents: 3000, post_quota: 4294967295, image_quota: 4294967295, scheduler_interval_minutes: 0 }
@@ -20,7 +28,7 @@ const DEFAULT_PRICING = [
 export default function PricingTiers({ onUpgrade, upgradingTier, currentTier }: PricingTiersProps = {}) {
   const t = useTranslations("Pricing");
   const [cycle, setCycle] = useState<"monthly" | "annually">("monthly");
-  const [pricingData, setPricingData] = useState<any[] | null>(null);
+  const [pricingData, setPricingData] = useState<PricingTierItem[] | null>(null);
 
   useEffect(() => {
     fetch("/api/pricing")

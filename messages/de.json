@@ -18,7 +18,8 @@
     "enterSearchTerm": "Geben Sie einen Suchbegriff ein, um Produkte zu finden.",
     "tryDifferentKeywords": "Versuchen Sie andere Suchbegriffe oder überprüfen Sie die Rechtschreibung.",
     "browseAllProducts": "Alle Produkte durchsuchen",
-    "search": "Suche"
+    "search": "Suche",
+    "language": "Sprache"
   },
   "Product": {
     "title": "Unsere Produkte",
@@ -76,7 +77,8 @@
     "downloads": "Downloads",
     "version": "Version",
     "productNotFound": "Produkt nicht gefunden.",
-    "relatedProducts": "Ähnliche Produkte"
+    "relatedProducts": "Ähnliche Produkte",
+    "viewLiveService": "Dienst starten"
   },
   "Home": {
     "title": "Bessere bauen mit",
@@ -415,6 +417,49 @@
     "noReviewsYet": "Noch keine Bewertungen",
     "noReviewsDesc": "Sie haben noch keine Bewertungen geschrieben. Durchsuchen Sie Produkte und teilen Sie uns Ihre Meinung mit!",
     "backToDashboard": "Zurück zum Dashboard"
+  },
+  "AdminRefunds": {
+    "title": "Rückerstattungs-Warnungen",
+    "subtitle": "Überwachen Sie Rückerstattungen und erkennen Sie potenzielle Betrugsmuster.",
+    "loading": "Laden…",
+    "noAlerts": "Keine Rückerstattungs-Warnungen gefunden.",
+    "colDate": "Datum",
+    "colUserEmail": "Benutzer-E-Mail",
+    "colAmount": "Betrag",
+    "colSeverity": "Schweregrad",
+    "colReason": "Grund",
+    "colOrderId": "Bestell-ID",
+    "prev": "← Zurück",
+    "next": "Weiter →",
+    "page": "Seite {page}"
+  },
+  "DotShareDashboard": {
+    "backToDashboard": "Zurück zum Dashboard",
+    "title": "DotShare",
+    "subtitle": "Planen & veröffentlichen auf 9 Plattformen",
+    "subCancelled": "Ihr Abonnement wurde gekündigt. Der Zugriff bleibt bis zum {date} bestehen.",
+    "reactivate": "Reaktivieren",
+    "planTitle": "DotShare — {tier}-Tarif",
+    "cancelsOn": "Endet am {date}",
+    "activeSubscription": "✅ Aktives Abonnement",
+    "freePlanDesc": "Kostenloser Tarif — upgraden für mehr Funktionen",
+    "manageBilling": "Abrechnung verwalten",
+    "opening": "Öffnen…",
+    "changePlan": "Tarif ändern",
+    "upgrade": "Upgraden",
+    "postsQuota": "Beiträge diesen Monat",
+    "imagesQuota": "Bild-Beiträge diesen Monat",
+    "billingError": "Abrechnungsstatus konnte nicht geladen werden. Läuft der Rust-Server?",
+    "apiKeysTitle": "API-Schlüssel",
+    "manageKeys": "Schlüssel verwalten →",
+    "apiKeysDesc": "Verwenden Sie Ihren API-Schlüssel, um die DotShare VS Code-Erweiterung zu verbinden. Generieren und verwalten Sie Schlüssel im Dashboard.",
+    "recentPostsTitle": "Neueste Beiträge",
+    "viewAll": "Alle anzeigen →",
+    "noPosts": "Noch keine Beiträge vorhanden.",
+    "noPostsDesc": "Installieren Sie die DotShare VS Code-Erweiterung, um mit der Beitragsplanung zu beginnen.",
+    "cancel": "Abbrechen",
+    "confirmCancelPost": "Diesen geplanten Beitrag abbrechen?",
+    "billingPortalError": "Abrechnungsportal konnte nicht geöffnet werden"
   },
   "DashboardKeys": {
     "title": "API-Schlüssel",

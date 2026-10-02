@@ -18,7 +18,8 @@
     "enterSearchTerm": "Enter a search term to find products.",
     "tryDifferentKeywords": "Try using different keywords or checking for typos.",
     "browseAllProducts": "Browse all products",
-    "search": "Search"
+    "search": "Search",
+    "language": "Language"
   },
   "Product": {
     "title": "Our Products",
@@ -77,7 +78,8 @@
     "downloads": "downloads",
     "version": "Version",
     "productNotFound": "Product not found.",
-    "relatedProducts": "Related Products"
+    "relatedProducts": "Related Products",
+    "viewLiveService": "Launch Service"
   },
   "Home": {
     "title": "Build better with",
@@ -416,6 +418,49 @@
     "noReviewsYet": "No reviews yet",
     "noReviewsDesc": "You haven't written any reviews for any products yet. Browse our tools and let us know what you think!",
     "backToDashboard": "Back to Dashboard"
+  },
+  "AdminRefunds": {
+    "title": "Refund Alerts",
+    "subtitle": "Monitor user refunds and detect potential fraud patterns.",
+    "loading": "Loading…",
+    "noAlerts": "No refund alerts found.",
+    "colDate": "Date",
+    "colUserEmail": "User Email",
+    "colAmount": "Amount",
+    "colSeverity": "Severity",
+    "colReason": "Reason",
+    "colOrderId": "Order ID",
+    "prev": "← Prev",
+    "next": "Next →",
+    "page": "Page {page}"
+  },
+  "DotShareDashboard": {
+    "backToDashboard": "Back to Dashboard",
+    "title": "DotShare",
+    "subtitle": "Schedule & publish across 9 platforms",
+    "subCancelled": "Your subscription is cancelled. Access continues until {date}.",
+    "reactivate": "Reactivate",
+    "planTitle": "DotShare — {tier} Plan",
+    "cancelsOn": "Cancels on {date}",
+    "activeSubscription": "✅ Active subscription",
+    "freePlanDesc": "Free plan — upgrade to unlock more",
+    "manageBilling": "Manage Billing",
+    "opening": "Opening…",
+    "changePlan": "Change Plan",
+    "upgrade": "Upgrade",
+    "postsQuota": "Posts this month",
+    "imagesQuota": "Image posts this month",
+    "billingError": "Could not load billing status. Is the Rust server running?",
+    "apiKeysTitle": "API Keys",
+    "manageKeys": "Manage keys →",
+    "apiKeysDesc": "Use your API key to connect the DotShare VS Code extension. Generate and manage keys from the keys dashboard.",
+    "recentPostsTitle": "Recent Posts",
+    "viewAll": "View all →",
+    "noPosts": "No posts yet.",
+    "noPostsDesc": "Install the DotShare VS Code extension to start scheduling.",
+    "cancel": "Cancel",
+    "confirmCancelPost": "Cancel this scheduled post?",
+    "billingPortalError": "Failed to open billing portal"
   },
   "DashboardKeys": {
     "title": "API Keys",

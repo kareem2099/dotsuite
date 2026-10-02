@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, startTransition } from "react";
 import { BanModal } from "./components/BanModal";
 
 const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "")
@@ -82,7 +82,7 @@ export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("feed");
   const [posts, setPosts] = useState<Post[]>([]);
   const [banned, setBanned] = useState<BannedUser[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [banTarget, setBanTarget] = useState<Post | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -126,8 +126,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!isAdmin) return;
-    if (tab === "feed") fetchPosts(page);
-    else fetchBanned(page);
+    startTransition(() => {
+      if (tab === "feed") fetchPosts(page);
+      else fetchBanned(page);
+    });
   }, [tab, page, isAdmin, fetchPosts, fetchBanned]);
 
   async function handleUnban(userId: string) {

@@ -21,7 +21,6 @@ export default function ResendVerification() {
   const { toast } = useToast();
   const params = useParams();
   const locale = params.locale as string || "en";
-  const isRTL = locale === "ar";
 
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -52,7 +51,7 @@ export default function ResendVerification() {
       } else {
         toast.error(result.error || result.message || t("unexpectedError"));
       }
-    } catch (err) {
+    } catch {
       toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);

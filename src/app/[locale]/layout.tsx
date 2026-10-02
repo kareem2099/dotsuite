@@ -10,7 +10,13 @@ import { ConfirmProvider } from "@/components/ConfirmModal";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Inter } from "next/font/google";
 import Script from "next/script";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const BASE_URL = process.env.NEXTAUTH_URL || "https://dotsuite.dev";
 const locales = ["en", "ar", "fr", "de", "ru"] as const;
@@ -185,13 +191,6 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
       <head>
-        {/* Preconnect for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
         {/* PWA theme colors */}
         <meta name="theme-color" content="#10b981" />
         <meta name="msapplication-TileColor" content="#0a0a0a" />
@@ -199,7 +198,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="dotsuite" />
       </head>
-      <body className="antialiased min-h-screen flex flex-col">
+      <body className={`${inter.className} antialiased min-h-screen flex flex-col`}>
         {/* Organization JSON-LD */}
         <Script
           id="schema-organization"

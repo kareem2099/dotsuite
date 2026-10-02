@@ -23,7 +23,7 @@ const GitHubIcon = () => (
 
 interface SocialLink {
   key: "twitter" | "github";
-  labelKey: string;
+  labelKey: "twitterLabel" | "githubLabel";
   prefix: string;
   baseUrl: string;
   value: string;
@@ -70,7 +70,7 @@ export default function SocialLinks({ twitter, github, isEditing, onChange }: Pr
           <div key={key}>
             <label className="flex items-center gap-2 text-sm text-(--text-muted) mb-1">
               {icon}
-              {t(labelKey as any)}
+              {t(labelKey)}
             </label>
             {isEditing ? (
               <div className="flex">

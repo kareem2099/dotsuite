@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter, useParams } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { useForm } from "react-hook-form";
+import { useParams } from "next/navigation";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import GoogleLogin from "@/components/GoogleLogin";
 import GitHubLogin from "@/components/GitHubLogin";
@@ -14,7 +13,6 @@ import { registerSchema, RegisterFormData } from "@/lib/validation";
 
 export default function Register() {
   const t = useTranslations("Auth");
-  const router = useRouter();
   const params = useParams();
   const locale = params.locale as string || "en";
   const isRTL = locale === "ar";
@@ -28,14 +26,13 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
+    control,
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
 
-  const password = watch("password", "");
+  const password = useWatch({ control, name: "password", defaultValue: "" });
 
   const onSubmit = async (data: RegisterFormData) => {
     setServerError("");
@@ -64,7 +61,7 @@ export default function Register() {
 
       // Show success message - don't auto-login, user needs to verify email first
       setSuccess(true);
-    } catch (err) {
+    } catch {
       setServerError(t("unexpectedError"));
     } finally {
       setIsLoading(false);

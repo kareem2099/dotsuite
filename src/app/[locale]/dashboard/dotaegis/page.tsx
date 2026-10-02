@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
   Shield,
-  ShieldAlert,
   ShieldCheck,
   Zap,
   Activity,
@@ -82,11 +81,6 @@ export default function DotAegisDashboardPage() {
 
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  // Check health on mount
-  useEffect(() => {
-    checkServiceHealth();
-  }, []);
-
   const checkServiceHealth = async () => {
     setCheckingStatus(true);
     try {
@@ -99,6 +93,13 @@ export default function DotAegisDashboardPage() {
       setCheckingStatus(false);
     }
   };
+
+  // Check health on mount
+  useEffect(() => {
+    startTransition(() => {
+      checkServiceHealth();
+    });
+  }, []);
 
   const handleScan = async () => {
     if (!content.trim()) return;

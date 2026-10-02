@@ -82,19 +82,18 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
     const [visible, setVisible] = useState(false);
     const [leaving, setLeaving] = useState(false);
 
+    const handleClose = useCallback(() => {
+        setLeaving(true);
+        setTimeout(() => onRemove(toast.id), 300);
+    }, [onRemove, toast.id]);
+
     useEffect(() => {
         // mount → slide in
         const enter = setTimeout(() => setVisible(true), 10);
         // auto dismiss
         const leave = setTimeout(() => handleClose(), DURATION);
         return () => { clearTimeout(enter); clearTimeout(leave); };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const handleClose = useCallback(() => {
-        setLeaving(true);
-        setTimeout(() => onRemove(toast.id), 300);
-    }, [onRemove, toast.id]);
+    }, [handleClose]);
 
     return (
         <div

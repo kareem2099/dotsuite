@@ -46,19 +46,19 @@ export default function Dashboard() {
   useEffect(() => {
     const checkIntent = async () => {
       const intent = localStorage.getItem("auth_intent");
-      
+
       if (intent === "vscode" && status === "authenticated" && !intentProcessed.current) {
         intentProcessed.current = true;
         setIsRedirecting(true);
         console.log("[DotSuite] VS Code auth intent detected, generating key...");
-        
+
         try {
-          const res = await fetch("/api/keys", { 
+          const res = await fetch("/api/keys", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ label: "VS Code Extension" })
           });
-          
+
           if (res.ok) {
             const data = await res.json();
             const token = data.plaintext_key;
@@ -69,19 +69,21 @@ export default function Dashboard() {
 
             // 1. Sanitization
             const safeToken = encodeURIComponent(token);
-            
+
             // 2. Build link
             const scheme = localStorage.getItem("auth_scheme") || "vscode";
             const vscodeUrl = `${scheme}://freerave.dotshare/login?token=${safeToken}`;
-            
+
             setVscodeFallbackUrl(vscodeUrl);
-            
+
             // 3. Small delay to ensure the UI is ready and intent is cleared
             localStorage.removeItem("auth_intent");
             localStorage.removeItem("auth_scheme");
             console.log("[DotSuite] Key generated, redirecting to VS Code...");
-            
+
             setTimeout(() => {
+              // Deep link custom protocol to open desktop application (e.g. vscode://...)
+              // eslint-disable-next-line @next/next/no-location-assign-relative-destination
               window.location.href = vscodeUrl;
             }, 500);
           } else {
@@ -119,12 +121,12 @@ export default function Dashboard() {
           <p className="text-lg font-bold mb-2 animate-pulse">Connecting to DotShare VS Code Extension... Please confirm the prompt in your browser.</p>
           {vscodeFallbackUrl && (
             <p className="mt-4 text-sm bg-green-600/50 p-3 rounded-lg inline-block border border-green-400">
-              If VS Code didn't open automatically, <a href={vscodeFallbackUrl} className="underline font-bold hover:text-green-200">Click Here to Connect Manually</a>
+              If VS Code didn&#39;t open automatically, <a href={vscodeFallbackUrl} className="underline font-bold hover:text-green-200">Click Here to Connect Manually</a>
             </p>
           )}
         </div>
       )}
-      
+
       {/* Header */}
       <div className="border-b border-(--card-border) bg-(--card-bg)">
         <div className="w-full px-6 md:px-12 lg:px-20 py-8">

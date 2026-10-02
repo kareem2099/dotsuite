@@ -18,7 +18,8 @@
     "enterSearchTerm": "أدخل كلمة للبحث عن المنتجات.",
     "tryDifferentKeywords": "حاول استخدام كلمات بحث مختلفة أو تأكد من الإملاء.",
     "browseAllProducts": "تصفح جميع المنتجات",
-    "search": "بحث"
+    "search": "بحث",
+    "language": "اللغة"
   },
   "Product": {
     "title": "منتجاتنا",
@@ -77,7 +78,8 @@
     "downloads": "تنزيلات",
     "version": "الإصدار",
     "productNotFound": "لم يتم العثور على المنتج.",
-    "relatedProducts": "منتجات مشابهة"
+    "relatedProducts": "منتجات مشابهة",
+    "viewLiveService": "تشغيل الخدمة"
   },
   "Home": {
     "title": "ابني بشكل أفضل مع",
@@ -416,6 +418,49 @@
     "noReviewsYet": "لا توجد مراجعات بعد",
     "noReviewsDesc": "لم تقم بكتابة أي مراجعات لأي منتج حتى الآن. تصفح المنتجات وشاركنا رأيك!",
     "backToDashboard": "العودة للوحة التحكم"
+  },
+  "AdminRefunds": {
+    "title": "تنبيهات استرداد الأموال",
+    "subtitle": "مراقبة طلبات الاسترداد واكتشاف أنماط الاحتيال المحتملة.",
+    "loading": "جارٍ التحميل…",
+    "noAlerts": "لا توجد تنبيهات استرداد أموال.",
+    "colDate": "التاريخ",
+    "colUserEmail": "بريد المستخدم",
+    "colAmount": "المبلغ",
+    "colSeverity": "مستوى الخطورة",
+    "colReason": "السبب",
+    "colOrderId": "معرف الطلب",
+    "prev": "← السابق",
+    "next": "التالي →",
+    "page": "صفحة {page}"
+  },
+  "DotShareDashboard": {
+    "backToDashboard": "العودة للوحة التحكم",
+    "title": "DotShare",
+    "subtitle": "جدولة ونشر المحتوى عبر 9 منصات اجتماعية",
+    "subCancelled": "تم إلغاء اشتراكك. يمكنك الاستمرار في الاستخدام حتى {date}.",
+    "reactivate": "إعادة التفعيل",
+    "planTitle": "DotShare — باقة {tier}",
+    "cancelsOn": "ينتهي في {date}",
+    "activeSubscription": "✅ اشتراك نشط",
+    "freePlanDesc": "الباقة المجانية — قم بالترقية للحصول على ميزات أكثر",
+    "manageBilling": "إدارة الفواتير",
+    "opening": "جارٍ الفتح…",
+    "changePlan": "تغيير الباقة",
+    "upgrade": "ترقية",
+    "postsQuota": "المنشورات هذا الشهر",
+    "imagesQuota": "منشورات الصور هذا الشهر",
+    "billingError": "تعذر تحميل حالة الاشتراك. هل خادم Rust يعمل؟",
+    "apiKeysTitle": "مفاتيح API",
+    "manageKeys": "إدارة المفاتيح ←",
+    "apiKeysDesc": "استخدم مفتاح API لربط إضافة DotShare في VS Code. أنشئ وقم بإدارة المفاتيح من لوحة المفاتيح.",
+    "recentPostsTitle": "المنشورات الأخيرة",
+    "viewAll": "عرض الكل ←",
+    "noPosts": "لا توجد منشورات بعد.",
+    "noPostsDesc": "قم بتثبيت إضافة DotShare على VS Code للبدء في جدولة المنشورات.",
+    "cancel": "إلغاء",
+    "confirmCancelPost": "هل أنت متأكد من إلغاء هذا المنشور المجدول؟",
+    "billingPortalError": "فشل فتح بوابة الفواتير"
   },
   "DashboardKeys": {
     "title": "مفاتيح API",

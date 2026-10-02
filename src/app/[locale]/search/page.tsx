@@ -26,27 +26,37 @@ export default function SearchPage() {
   const query = searchParams.get("q") || "";
   const [searchInput, setSearchInput] = useState(query);
   const [results, setResults] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(() => Boolean(query.trim()));
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    // Sync input with url
+  const [prevQuery, setPrevQuery] = useState(query);
+  if (query !== prevQuery) {
+    setPrevQuery(query);
     setSearchInput(query);
-
     if (!query.trim()) {
       setResults([]);
       setTotal(0);
-      return;
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
+  }
+
+  useEffect(() => {
+    if (!query.trim()) return;
+
+    const controller = new AbortController();
 
     const fetchResults = async () => {
-      setLoading(true);
       try {
-        const res = await fetch(`/api/products?search=${encodeURIComponent(query)}&limit=50`);
+        const res = await fetch(`/api/products?search=${encodeURIComponent(query)}&limit=50`, {
+          signal: controller.signal,
+        });
         const data = await res.json();
         setResults(data.products || []);
         setTotal(data.pagination?.total || 0);
-      } catch (err) {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === "AbortError") return;
         console.error(err);
       } finally {
         setLoading(false);
@@ -54,6 +64,10 @@ export default function SearchPage() {
     };
 
     fetchResults();
+
+    return () => {
+      controller.abort();
+    };
   }, [query]);
 
   const handleSearch = (e: React.FormEvent) => {

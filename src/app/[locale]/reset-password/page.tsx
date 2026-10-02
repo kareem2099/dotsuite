@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import Link from "next/link";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/components/Toast";
 
@@ -11,7 +11,6 @@ export default function ResetPassword() {
   const { toast } = useToast();
   const params = useParams();
   const searchParams = useSearchParams();
-  const router = useRouter();
   const locale = params.locale as string || "en";
 
   const token = searchParams.get("token");
@@ -20,7 +19,6 @@ export default function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isInvalidToken, setIsInvalidToken] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -52,11 +50,8 @@ export default function ResetPassword() {
         toast.success(t("passwordResetSuccess"));
       } else {
         toast.error(data.message);
-        if (data.message.includes("Invalid") || data.message.includes("expired")) {
-          setIsInvalidToken(true);
-        }
       }
-    } catch (err) {
+    } catch {
       toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);

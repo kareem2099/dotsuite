@@ -48,8 +48,8 @@ export default function ReviewForm({
         setRating(0);
         setComment("");
       }
-    } catch (err: any) {
-      setError(err.message || t("submitReviewError"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("submitReviewError"));
     } finally {
       setIsLoading(false);
     }

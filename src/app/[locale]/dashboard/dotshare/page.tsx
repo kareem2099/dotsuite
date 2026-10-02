@@ -10,7 +10,7 @@ import TierBadge from "@/components/dotshare/TierBadge";
 import PlatformBadge from "@/components/dotshare/PlatformBadge";
 import PostStatusIcon from "@/components/dotshare/PostStatusIcon";
 import ConnectedAccounts from "@/components/dotshare/ConnectedAccounts";
-import { formatQuota, UNLIMITED_QUOTA } from "@/lib/rust-api";
+import { UNLIMITED_QUOTA } from "@/lib/rust-api";
 
 interface BillingStatus {
   tier: "free" | "pro" | "max";
@@ -35,6 +35,7 @@ interface Post {
 export default function DotSharePage() {
   const params = useParams();
   const locale = (params.locale as string) || "en";
+  const t = useTranslations("DotShareDashboard");
   const { status: authStatus } = useSession();
 
   const [billing, setBilling] = useState<BillingStatus | null>(null);
@@ -71,7 +72,7 @@ export default function DotSharePage() {
         window.location.href = portal_url;
       } else {
         const err = await res.json();
-        alert(err.error || "Failed to open billing portal");
+        alert(err.error || t("billingPortalError"));
       }
     } finally {
       setPortalLoading(false);
@@ -79,7 +80,7 @@ export default function DotSharePage() {
   };
 
   const handleCancelPost = async (postId: string) => {
-    if (!confirm("Cancel this scheduled post?")) return;
+    if (!confirm(t("confirmCancelPost"))) return;
     setCancellingId(postId);
     try {
       await fetch(`/api/posts/${postId}`, { method: "DELETE" });
@@ -109,7 +110,7 @@ export default function DotSharePage() {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Dashboard
+          {t("backToDashboard")}
         </Link>
 
         {/* Title */}
@@ -120,8 +121,8 @@ export default function DotSharePage() {
             </svg>
           </div>
           <div>
-            <h1 className="text-2xl font-bold">DotShare</h1>
-            <p className="text-sm text-(--text-muted)">Schedule & publish across 9 platforms</p>
+            <h1 className="text-2xl font-bold">{t("title")}</h1>
+            <p className="text-sm text-(--text-muted)">{t("subtitle")}</p>
           </div>
         </div>
 
@@ -130,9 +131,9 @@ export default function DotSharePage() {
           <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center gap-3">
             <span className="text-amber-400">⚠</span>
             <p className="text-sm text-amber-300">
-              Your subscription is cancelled. Access continues until <strong>{endsAt}</strong>.{" "}
+              {t("subCancelled", { date: endsAt })}{" "}
               <button onClick={handleManageBilling} className="underline hover:no-underline">
-                Reactivate
+                {t("reactivate")}
               </button>
             </p>
           </div>
@@ -152,16 +153,16 @@ export default function DotSharePage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <h2 className="text-lg font-bold">DotShare — {tierLabel} Plan</h2>
+                    <h2 className="text-lg font-bold">{t("planTitle", { tier: tierLabel })}</h2>
                     <TierBadge tier={billing.tier} />
                   </div>
                   <p className="text-sm text-(--text-muted)">
                     {billing.is_paid ? (
                       endsAt
-                        ? `Cancels on ${endsAt}`
-                        : "✅ Active subscription"
+                        ? t("cancelsOn", { date: endsAt })
+                        : t("activeSubscription")
                     ) : (
-                      "Free plan — upgrade to unlock more"
+                      t("freePlanDesc")
                     )}
                   </p>
                 </div>
@@ -172,14 +173,14 @@ export default function DotSharePage() {
                       disabled={portalLoading}
                       className="px-4 py-2 border border-(--card-border) rounded-lg text-sm hover:border-(--primary) hover:text-(--primary) transition-colors disabled:opacity-50"
                     >
-                      {portalLoading ? "Opening…" : "Manage Billing"}
+                      {portalLoading ? t("opening") : t("manageBilling")}
                     </button>
                   )}
                   <Link
                     href={`/${locale}/dashboard/dotshare/upgrade`}
                     className="px-4 py-2 bg-(--primary) text-(--primary-text) rounded-lg text-sm font-semibold hover:bg-(--primary-hover) transition-colors"
                   >
-                    {billing.is_paid ? "Change Plan" : "Upgrade"}
+                    {billing.is_paid ? t("changePlan") : t("upgrade")}
                   </Link>
                 </div>
               </div>
@@ -189,21 +190,21 @@ export default function DotSharePage() {
                 <QuotaBar
                   used={billing.posts_used}
                   total={billing.posts_quota}
-                  label="Posts this month"
+                  label={t("postsQuota")}
                   tier={billing.tier}
                   locale={locale}
                 />
                 <QuotaBar
                   used={billing.images_used ?? 0}
                   total={billing.images_quota ?? (billing.tier === "free" ? 10 : UNLIMITED_QUOTA)}
-                  label="Image posts this month"
+                  label={t("imagesQuota")}
                   tier={billing.tier}
                   locale={locale}
                 />
               </div>
             </>
           ) : (
-            <p className="text-sm text-(--text-muted)">Could not load billing status. Is the Rust server running?</p>
+            <p className="text-sm text-(--text-muted)">{t("billingError")}</p>
           )}
         </div>
 
@@ -215,28 +216,28 @@ export default function DotSharePage() {
         {/* ── Section C: API Keys ── */}
         <div className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold">API Keys</h2>
+            <h2 className="text-lg font-bold">{t("apiKeysTitle")}</h2>
             <Link
               href={`/${locale}/dashboard/keys`}
               className="text-sm text-(--primary) hover:underline"
             >
-              Manage keys →
+              {t("manageKeys")}
             </Link>
           </div>
           <p className="text-sm text-(--text-muted)">
-            Use your API key to connect the DotShare VS Code extension. Generate and manage keys from the keys dashboard.
+            {t("apiKeysDesc")}
           </p>
         </div>
 
         {/* ── Section D: Recent Posts ── */}
         <div className="bg-(--card-bg) border border-(--card-border) rounded-xl">
           <div className="flex items-center justify-between p-6 border-b border-(--card-border)">
-            <h2 className="text-lg font-bold">Recent Posts</h2>
+            <h2 className="text-lg font-bold">{t("recentPostsTitle")}</h2>
             <Link
               href={`/${locale}/dashboard/dotshare/posts`}
               className="text-sm text-(--primary) hover:underline"
             >
-              View all →
+              {t("viewAll")}
             </Link>
           </div>
 
@@ -259,8 +260,8 @@ export default function DotSharePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               </div>
-              <p className="text-sm mb-3">No posts yet.</p>
-              <p className="text-xs">Install the DotShare VS Code extension to start scheduling.</p>
+              <p className="text-sm mb-3">{t("noPosts")}</p>
+              <p className="text-xs">{t("noPostsDesc")}</p>
             </div>
           ) : (
             <ul className="divide-y divide-(--card-border)">
@@ -291,7 +292,7 @@ export default function DotSharePage() {
                       disabled={cancellingId === post._id}
                       className="shrink-0 text-xs text-red-400 hover:text-red-300 transition-colors disabled:opacity-50"
                     >
-                      {cancellingId === post._id ? "…" : "Cancel"}
+                      {cancellingId === post._id ? "…" : t("cancel")}
                     </button>
                   )}
                 </li>

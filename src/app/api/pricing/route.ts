@@ -23,8 +23,8 @@ export async function GET(req: NextRequest) {
     
     const data = await res.json();
     return NextResponse.json(data);
-  } catch (err: any) {
-    console.error("[api/pricing] error:", err.message);
+  } catch (err) {
+    console.error("[api/pricing] error:", err instanceof Error ? err.message : err);
     return NextResponse.json({ error: "Could not load pricing" }, { status: 500 });
   }
 }

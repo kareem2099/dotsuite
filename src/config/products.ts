@@ -2,6 +2,8 @@ export interface IProduct {
   _id: string; // Used instead of MongoDB _id
   slug: string;
   extensionId?: string;
+  openDesktopUrl?: string;
+  serviceUrl?: string;
   category: "vscode" | "python" | "nextjs";
   githubRepo: string;
   hasLicense: boolean;
@@ -141,6 +143,7 @@ export const products: IProduct[] = [
     slug: "dotscramble",
     category: "python",
     githubRepo: "kareem2099/DotScramble",
+    openDesktopUrl: "https://www.opendesktop.org/p/2362477/",
     hasLicense: true,
     price: 5,
     order: 8,
@@ -157,6 +160,7 @@ export const products: IProduct[] = [
     slug: "dotaegis",
     category: "python",
     githubRepo: "kareem2099/DotAegis",
+    serviceUrl: "https://aegis.dotsuite.dev/",
     hasLicense: false,
     price: 0,
     order: 9,
@@ -166,6 +170,38 @@ export const products: IProduct[] = [
       fr: { title: "DotAegis", description: "Détection des fuites de clés secrètes propulsée par l'IA" },
       ru: { title: "DotAegis", description: "ИИ-обнаружение утечек секретов и учетных данных в реальном времени" },
       de: { title: "DotAegis", description: "KI-gestützte Erkennung von Secret- und Credential-Leaks" },
+    },
+  },
+  {
+    _id: "prod_dotghostboard",
+    slug: "dotghostboard",
+    category: "python",
+    githubRepo: "kareem2099/DotGhostBoard",
+    openDesktopUrl: "https://www.opendesktop.org/p/2353623/",
+    hasLicense: false,
+    price: 0,
+    order: 10,
+    translations: {
+      en: {
+        title: "DotGhostBoard",
+        description: "Advanced cryptographic & privacy-first clipboard manager for Linux with hardware-level secure wiping",
+      },
+      ar: {
+        title: "DotGhostBoard",
+        description: "مدير حافظة متطور ومشفّر لنظام لينكس يركز على الخصوصية مع مسح آمن للبيانات الحساسة",
+      },
+      fr: {
+        title: "DotGhostBoard",
+        description: "Gestionnaire de presse-papiers cryptographique et respectueux de la vie privée pour Linux",
+      },
+      ru: {
+        title: "DotGhostBoard",
+        description: "Продвинутый криптографический менеджер буфера обмена для Linux с защитой конфиденциальности",
+      },
+      de: {
+        title: "DotGhostBoard",
+        description: "Fortschrittlicher kryptografischer und datenschutzorientierter Zwischenablage-Manager für Linux",
+      },
     },
   },
 ];

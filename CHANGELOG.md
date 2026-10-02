@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] — 2026-10-02 — "Desktop Ecosystem, OpenDesktop Integration & Platform Modernization"
+
+### Added
+- **DotGhostBoard v2.1.0 Integration (`prod_dotghostboard`)**:
+  - Welcomed **DotGhostBoard** (Leviathan release) into the central DotSuite product catalog (`src/config/products.ts`) under the Python / Linux Utilities category.
+  - Complete 5-language localization (`en`, `ar`, `fr`, `de`, `ru`) with localized title and high-impact descriptions highlighting hardware-level secure wiping, cryptographic clipboard management, and zero-telemetry architecture.
+  - Live GitHub sync with `kareem2099/DotGhostBoard` for automatic release detection, star counts, and live README/Changelog rendering.
+  - Direct integration with the OpenDesktop / Pling Store via `https://www.opendesktop.org/p/2353623/`.
+- **OpenDesktop & Pling Store Deep-Linking**:
+  - Extended `IProduct` interface with `openDesktopUrl?: string`.
+  - Added direct OpenDesktop store links for both Linux desktop applications:
+    - **DotGhostBoard**: `https://www.opendesktop.org/p/2353623/`
+    - **DotScramble**: `https://www.opendesktop.org/p/2362477/`
+  - Updated `ProductClient.tsx` to render a styled "View on OpenDesktop" store badge button linking directly to Pling / OpenDesktop.
+- **DotAegis Cloud AI Service Integration (`prod_dotaegis`)**:
+  - Extended `IProduct` interface with `serviceUrl?: string` linking to `https://aegis.dotsuite.dev/`.
+  - Added dynamic "Launch Service" (⚡) action button on the DotAegis product page with direct external routing.
+  - Added `ProductDetail.viewLiveService` localized strings across all 5 language dictionaries (`messages/{en,ar,fr,de,ru}.json`).
+- **Comprehensive Package Modernization (`npm outdated`)**:
+  - Upgraded project dependencies across the board to their latest stable releases:
+    - Next.js `16.2.3` & Next-Auth `4.24.14`
+    - React & React-DOM `19.2.5`
+    - Tailwind CSS `@tailwindcss/postcss` & `tailwindcss` `4.2.0`
+    - TypeScript `5.9.3` & ESLint `9.39.5`
+    - Mongoose `9.2.1`
+    - AWS SDK `@aws-sdk/client-s3` `3.1038.0`
+    - React Hook Form `7.74.0` & `@hookform/resolvers` `5.2.2`
+    - Lucide React `1.14.0`
+    - Zod `4.3.6`
+    - Nodemailer `10.0.10`
+    - Date-fns `4.1.0`
+
+### Changed
+- **Full Codebase Strict ESLint Remediation (`npm run lint` across 51+ files)**:
+  - Fixed unescaped JSX entities (`&quot;`, `&apos;`, etc.) throughout all dashboard and authentication views.
+  - Eliminated dead variables, unused parameters, and lingering console statements across dashboard routes (`admin`, `refunds`, `dotaegis`, `dotscramble`, `dotshare`, `keys`, `profile`, `reviews`), authentication pages (`login`, `register`, `verify-email`, `resend-verification`, `forgot-password`, `reset-password`, `oauth`), and core components.
+  - Wrapped client router state transitions with React 19 `startTransition` to eliminate blocking UI updates and satisfy React Concurrent Mode guidelines.
+  - Refined strict TypeScript types in NextAuth callbacks and Mongoose models (`src/models/User.ts`, `src/types/next-auth.d.ts`).
+- **Upgraded Version References**:
+  - Bumped project version to `1.6.0` across `package.json`, `README.md`, and `CHANGELOG.md`.
+
+### Fixed
+- **Missing Navigation Language Key**:
+  - Added missing `Navigation.language` translation key in all 5 locale message dictionaries (`messages/{en,ar,fr,de,ru}.json`), resolving `next-intl` console errors during locale changes.
+- **MarkdownRenderer Raw Event Handler Collision**:
+  - Patched `src/components/MarkdownRenderer.tsx` image tag component by destructuring `{ src, alt, onError: _discardOnError, ...props }`, preventing raw HTML `onerror="..."` strings in upstream GitHub READMEs from conflicting with React's native event listener.
+
+---
+
+
 ## [1.5.0] — 2026-09-26 — "Advanced SEO Engine & Decoupled SSR Infrastructure"
 
 ### Added

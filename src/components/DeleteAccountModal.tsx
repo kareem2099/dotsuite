@@ -24,12 +24,20 @@ export default function DeleteAccountModal({ isOpen, onClose }: Props) {
   const isMatch = input === userEmail;
   const isReady = isMatch && (isOAuthUser || password.length > 0);
 
-  useEffect(() => {
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
       setInput("");
       setPassword("");
       setError("");
-      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 

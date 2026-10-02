@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 
 // ── Ban Check ─────────────────────────────────────────────────────────────────
 //
@@ -11,8 +10,8 @@ import { headers } from "next/headers";
 // On any network error → fail-open (never block legitimate users due to infra issues).
 
 async function checkBanStatus(userId: string): Promise<boolean> {
-  const coreUrl  = process.env.CORE_API_URL;
-  const secret   = process.env.INTERNAL_SECRET;
+  const coreUrl = process.env.CORE_API_URL;
+  const secret = process.env.INTERNAL_SECRET;
 
   if (!coreUrl || !secret || !userId) return false;
 

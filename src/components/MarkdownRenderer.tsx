@@ -528,7 +528,7 @@ export default function MarkdownRenderer({
               },
 
               // Custom Images (Badge support, resolve relative GitHub images)
-              img({ src, alt, ...props }) {
+              img({ src, alt, onError: _discardOnError, ...props }) {
                 const srcStr = typeof src === "string" ? src : "";
                 const resolvedSrc = resolveGitHubUrl(srcStr, githubRepo, branch, true);
                 const isBadge =

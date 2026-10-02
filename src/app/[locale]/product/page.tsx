@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import ProductCardSkeleton from "@/components/skeletons/ProductCardSkeleton";
 import useDebounce from "@/hooks/useDebounce";
@@ -39,17 +38,14 @@ export default function ProductsPage() {
   // Use debounce hook
   const debouncedSearch = useDebounce(search, 500);
 
-  // Track the current "intent" page — resets to 1 when filters change
-  const pageRef = useRef(page);
-  pageRef.current = page;
 
-  // Single unified effect — fixes race condition by:
-  // 1. Resetting page to 1 when filters change (instead of a separate effect)
-  // 2. Using AbortController to cancel stale in-flight requests
-  useEffect(() => {
-    // When search or category changes, always start from page 1
+
+  const [prevFilters, setPrevFilters] = useState({ search: debouncedSearch, category });
+  if (debouncedSearch !== prevFilters.search || category !== prevFilters.category) {
+    setPrevFilters({ search: debouncedSearch, category });
     setPage(1);
-  }, [debouncedSearch, category]); // eslint-disable-line react-hooks/exhaustive-deps
+    setLoading(true);
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -60,9 +56,6 @@ export default function ProductsPage() {
       if (debouncedSearch) qs.set("search", debouncedSearch);
       qs.set("page", page.toString());
       qs.set("limit", "6");
-
-      if (page === 1) setLoading(true);
-      else setLoadingMore(true);
 
       try {
         const res = await fetch(`/api/products?${qs}`, { signal: controller.signal });
@@ -174,7 +167,10 @@ export default function ProductsPage() {
         {!loading && products.length > 0 && page < totalPages && (
           <div className="mt-12 text-center">
             <button
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => {
+                setLoadingMore(true);
+                setPage((p) => p + 1);
+              }}
               disabled={loadingMore}
               className="px-8 py-3 bg-(--card-bg) border border-(--card-border) text-(--foreground) font-medium rounded-lg hover:border-(--primary) hover:text-(--primary) transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
             >

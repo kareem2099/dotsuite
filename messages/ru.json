@@ -18,7 +18,8 @@
     "enterSearchTerm": "Введите поисковый запрос, чтобы найти продукты.",
     "tryDifferentKeywords": "Попробуйте использовать другие ключевые слова или проверьте опечатки.",
     "browseAllProducts": "Просмотреть все продукты",
-    "search": "Поиск"
+    "search": "Поиск",
+    "language": "Язык"
   },
   "Product": {
     "title": "Наши продукты",
@@ -76,7 +77,8 @@
     "downloads": "загрузок",
     "version": "Версия",
     "productNotFound": "Продукт не найден.",
-    "relatedProducts": "Похожие продукты"
+    "relatedProducts": "Похожие продукты",
+    "viewLiveService": "Открыть сервис"
   },
   "Home": {
     "title": "Создавайте лучше с",
@@ -415,6 +417,49 @@
     "noReviewsYet": "Пока нет отзывов",
     "noReviewsDesc": "Вы еще не написали ни одного отзыва. Просмотрите наши инструменты и поделитесь своим мнением!",
     "backToDashboard": "Вернуться на панель"
+  },
+  "AdminRefunds": {
+    "title": "Оповещения о возвратах",
+    "subtitle": "Мониторинг возвратов пользователей и выявление потенциального мошенничества.",
+    "loading": "Загрузка…",
+    "noAlerts": "Оповещений о возвратах не найдено.",
+    "colDate": "Дата",
+    "colUserEmail": "Email пользователя",
+    "colAmount": "Сумма",
+    "colSeverity": "Уровень важности",
+    "colReason": "Причина",
+    "colOrderId": "ID заказа",
+    "prev": "← Назад",
+    "next": "Далее →",
+    "page": "Страница {page}"
+  },
+  "DotShareDashboard": {
+    "backToDashboard": "Вернуться на панель",
+    "title": "DotShare",
+    "subtitle": "Планирование и публикация в 9 социальных сетях",
+    "subCancelled": "Ваша подписка отменена. Доступ сохраняется до {date}.",
+    "reactivate": "Возобновить",
+    "planTitle": "DotShare — тариф {tier}",
+    "cancelsOn": "Заканчивается {date}",
+    "activeSubscription": "✅ Активная подписка",
+    "freePlanDesc": "Бесплатный тариф — перейдите на платный для расширения возможностей",
+    "manageBilling": "Управление подпиской",
+    "opening": "Открытие…",
+    "changePlan": "Сменить тариф",
+    "upgrade": "Обновить",
+    "postsQuota": "Постов в этом месяце",
+    "imagesQuota": "Постов с изображениями в этом месяце",
+    "billingError": "Не удалось загрузить статус подписки. Запущен ли сервер Rust?",
+    "apiKeysTitle": "Ключи API",
+    "manageKeys": "Управление ключами →",
+    "apiKeysDesc": "Используйте ключ API для подключения расширения DotShare в VS Code. Создавайте и управляйте ключами на панели.",
+    "recentPostsTitle": "Недавние посты",
+    "viewAll": "Смотреть все →",
+    "noPosts": "Пока нет постов.",
+    "noPostsDesc": "Установите расширение DotShare для VS Code, чтобы начать планирование публикаций.",
+    "cancel": "Отмена",
+    "confirmCancelPost": "Отменить этот запланированный пост?",
+    "billingPortalError": "Не удалось открыть портал управления подпиской"
   },
   "DashboardKeys": {
     "title": "API Ключи",

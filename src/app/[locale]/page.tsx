@@ -397,13 +397,13 @@ export default async function HomePage({ params }: Props) {
             </div>
 
             <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map((idx) => (
+              {([1, 2, 3, 4, 5] as const).map((idx) => (
                 <details
                   key={idx}
                   className="group bg-(--background) border border-(--card-border) rounded-xl p-6 transition-all duration-200 open:border-(--primary)/50 open:shadow-sm"
                 >
                   <summary className="flex items-center justify-between cursor-pointer list-none font-semibold text-lg text-(--foreground) hover:text-(--primary) transition-colors">
-                    <span>{t(`faqQ${idx}` as any)}</span>
+                    <span>{t(`faqQ${idx}` as `faqQ${typeof idx}`)}</span>
                     <span className="ml-4 flex-shrink-0 text-(--primary) transition-transform duration-200 group-open:rotate-180">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -411,7 +411,7 @@ export default async function HomePage({ params }: Props) {
                     </span>
                   </summary>
                   <p className="mt-4 text-(--text-muted) leading-relaxed text-sm md:text-base border-t border-(--card-border)/60 pt-4">
-                    {t(`faqA${idx}` as any)}
+                    {t(`faqA${idx}` as `faqA${typeof idx}`)}
                   </p>
                 </details>
               ))}

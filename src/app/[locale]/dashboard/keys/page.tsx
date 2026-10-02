@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 import { useTranslations } from "next-intl";
 import {
   Key,
@@ -122,10 +122,6 @@ export default function ApiKeysPage() {
   const [editLabelValue, setEditLabelValue] = useState("");
   const [isSavingRename, setIsSavingRename] = useState(false);
 
-  useEffect(() => {
-    fetchKeys();
-  }, []);
-
   const fetchKeys = async () => {
     try {
       const res = await fetch("/api/keys");
@@ -139,6 +135,12 @@ export default function ApiKeysPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    startTransition(() => {
+      fetchKeys();
+    });
+  }, []);
 
   const handleGenerateKey = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -266,13 +268,15 @@ export default function ApiKeysPage() {
     return "bg-muted text-muted-foreground border-border";
   };
 
+  const [now] = useState(() => Date.now());
+
   const isExpired = (expiresAt?: string | null) => {
     if (!expiresAt) return false;
-    return new Date(expiresAt).getTime() < Date.now();
+    return new Date(expiresAt).getTime() < now;
   };
 
   const formatDaysRemaining = (expiresAt: string) => {
-    const diff = new Date(expiresAt).getTime() - Date.now();
+    const diff = new Date(expiresAt).getTime() - now;
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
     return days > 0 ? days : 0;
   };

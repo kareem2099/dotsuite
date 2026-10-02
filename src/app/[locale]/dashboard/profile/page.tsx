@@ -79,7 +79,7 @@ export default function Profile() {
         ...session,
         user: { ...session?.user, name: form.displayName },
       });
-    } catch (err) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setIsSaving(false);
@@ -124,7 +124,7 @@ export default function Profile() {
         ...session,
         user: { ...session?.user, image: data.imageUrl },
       });
-    } catch (error) {
+    } catch {
       toast.error("An error occurred during upload");
     } finally {
       setIsUploadingAvatar(false);

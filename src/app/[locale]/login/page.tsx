@@ -81,7 +81,7 @@ export default function Login() {
         router.push(`/${locale}/dashboard`);
         router.refresh();
       }
-    } catch (err) {
+    } catch {
       toast.error(t("unexpectedError"));
     } finally {
       setIsLoading(false);

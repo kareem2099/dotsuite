@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, startTransition } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
@@ -14,6 +14,8 @@ interface ProductData {
     _id: string;
     slug: string;
     extensionId?: string;
+    openDesktopUrl?: string;
+    serviceUrl?: string;
     category: string;
     githubRepo: string;
     hasLicense: boolean;
@@ -57,7 +59,7 @@ interface ProductClientProps {
   slug: string;
 }
 
-export default function ProductClient({ initialData, locale, slug }: ProductClientProps) {
+export default function ProductClient({ initialData, locale }: ProductClientProps) {
   const t = useTranslations("ProductDetail");
   const tProduct = useTranslations("Product");
   const { data: session } = useSession();
@@ -95,7 +97,9 @@ export default function ProductClient({ initialData, locale, slug }: ProductClie
 
   useEffect(() => {
     if (data?.product?._id) {
-      fetchReviews(data.product._id);
+      startTransition(() => {
+        fetchReviews(data.product._id);
+      });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.product?._id]);
@@ -275,9 +279,9 @@ export default function ProductClient({ initialData, locale, slug }: ProductClie
                 </>
               )}
 
-              {product.category === "python" && (
+              {product.openDesktopUrl && (
                 <a
-                  href="https://www.opendesktop.org/"
+                  href={product.openDesktopUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
@@ -286,6 +290,20 @@ export default function ProductClient({ initialData, locale, slug }: ProductClie
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
                   {t("viewOnOpenDesktop")}
+                </a>
+              )}
+
+              {product.serviceUrl && (
+                <a
+                  href={product.serviceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-(--primary) text-(--primary-text) font-semibold rounded-lg hover:bg-(--primary-hover) transition-colors text-sm"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  {t("viewLiveService")}
                 </a>
               )}
 

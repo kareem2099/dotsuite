@@ -95,9 +95,9 @@ export async function POST(req: Request) {
       await review.populate("userId", "name image");
       return NextResponse.json({ review }, { status: 201 });
 
-    } catch (error: any) {
+    } catch (error) {
       // ✅ Handle duplicate review
-      if (error.code === 11000) {
+      if (typeof error === "object" && error !== null && "code" in error && (error as { code: number }).code === 11000) {
         return NextResponse.json(
           { error: "You have already reviewed this product" },
           { status: 400 }

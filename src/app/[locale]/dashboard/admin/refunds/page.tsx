@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, startTransition } from "react";
 import { useTranslations } from "next-intl";
 
 const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "")
@@ -43,10 +43,9 @@ function AlertBadge({ level }: { level: string }) {
 export default function AdminRefundsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const t = useTranslations("Dashboard");
-
+  const t = useTranslations("AdminRefunds");
   const [alerts, setAlerts] = useState<RefundAlert[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
   const isAdmin = ADMIN_EMAILS.includes(session?.user?.email ?? "");
@@ -73,7 +72,9 @@ export default function AdminRefundsPage() {
 
   useEffect(() => {
     if (!isAdmin) return;
-    fetchAlerts(page);
+    startTransition(() => {
+      fetchAlerts(page);
+    });
   }, [page, isAdmin, fetchAlerts]);
 
   if (status === "loading" || !isAdmin) return null;
@@ -84,32 +85,32 @@ export default function AdminRefundsPage() {
       <div style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "1.5rem 2rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
         <span style={{ fontSize: "1.25rem" }}>💸</span>
         <div>
-          <h1 style={{ margin: 0, fontSize: "1.125rem", fontWeight: 700 }}>Refund Alerts</h1>
-          <p style={{ margin: 0, color: "#6b7280", fontSize: "0.8125rem" }}>Monitor user refunds and detect potential fraud patterns.</p>
+          <h1 style={{ margin: 0, fontSize: "1.125rem", fontWeight: 700 }}>{t("title")}</h1>
+          <p style={{ margin: 0, color: "#6b7280", fontSize: "0.8125rem" }}>{t("subtitle")}</p>
         </div>
       </div>
 
       {/* Content */}
       <div style={{ padding: "1.5rem 2rem" }}>
         {loading && (
-          <div style={{ textAlign: "center", padding: "3rem", color: "#4b5563" }}>Loading…</div>
+          <div style={{ textAlign: "center", padding: "3rem", color: "#4b5563" }}>{t("loading")}</div>
         )}
 
         {/* Alerts Table */}
         {!loading && (
           <div style={{ overflowX: "auto" }}>
             {alerts.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "3rem", color: "#4b5563" }}>No refund alerts found.</div>
+              <div style={{ textAlign: "center", padding: "3rem", color: "#4b5563" }}>{t("noAlerts")}</div>
             ) : (
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8125rem" }}>
                 <thead>
                   <tr style={{ color: "#6b7280", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>Date</th>
-                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>User Email</th>
-                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>Amount</th>
-                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>Severity</th>
-                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>Reason</th>
-                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>Order ID</th>
+                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>{t("colDate")}</th>
+                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>{t("colUserEmail")}</th>
+                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>{t("colAmount")}</th>
+                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>{t("colSeverity")}</th>
+                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>{t("colReason")}</th>
+                    <th style={{ textAlign: "left", padding: "0.625rem 0.75rem", fontWeight: 600 }}>{t("colOrderId")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -162,10 +163,10 @@ export default function AdminRefundsPage() {
                 fontSize: "0.8125rem",
               }}
             >
-              ← Prev
+              {t("prev")}
             </button>
             <span style={{ color: "#6b7280", fontSize: "0.8125rem", display: "flex", alignItems: "center", padding: "0 0.5rem" }}>
-              Page {page}
+              {t("page", { page })}
             </span>
             <button
               onClick={() => setPage((p) => p + 1)}
@@ -179,7 +180,7 @@ export default function AdminRefundsPage() {
                 fontSize: "0.8125rem",
               }}
             >
-              Next →
+              {t("next")}
             </button>
           </div>
         )}

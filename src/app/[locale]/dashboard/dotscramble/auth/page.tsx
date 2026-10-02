@@ -1,26 +1,29 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
 export default function DotScrambleDesktopAuth() {
   const params = useParams();
+  const router = useRouter();
   const locale = (params.locale as string) || "en";
   const searchParams = useSearchParams();
   
   const port = searchParams.get("port");
   const state = searchParams.get("state");
+  const isMissingParams = !port || !state;
 
-  const [status, setStatus] = useState<"loading" | "error" | "success" | "upgrade_required">("loading");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [status, setStatus] = useState<"loading" | "error" | "success" | "upgrade_required">(
+    isMissingParams ? "error" : "loading"
+  );
+  const [errorMsg, setErrorMsg] = useState(
+    isMissingParams ? "Missing required parameters from desktop app." : ""
+  );
   const didRun = useRef(false);
 
   useEffect(() => {
-    if (!port || !state) {
-      setStatus("error");
-      setErrorMsg("Missing required parameters from desktop app.");
+    if (isMissingParams) {
       return;
     }
     // Guard: only run once even if deps change (e.g. locale hydrates after mount)
@@ -34,7 +37,7 @@ export default function DotScrambleDesktopAuth() {
         const sessionData = await sessionRes.json();
         if (!sessionData?.user) {
           const callbackUrl = encodeURIComponent(window.location.href);
-          window.location.href = `/${locale}/login?callbackUrl=${callbackUrl}`;
+          router.push(`/${locale}/login?callbackUrl=${callbackUrl}`);
           return;
         }
 
@@ -89,9 +92,9 @@ export default function DotScrambleDesktopAuth() {
         } else {
           throw new Error("Local app is not responding. Please make sure DotScramble is still open.");
         }
-      } catch (err: any) {
+      } catch (err) {
         setStatus("error");
-        setErrorMsg(err.message || "An unexpected error occurred.");
+        setErrorMsg(err instanceof Error ? err.message : "An unexpected error occurred.");
       }
     };
 

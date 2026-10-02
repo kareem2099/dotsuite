@@ -3,11 +3,6 @@ import { products as staticProducts } from "@/config/products";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 
-// function to escape special characters in search query for regex ddos protection
-function escapeRegExp(string: string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
 // zod schema for validating query parameters for fetching products
 const querySchema = z.object({
   category: z.string().optional().default("all"),

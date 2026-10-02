@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
 import { CATEGORY_ICONS } from "@/components/TagFilter";
 
 interface SearchResultProps {
@@ -19,7 +18,6 @@ export default function SearchResult({ product, query, locale }: SearchResultPro
   const router = useRouter();
   const title = product.translations[locale]?.title || product.translations.en?.title || "";
   const description = product.translations[locale]?.description || product.translations.en?.description || "";
-  const tProduct = useTranslations("Product");
 
   const highlightText = (text: string, highlight: string) => {
     if (!highlight.trim()) return text;

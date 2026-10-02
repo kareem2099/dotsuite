@@ -20,9 +20,6 @@ export async function GET() {
     // Get total downloads (sum from all products - you can add this field to Product model)
     // For now, we'll calculate based on GitHub API data
     
-    // Get products for detailed stats
-    const products = staticProducts;
-    
     // Calculate total downloads from products (if you add downloadCount field)
     // For now, we'll return mock data structure that you can expand
     

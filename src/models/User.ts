@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, CallbackError } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 

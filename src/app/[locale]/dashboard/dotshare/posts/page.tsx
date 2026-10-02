@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, startTransition } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import PlatformBadge from "@/components/dotshare/PlatformBadge";
@@ -57,11 +57,9 @@ export default function PostsPage() {
   }, [page, statusFilter]);
 
   useEffect(() => {
-    setPage(1);
-  }, [statusFilter]);
-
-  useEffect(() => {
-    fetchPosts();
+    startTransition(() => {
+      fetchPosts();
+    });
   }, [fetchPosts]);
 
   const handleCancel = async (postId: string) => {
@@ -100,7 +98,10 @@ export default function PostsPage() {
           {STATUS_FILTERS.map((f) => (
             <button
               key={f.value}
-              onClick={() => setStatusFilter(f.value)}
+              onClick={() => {
+                setStatusFilter(f.value);
+                setPage(1);
+              }}
               className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                 statusFilter === f.value
                   ? "bg-(--primary) text-(--primary-text) border-(--primary)"

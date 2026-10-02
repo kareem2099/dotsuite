@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, startTransition } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import ReviewsDashboardSkeleton from "@/components/skeletons/ReviewsDashboardSkeleton";
@@ -51,13 +51,15 @@ export default function MyReviewsPage() {
     } finally {
       setLoading(false);
     }
-  }, [tCommon]);
+  }, [tCommon, toast]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push(`/${locale}/login`);
     } else if (status === "authenticated") {
-      fetchReviews();
+      startTransition(() => {
+        fetchReviews();
+      });
     }
   }, [status, router, locale, fetchReviews]);
 

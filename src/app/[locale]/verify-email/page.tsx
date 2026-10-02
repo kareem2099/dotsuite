@@ -12,15 +12,13 @@ function VerifyEmailContent() {
   const locale = (params.locale as string) || "en";
   const token = searchParams.get("token");
 
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
-  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"loading" | "success" | "error">(() =>
+    !token ? "error" : "loading"
+  );
+  const [message, setMessage] = useState(() => (!token ? t("invalidToken") : ""));
 
   useEffect(() => {
-    if (!token) {
-      setStatus("error");
-      setMessage(t("invalidToken"));
-      return;
-    }
+    if (!token) return;
 
     const verifyEmail = async () => {
       try {

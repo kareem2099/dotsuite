@@ -1,19 +1,20 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Key, ShieldCheck, ExternalLink, Loader2, XCircle } from "lucide-react";
+import { Key, ShieldCheck, ExternalLink, Loader2, XCircle, Check } from "lucide-react";
 import UserAvatar from "@/components/UserAvatar";
 
 export default function ExtensionOAuthPage() {
   const t = useTranslations("OAuth");
   const { data: session, status } = useSession();
   const router = useRouter();
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
   const searchParams = useSearchParams();
   
-  const product = searchParams.get("product") || "dotshare";
   const scheme = searchParams.get("scheme") || "vscode";
   const callbackUrl = searchParams.get("callbackUrl") || `${scheme}://freerave.dotshare/auth`;
   
@@ -24,9 +25,9 @@ export default function ExtensionOAuthPage() {
     if (status === "unauthenticated") {
       // Redirect to login, then back to this oauth page
       const currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
-      router.push(`/en/login?callbackUrl=${currentUrl}`);
+      router.push(`/${locale}/login?callbackUrl=${currentUrl}`);
     }
-  }, [status, router]);
+  }, [status, router, locale]);
 
   const handleAuthorize = async () => {
     setIsAuthorizing(true);
@@ -51,16 +52,18 @@ export default function ExtensionOAuthPage() {
       // 2. Redirect back to VS Code
       // Expected format: vscode://kareem2099.dotshare/auth?token=ds_prod_xxx
       const targetUrl = `${callbackUrl}?token=${encodeURIComponent(token)}`;
+      // Deep link to desktop application
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = targetUrl;
       
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate access token");
       setIsAuthorizing(false);
     }
   };
 
   const handleCancel = () => {
-    router.push("/en/dashboard");
+    router.push(`/${locale}/dashboard`);
   };
 
   if (status === "loading") {
@@ -155,11 +158,4 @@ export default function ExtensionOAuthPage() {
   );
 }
 
-// Temporary Check icon component until lucide is fully imported above
-function Check(props: any) {
-  return (
-    <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
+

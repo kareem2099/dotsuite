@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, startTransition } from "react";
 
 // ── Platform Definitions ───────────────────────────────────────────────────────
 
@@ -283,7 +283,9 @@ export default function ConnectedAccounts() {
   }, []);
 
   useEffect(() => {
-    fetchConnections();
+    startTransition(() => {
+      fetchConnections();
+    });
     // Auto-refresh every 30s so the page reflects changes made in the extension
     const interval = setInterval(() => fetchConnections(true), 30_000);
     return () => clearInterval(interval);

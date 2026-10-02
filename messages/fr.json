@@ -18,7 +18,8 @@
     "enterSearchTerm": "Entrez un terme de recherche pour trouver des produits.",
     "tryDifferentKeywords": "Essayez d'utiliser d'autres mots-clés ou vérifiez l'orthographe.",
     "browseAllProducts": "Parcourir tous les produits",
-    "search": "Recherche"
+    "search": "Recherche",
+    "language": "Langue"
   },
   "Product": {
     "title": "Nos produits",
@@ -76,7 +77,8 @@
     "downloads": "téléchargements",
     "version": "Version",
     "productNotFound": "Produit non trouvé.",
-    "relatedProducts": "Produits similaires"
+    "relatedProducts": "Produits similaires",
+    "viewLiveService": "Lancer le service"
   },
   "Home": {
     "title": "Construisez mieux avec",
@@ -415,6 +417,49 @@
     "noReviewsYet": "Pas encore d'avis",
     "noReviewsDesc": "Vous n'avez pas encore rédigé d'avis. Parcourez les produits et partagez votre opinion !",
     "backToDashboard": "Retour au tableau de bord"
+  },
+  "AdminRefunds": {
+    "title": "Alertes de Remboursement",
+    "subtitle": "Surveillez les remboursements des utilisateurs et détectez les fraudes potentielles.",
+    "loading": "Chargement…",
+    "noAlerts": "Aucune alerte de remboursement trouvée.",
+    "colDate": "Date",
+    "colUserEmail": "E-mail de l'utilisateur",
+    "colAmount": "Montant",
+    "colSeverity": "Gravité",
+    "colReason": "Motif",
+    "colOrderId": "ID de commande",
+    "prev": "← Préc",
+    "next": "Suiv →",
+    "page": "Page {page}"
+  },
+  "DotShareDashboard": {
+    "backToDashboard": "Retour au tableau de bord",
+    "title": "DotShare",
+    "subtitle": "Planifiez et publiez sur 9 plateformes",
+    "subCancelled": "Votre abonnement est annulé. L'accès se poursuit jusqu'au {date}.",
+    "reactivate": "Réactiver",
+    "planTitle": "DotShare — Forfait {tier}",
+    "cancelsOn": "Prend fin le {date}",
+    "activeSubscription": "✅ Abonnement actif",
+    "freePlanDesc": "Forfait gratuit — passez à la vitesse supérieure",
+    "manageBilling": "Gérer la facturation",
+    "opening": "Ouverture…",
+    "changePlan": "Changer de forfait",
+    "upgrade": "Mettre à niveau",
+    "postsQuota": "Publications ce mois-ci",
+    "imagesQuota": "Publications d'images ce mois-ci",
+    "billingError": "Impossible de charger le statut de facturation. Le serveur Rust fonctionne-t-il ?",
+    "apiKeysTitle": "Clés API",
+    "manageKeys": "Gérer les clés →",
+    "apiKeysDesc": "Utilisez votre clé API pour connecter l'extension VS Code DotShare. Générez et gérez vos clés depuis le tableau de bord.",
+    "recentPostsTitle": "Publications récentes",
+    "viewAll": "Tout voir →",
+    "noPosts": "Aucune publication pour l'instant.",
+    "noPostsDesc": "Installez l'extension VS Code DotShare pour commencer la planification.",
+    "cancel": "Annuler",
+    "confirmCancelPost": "Annuler cette publication planifiée ?",
+    "billingPortalError": "Échec de l'ouverture du portail de facturation"
   },
   "DashboardKeys": {
     "title": "Clés API",

@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { MessageSquareOff, Star, ArrowUpDown } from "lucide-react";
 import ReviewCard from "./ReviewCard";
 import ReviewForm from "./ReviewForm";
-import StarRating from "./StarRating";
 import { useTranslations } from "next-intl";
 import { useConfirm } from "@/components/ConfirmModal";
 
