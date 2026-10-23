@@ -1,5 +1,5 @@
 import AuditLog from "@/models/AuditLog";
-import mongoose from "mongoose";
+import { validId } from "@/lib/postgres";
 
 export interface AuditLogData {
   userId?: string;
@@ -21,7 +21,7 @@ export async function logAudit(data: AuditLogData): Promise<void> {
     // OAuth sessions may temporarily carry a provider ID (e.g. Google numeric ID)
     // before the JWT callback overwrites it with the real MongoDB _id.
     const safeUserId =
-      data.userId && mongoose.Types.ObjectId.isValid(data.userId)
+      data.userId && validId(data.userId)
         ? data.userId
         : undefined;
 

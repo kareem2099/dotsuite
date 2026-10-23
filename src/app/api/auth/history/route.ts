@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import AuditLog from "@/models/AuditLog";
 
 export async function GET() {
@@ -21,8 +21,7 @@ export async function GET() {
     const logs = await AuditLog.find({ userId: session.user.id })
       .sort({ createdAt: -1 })
       .limit(50)
-      .select("-__v")
-      .lean();
+      .select("-__v");
 
     return NextResponse.json({ logs });
   } catch (error) {

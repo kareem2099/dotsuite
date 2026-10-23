@@ -1,19 +1,14 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-export interface IContact extends Document {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  createdAt: Date;
+import { RecordBase } from "@/lib/records";
+export default class Contact extends RecordBase {
+  static collection = "contacts";
+  declare name: string;
+  declare email: string;
+  declare subject: string;
+  declare message: string;
+  protected async beforeSave() {
+    for (const field of ["name", "email", "subject", "message"] as const) {
+      this[field] = this[field]?.trim(); if (!this[field]) throw new Error("Contact fields are required");
+    }
+    this.email = this.email.toLowerCase();
+  }
 }
-
-const ContactSchema = new Schema<IContact>({
-  name: { type: String, required: true, trim: true },
-  email: { type: String, required: true, trim: true, lowercase: true },
-  subject: { type: String, required: true, trim: true },
-  message: { type: String, required: true, trim: true },
-}, { timestamps: true });
-
-export default mongoose.models.Contact ||
-  mongoose.model<IContact>("Contact", ContactSchema);

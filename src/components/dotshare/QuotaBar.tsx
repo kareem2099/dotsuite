@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { formatQuota, UNLIMITED_QUOTA } from "@/lib/rust-api";
+import { formatQuota, UNLIMITED_QUOTA } from "@/lib/billing-display";
 
 interface QuotaBarProps {
   used: number;

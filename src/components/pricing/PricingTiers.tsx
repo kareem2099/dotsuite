@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Check, X, Sparkles, Zap, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
@@ -27,6 +27,7 @@ const DEFAULT_PRICING: PricingTierItem[] = [
 
 export default function PricingTiers({ onUpgrade, upgradingTier, currentTier }: PricingTiersProps = {}) {
   const t = useTranslations("Pricing");
+  const locale = useLocale();
   const [cycle, setCycle] = useState<"monthly" | "annually">("monthly");
   const [pricingData, setPricingData] = useState<PricingTierItem[] | null>(null);
 
@@ -253,7 +254,7 @@ export default function PricingTiers({ onUpgrade, upgradingTier, currentTier }: 
                 </button>
               ) : (
                 <Link
-                  href={tier.href}
+                  href={`/${locale}${tier.href}`}
                   className={`block w-full py-4 px-6 rounded-2xl font-bold transition-all duration-300 text-center ${tier.buttonStyle}`}
                 >
                   {tier.buttonText}

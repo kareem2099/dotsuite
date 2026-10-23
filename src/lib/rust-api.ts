@@ -1,3 +1,5 @@
+import "server-only";
+
 /**
  * Shared helper for making server-to-server calls to the Rust core API.
  * Uses the internal route (X-Internal-Secret) — no Bearer token needed.
@@ -15,8 +17,7 @@ const INTERNAL_SECRET: string = (() => {
   return val;
 })();
 
-/** Numeric quota returned by Rust for "unlimited" tiers */
-export const UNLIMITED_QUOTA = 4294967295; // u32::MAX
+export { UNLIMITED_QUOTA, formatQuota, TIER_CONFIG } from "./billing-display";
 
 /** Call the Rust internal API on behalf of a user */
 export async function rustInternal(
@@ -31,7 +32,7 @@ export async function rustInternal(
   };
   if (userId) headers["X-User-Id"] = userId;
 
-  return fetch(`${CORE_API_URL}${path}`, { ...options, headers });
+  return fetch(`${CORE_API_URL}${path}`, { ...options, cache: "no-store", headers });
 }
 
 /** Get active API keys for a user */
@@ -48,11 +49,6 @@ export async function rustProxy(
   userId?: string
 ): Promise<Response> {
   return rustInternal(path, options, userId);
-}
-
-/** Convert u32::MAX quota to display string */
-export function formatQuota(quota: number): string {
-  return quota >= UNLIMITED_QUOTA ? "∞" : quota.toLocaleString();
 }
 
 /** Parse error message from Rust backend response JSON or text */
@@ -75,10 +71,3 @@ export function parseRustError(errorText: string, fallback: string): string {
 
   return fallback;
 }
-
-/** Tier display config */
-export const TIER_CONFIG = {
-  free:  { label: "Free",  color: "gray",   posts: 100,          images: 10           },
-  pro:   { label: "Pro",   color: "purple", posts: UNLIMITED_QUOTA, images: UNLIMITED_QUOTA },
-  max:   { label: "Max",   color: "gold",   posts: UNLIMITED_QUOTA, images: UNLIMITED_QUOTA },
-} as const;

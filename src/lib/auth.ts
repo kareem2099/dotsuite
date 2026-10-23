@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { logAudit } from "@/lib/audit";
@@ -250,7 +250,7 @@ export const authOptions: NextAuthOptions = {
 
         // 🛡️ Session Version Validation: Invalidate JWTs after password change/reset.
         // If sessionVersion in the token doesn't match the DB, the user must re-login.
-        if (token.sub && token.sessionVersion !== undefined) {
+        if (token.sub) {
           try {
             await connectDB();
             const dbUser = await User.findById(token.sub).select("sessionVersion");
@@ -259,7 +259,8 @@ export const authOptions: NextAuthOptions = {
               return null as unknown as typeof session;
             }
           } catch {
-            // On DB error, fail safely by allowing the session to continue
+            // A database outage must not bypass account/session revocation.
+            return null as unknown as typeof session;
           }
         }
       }
@@ -283,6 +284,7 @@ export const authOptions: NextAuthOptions = {
             if (dbUser) {
               token.sub = dbUser._id.toString();
               token.id = dbUser._id.toString();
+              token.sessionVersion = dbUser.sessionVersion ?? 1;
             }
           } catch (e) {
             console.error("Error fetching db user in jwt callback", e);
