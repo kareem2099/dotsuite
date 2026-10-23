@@ -164,7 +164,7 @@ export default async function ProductDetailPage({
       worstRating: "1",
     },
     codeRepository: `https://github.com/${product.githubRepo}`,
-    license: `https://opensource.org/licenses/${product.license ?? "MIT"}`,
+    license: `https://opensource.org/licenses/${product.license ?? "Apache-2.0"}`,
     keywords: [
       translation.title,
       categoryLabels[product.category] ?? "Developer Tool",

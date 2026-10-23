@@ -13,7 +13,7 @@
 [![Database](https://img.shields.io/badge/MongoDB-Mongoose_9-22c55e?style=flat-square&logo=mongodb&labelColor=1e293b)](https://www.mongodb.com/)
 [![Linux Store](https://img.shields.io/badge/OpenDesktop-Pling_Certified-0284c7?style=flat-square&labelColor=1e293b)](https://www.opendesktop.org/)
 [![i18n](https://img.shields.io/badge/i18n-5_Languages_(RTL)-8b5cf6?style=flat-square&labelColor=1e293b)](https://www.dotsuite.dev/en)
-[![License](https://img.shields.io/badge/License-MIT-emerald?style=flat-square&labelColor=1e293b)](./LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-emerald?style=flat-square&labelColor=1e293b)](./LICENSE)
 
 <br/>
 
@@ -304,7 +304,7 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed code of conduct an
 
 ## 📄 License
 
-Distributed under the **MIT License**. See [LICENSE](./LICENSE) for more information.
+Distributed under the **Apache License 2.0**. See [LICENSE](./LICENSE) for more information.
 
 ---
 

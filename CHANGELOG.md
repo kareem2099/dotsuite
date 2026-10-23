@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- License: Apache License 2.0 for this revision and future releases; updated the license text, package metadata, translations, social images, and product metadata default. Third-party dependencies retain their own licenses. Earlier revisions retain their original license terms.
+
 ### Added
 - **DotMorph 2.0.0 (`prod_dotmorph`)**:
   - Added **DotMorph**, the radial-menu file converter for Linux, to the product catalog (`src/config/products.ts`) under the Python / Linux category.
@@ -17,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Product page at `/{locale}/product/dotmorph`, which is picked up by the sitemap and static params automatically.
 - **Per-product SEO fields on `IProduct`** (all optional):
   - `platforms?: string` sets schema.org `operatingSystem` (DotMorph: `Linux`).
-  - `license?: string` sets the SPDX license in the JSON-LD (DotMorph: `Apache-2.0`; the default stays MIT).
+  - `license?: string` sets the SPDX license in the JSON-LD (DotMorph: `Apache-2.0`; the default is Apache-2.0).
   - `keywords?: string[]` adds product keywords to the page metadata and the JSON-LD.
 
 ### Fixed

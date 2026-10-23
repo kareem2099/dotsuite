@@ -239,7 +239,7 @@ export async function GET(req: NextRequest) {
                 {[
                   { label: "13,000+ Downloads", color: COLORS.primary },
                   { label: "Open Source", color: "#818cf8" },
-                  { label: "MIT License", color: COLORS.muted },
+                  { label: "Apache 2.0", color: COLORS.muted },
                 ].map((pill) => (
                   <div
                     key={pill.label}

@@ -2,6 +2,7 @@
   "name": "dotsuite",
   "version": "1.6.0",
   "private": true,
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

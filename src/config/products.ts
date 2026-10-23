@@ -7,7 +7,7 @@ export interface IProduct {
   category: "vscode" | "python" | "nextjs";
   githubRepo: string;
   platforms?: string; // schema.org operatingSystem, e.g. "Linux" (default: all three)
-  license?: string; // SPDX id, e.g. "Apache-2.0" (default: MIT)
+  license?: string; // SPDX id, e.g. "Apache-2.0" (default: Apache-2.0)
   keywords?: string[]; // extra SEO keywords for the product page
   hasLicense: boolean;
   price: number;

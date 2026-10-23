@@ -152,7 +152,7 @@ export default async function Image() {
               { label: "9+ Tools", color: "#10b981" },
               { label: "Open Source", color: "#818cf8" },
               { label: "5 Languages", color: "#f59e0b" },
-              { label: "MIT License", color: "#a1a1aa" },
+              { label: "Apache 2.0", color: "#a1a1aa" },
             ].map((pill) => (
               <div
                 key={pill.label}
