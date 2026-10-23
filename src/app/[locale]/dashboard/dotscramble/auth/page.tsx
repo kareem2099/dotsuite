@@ -48,31 +48,17 @@ export default function DotScrambleDesktopAuth() {
         }
         const billingData = await billingRes.json();
 
-        if (billingData.tier !== "max") {
+        if (billingData.products?.dotscramble?.tier !== "max") {
           setStatus("upgrade_required");
           return;
         }
 
-        // 3. Fetch existing keys — revoke old DotScramble key and generate fresh one
-        const keysRes = await fetch("/api/keys");
-        if (!keysRes.ok) {
-          throw new Error("Failed to fetch API keys.");
-        }
-        const keysData = await keysRes.json();
-
-        const existingDsKey = Array.isArray(keysData) ? keysData.find(
-          (k: { label: string }) => k.label === "DotScramble Desktop"
-        ) : undefined;
-        if (existingDsKey) {
-          // Revoke old key so we can generate a fresh one with plaintext
-          await fetch(`/api/keys/${existingDsKey.key_prefix}`, { method: "DELETE" });
-        }
-
-        // 4. Generate a fresh key to get the plaintext
+        // Each authorization is a separate connection. Never revoke another
+        // device's key solely because its display label matches.
         const newKeyRes = await fetch("/api/keys", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ label: "DotScramble Desktop" }),
+          body: JSON.stringify({ label: `DotScramble Desktop · ${new Date().toLocaleString()}`, source: "dotscramble", scopes: ["dotscramble:verify", "account:read"] }),
         });
         const newKeyData = await newKeyRes.json();
         if (!newKeyData.plaintext_key) {
@@ -142,7 +128,7 @@ export default function DotScrambleDesktopAuth() {
             </div>
             <p className="text-lg font-medium">Upgrade Required</p>
             <p className="text-(--text-muted) text-sm">
-              To activate DotScramble Pro, your DotSuite account must be on the Max plan.
+              To activate DotScramble Pro, you need active DotScramble Max access.
             </p>
             <Link
               href={`/${locale}/dashboard/dotscramble/upgrade`}
@@ -162,6 +148,7 @@ export default function DotScrambleDesktopAuth() {
             </div>
             <p className="text-lg font-medium text-red-500">Connection Failed</p>
             <p className="text-(--text-muted) text-sm">{errorMsg}</p>
+            <Link href={`/${locale}/dashboard/keys`} className="block underline">Manage API keys</Link>
             <button
               onClick={() => window.location.reload()}
               className="mt-4 px-4 py-2 bg-gray-500/10 hover:bg-gray-500/20 rounded-lg text-sm transition-colors"

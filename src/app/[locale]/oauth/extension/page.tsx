@@ -5,6 +5,8 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Key, ShieldCheck, ExternalLink, Loader2, XCircle, Check } from "lucide-react";
+import Link from "next/link";
+import { extensionCallback } from "@/lib/extension-callback";
 import UserAvatar from "@/components/UserAvatar";
 
 export default function ExtensionOAuthPage() {
@@ -19,6 +21,7 @@ export default function ExtensionOAuthPage() {
   const callbackUrl = searchParams.get("callbackUrl") || `${scheme}://freerave.dotshare/auth`;
   
   const [isAuthorizing, setIsAuthorizing] = useState(false);
+  const [keyLabel, setKeyLabel] = useState("DotShare · VS Code");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -34,11 +37,12 @@ export default function ExtensionOAuthPage() {
     setError(null);
 
     try {
+      const destination = extensionCallback(callbackUrl);
       // 1. Generate an API Key
       const res = await fetch("/api/keys", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ label: `VS Code Extension (${new Date().toLocaleDateString()})` }),
+        body: JSON.stringify({ label: keyLabel.trim(), source: "vscode", scopes: ["dotshare:read", "dotshare:write", "account:read"] }),
       });
 
       if (!res.ok) {
@@ -51,9 +55,9 @@ export default function ExtensionOAuthPage() {
 
       // 2. Redirect back to VS Code
       // Expected format: vscode://kareem2099.dotshare/auth?token=ds_prod_xxx
-      const targetUrl = `${callbackUrl}?token=${encodeURIComponent(token)}`;
+      destination.searchParams.set("token", token);
+      const targetUrl = destination.toString();
       // Deep link to desktop application
-      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = targetUrl;
       
     } catch (err) {
@@ -117,17 +121,18 @@ export default function ExtensionOAuthPage() {
           </ul>
         </div>
 
+        <label className="block text-sm space-y-2"><span>{locale === "ar" ? "اسم الاتصال أو الجهاز" : "Connection or device name"}</span><input maxLength={100} value={keyLabel} onChange={event => setKeyLabel(event.target.value)} className="w-full rounded-lg border border-(--card-border) bg-(--background) p-3" placeholder="Work laptop · DotShare" /></label>
         {error && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 flex items-start gap-3">
             <XCircle className="w-5 h-5 text-red-500 shrink-0" />
-            <p className="text-sm text-red-500">{error}</p>
+            <div><p className="text-sm text-red-500">{error}</p><Link href={`/${locale}/dashboard/keys`} className="underline text-sm">{locale === "ar" ? "إدارة مفاتيح API" : "Manage API keys"}</Link></div>
           </div>
         )}
 
         <div className="pt-4 flex flex-col gap-3">
           <button
             onClick={handleAuthorize}
-            disabled={isAuthorizing}
+            disabled={isAuthorizing || !keyLabel.trim()}
             className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-all"
           >
             {isAuthorizing ? (

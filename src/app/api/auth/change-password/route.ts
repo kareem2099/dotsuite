@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
 import { sendEmail } from "@/lib/email";
 import { getPasswordResetSuccessEmailTemplate } from "@/lib/emailTemplates";

@@ -15,7 +15,7 @@ export default function DotScramblePage() {
     fetch("/api/billing/status")
       .then((res) => res.json())
       .then((data) => {
-        if (data && data.tier) setTier(data.tier);
+        if (data?.products?.dotscramble) setTier(data.products.dotscramble.tier);
       })
       .catch((err) => console.error("Failed to fetch billing status:", err))
       .finally(() => setLoading(false));
@@ -66,13 +66,13 @@ export default function DotScramblePage() {
               </p>
             </div>
             
-            {!isMax && !loading && (
+            {!loading && (
               <div className="flex gap-2">
                 <Link
                   href={`/${locale}/dashboard/dotscramble/upgrade`}
                   className="px-4 py-2 bg-(--primary) text-(--primary-text) rounded-lg text-sm font-semibold hover:bg-(--primary-hover) transition-colors"
                 >
-                  Upgrade to Max
+                  {isMax ? "Manage billing & payment type" : "Upgrade to Max"}
                 </Link>
               </div>
             )}

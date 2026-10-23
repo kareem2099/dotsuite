@@ -1,0 +1,30 @@
+/** Real PostgreSQL regression tests for account persistence and concurrency. */
+import assert from 'node:assert/strict';import pg from'pg';import{readFileSync}from'node:fs';import{randomBytes}from'node:crypto';
+const adminUrl=process.env.PG_TEST_ADMIN_URL||'postgresql://kareem@127.0.0.1:15432/postgres';const url=new URL(adminUrl);assert(['localhost','127.0.0.1'].includes(url.hostname));
+const database='dotsuite_billing_test_models_'+randomBytes(5).toString('hex');const admin=new pg.Pool({connectionString:adminUrl});await admin.query(`CREATE DATABASE "${database}"`);url.pathname='/'+database;
+process.env.DATABASE_URL=url.toString();process.env.NODE_ENV='test';delete process.env.PG_SSL_ROOT_CERT;
+const{getPool,encode,decode}=await import('../src/lib/postgres.ts');const User=(await import('../src/models/User.ts')).default;const Review=(await import('../src/models/Review.ts')).default;const{checkRateLimit}=await import('../src/lib/rateLimit.ts');
+const pool=getPool();const checks=[];
+try{
+ await pool.query(readFileSync(new URL('../../dotsuite-core/migrations/0001_postgresql.sql',import.meta.url),'utf8'));
+ const account=await User.create({email:'pg-test@example.com',name:'PG Test',password:'Initial-good-password-123',isEmailVerified:true});
+ const raw=()=>pool.query("SELECT data FROM ds_documents WHERE collection='users' AND id=$1",[account.id]).then(r=>decode(r.rows[0].data));
+ const initialPassword=(await raw()).password;assert.notEqual(initialPassword,'Initial-good-password-123');assert.equal(await account.comparePassword('Initial-good-password-123'),true);
+ const hidden=await User.findById(account.id);assert.equal(hidden.password,undefined);assert.equal(hidden.passwordHistory,undefined);checks.push('password hashing and hidden secret projection');
+ const ledger={subscriptions:{paid:{id:'paid',ends_at:1234}},orders:{paid:{paid:true}},usage_reset_at:42};
+ await pool.query("SELECT * FROM ds_write('users',$1::jsonb,$2::jsonb,false,false,$3)",[JSON.stringify(encode({_id:account.id})),JSON.stringify({$set:{billing_state:ledger,manual_dotshare_tier:'max',posts_used:7}}),account.id]);
+ const partial=await User.findById(account.id).select('name email');partial.name='Updated name';await partial.save();
+ const after=await raw();assert.deepEqual(after.billing_state,ledger);assert.equal(after.posts_used,7);assert.equal(after.referral_code,account.referral_code);assert.equal(after.password,initialPassword);checks.push('projected profile save preserves billing, quota, password and referral');
+ const passwordRecord=await User.findById(account.id).select('+password');passwordRecord.password='Second-good-password-456';await passwordRecord.save();assert.equal((await raw()).passwordHistory.length,2);assert.equal(await passwordRecord.comparePassword('Second-good-password-456'),true);checks.push('password replacement preserves existing history');
+ await Promise.all(Array.from({length:10},async()=>{const u=await User.findById(account.id);await u.incrementSessionVersion();}));assert.equal((await raw()).sessionVersion,11);checks.push('concurrent session invalidations increment atomically');
+ const reset=await User.findById(account.id);const token=reset.getResetPasswordToken();await reset.save();assert.notEqual((await raw()).resetPasswordToken,token);assert(await User.findOne({resetPasswordToken:reset.resetPasswordToken,resetPasswordExpire:{$gt:new Date()}}));assert.equal(await User.findOne({resetPasswordExpire:{$lt:new Date()}}),null);checks.push('reset-token hashing and date filters');
+ const results=await Promise.all(Array.from({length:40},()=>checkRateLimit('parallel','test',5,60)));assert.equal(results.filter(r=>r.success).length,5);assert.equal(results.filter(r=>r.remaining===4).length,1);checks.push('forty concurrent rate-limit calls allow exactly five');
+ await pool.query("SELECT * FROM ds_write('ratelimits',$1::jsonb,$2::jsonb,false,false,$3)",[JSON.stringify({identifier:'parallel',action:'test'}),JSON.stringify(encode({$set:{expiresAt:new Date(Date.now()-1000)}})),'unused']);
+ const resets=await Promise.all(Array.from({length:20},()=>checkRateLimit('parallel','test',5,60)));assert.equal(resets.filter(r=>r.success).length,5);checks.push('expired rate-limit window resets exactly once under concurrency');
+ const review=await Review.create({userId:account.id,productId:'dotshare',rating:4,comment:'A valid PostgreSQL review'});assert.equal((await Review.ratingStats({productId:'dotshare'})).avgRating,4);const populated=await Review.findOne({_id:review.id}).populate('userId','name image');assert.equal(populated.userId.name,'Updated name');await assert.rejects(()=>Review.create({userId:account.id,productId:'dotshare',rating:5,comment:'Duplicate review is rejected'}),e=>e.code==='23505');checks.push('review uniqueness, relations and SQL average');
+ const uid=account.id;const f=JSON.stringify(encode({_id:uid,$expr:{$lt:['$posts_used',10]}}));const p=JSON.stringify({$inc:{posts_used:1}});
+ const quota=await Promise.all(Array.from({length:30},()=>pool.query("SELECT * FROM ds_write('users',$1::jsonb,$2::jsonb,false,false,$3)",[f,p,uid])));assert.equal(quota.filter(r=>r.rowCount===1).length,3);assert.equal((await raw()).posts_used,10);checks.push('conditional quota updates remain atomic under thirty concurrent claims');
+ await pool.query("SELECT * FROM ds_write('users',$1::jsonb,$2::jsonb,false,false,$3)",[JSON.stringify(encode({_id:uid})),JSON.stringify({$set:{billing_revision:0}}),uid]);
+ const cas=await Promise.all(Array.from({length:20},()=>pool.query("SELECT * FROM ds_write('users',$1::jsonb,$2::jsonb,false,false,$3)",[JSON.stringify(encode({_id:uid,billing_revision:0})),JSON.stringify({$inc:{billing_revision:1}}),uid])));assert.equal(cas.filter(r=>r.rowCount===1).length,1);checks.push('billing compare-and-swap accepts one writer for a revision');
+ console.log(JSON.stringify({passed:true,scenarios:checks},null,2));
+}finally{await pool.end();await admin.query(`DROP DATABASE "${database}" WITH(FORCE)`);await admin.end();}

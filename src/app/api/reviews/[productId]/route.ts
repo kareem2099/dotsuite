@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import Review from "@/models/Review";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
-import mongoose from "mongoose";
+
 import { products as staticProducts } from "@/config/products";
 
 const updateReviewSchema = z.object({
@@ -45,15 +45,12 @@ export async function GET(
         .skip(skip)
         .limit(limit),
       Review.countDocuments({ productId }),
-      Review.aggregate([
-        { $match: { productId } },
-        { $group: { _id: null, avgRating: { $avg: "$rating" } } },
-      ]),
+      Review.ratingStats({ productId }),
     ]);
 
     return NextResponse.json({
       reviews,
-      averageRating: Math.round((avgRating[0]?.avgRating || 0) * 10) / 10,
+      averageRating: Math.round((avgRating.avgRating || 0) * 10) / 10,
       totalReviews: total,
       pagination: { total, page, limit, totalPages: Math.ceil(total / limit) },
     });
@@ -99,7 +96,7 @@ export async function PUT(
     const review = await Review.findOneAndUpdate(
       {
         productId,
-        userId: new mongoose.Types.ObjectId(session.user.id),
+        userId: session.user.id,
       },
       { $set: validation.data },
       { returnDocument: 'after' }
@@ -142,7 +139,7 @@ export async function DELETE(
 
     const review = await Review.findOneAndDelete({
       productId,
-      userId: new mongoose.Types.ObjectId(session.user.id),
+      userId: session.user.id,
     });
 
     if (!review) {

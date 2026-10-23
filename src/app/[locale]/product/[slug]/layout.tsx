@@ -18,16 +18,11 @@ export async function generateMetadata({
   
   let averageRating = "0.0";
   try {
-    const { connectDB } = await import("@/lib/mongodb");
+    const { connectDB } = await import("@/lib/postgres");
     const Review = (await import("@/models/Review")).default;
     await connectDB();
-    const stats = await Review.aggregate([
-      { $match: { productId: product._id } },
-      { $group: { _id: null, averageRating: { $avg: "$rating" } } }
-    ]);
-    if (stats.length > 0) {
-      averageRating = stats[0].averageRating.toFixed(1);
-    }
+    const stats = await Review.ratingStats({ productId: product._id });
+    averageRating = stats.avgRating.toFixed(1);
   } catch (e) {
     console.error("Failed to fetch rating for OG image", e);
   }

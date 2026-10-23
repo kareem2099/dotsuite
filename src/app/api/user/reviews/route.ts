@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import Review from "@/models/Review";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
-import mongoose from "mongoose";
+
 import { products as staticProducts } from "@/config/products";
 
 export async function GET(req: Request) {
@@ -30,12 +30,12 @@ export async function GET(req: Request) {
     
     // Find reviews matching the logged-in user
     const [reviews, total] = await Promise.all([
-      Review.find({ userId: new mongoose.Types.ObjectId(session.user.id) })
+      Review.find({ userId: session.user.id })
         .populate("userId", "name image")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
-      Review.countDocuments({ userId: new mongoose.Types.ObjectId(session.user.id) }),
+      Review.countDocuments({ userId: session.user.id }),
     ]);
 
     // Map over reviews to inject static product details

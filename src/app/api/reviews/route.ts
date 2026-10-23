@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import Review from "@/models/Review";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
-import mongoose from "mongoose";
+
 import { products as staticProducts } from "@/config/products";
 
 const createReviewSchema = z.object({
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
     try {
       const review = await Review.create({
         productId: productId,
-        userId: new mongoose.Types.ObjectId(session.user.id),
+        userId: session.user.id,
         rating,
         comment,
       });
@@ -97,7 +97,7 @@ export async function POST(req: Request) {
 
     } catch (error) {
       // ✅ Handle duplicate review
-      if (typeof error === "object" && error !== null && "code" in error && (error as { code: number }).code === 11000) {
+      if (typeof error === "object" && error !== null && "code" in error && (error as { code: string }).code === "23505") {
         return NextResponse.json(
           { error: "You have already reviewed this product" },
           { status: 400 }
