@@ -1,6 +1,6 @@
 import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
 import createIntlMiddleware from "next-intl/middleware";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 
 // 1. Public pages that don't require login (exact match only — no wildcards)
@@ -105,6 +105,12 @@ const publicPrefixRegex = RegExp(
 // 5. Main proxy function to route requests
 export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  if (process.env.MAINTENANCE_MODE === "true") {
+    return new NextResponse("DotSuite is being upgraded. Please try again shortly.", {
+      status: 503, headers: { "Retry-After": "60", "Cache-Control": "no-store" },
+    });
+  }
+  if (pathname === "/api" || pathname.startsWith("/api/")) return NextResponse.next();
 
   // 1. Check protected pages first (auth required)
   if (protectedPathnameRegex.test(pathname)) {
@@ -127,5 +133,5 @@ export default function proxy(req: NextRequest) {
 
 export const config = {
   // Match all routes except API and static files
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  matcher: ["/api/:path*", "/((?!api|_next|.*\\..*).*)"],
 };

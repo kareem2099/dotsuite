@@ -210,9 +210,9 @@ EMAIL_PASS=your_gmail_app_password
 EMAIL_FROM="DotSuite <no-reply@dotsuite.dev>"
 
 # ==============================================================================
-# Rust Core Microservice (dotsuite-core — https://aegis.dotsuite.dev)
+# Rust Core Microservice (dotsuite-core — https://core.dotsuite.dev)
 # ==============================================================================
-CORE_API_URL=https://aegis.dotsuite.dev
+CORE_API_URL=https://core.dotsuite.dev
 INTERNAL_API_SECRET=your_internal_shared_secret_between_next_and_rust
 
 # ==============================================================================

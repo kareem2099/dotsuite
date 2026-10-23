@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+- **DotMorph 2.0.0 (`prod_dotmorph`)**:
+  - Added **DotMorph**, the radial-menu file converter for Linux, to the product catalog (`src/config/products.ts`) under the Python / Linux category.
+  - Localized title and description in all 5 languages (`en`, `ar`, `fr`, `de`, `ru`).
+  - Live GitHub sync with `kareem2099/DotMorph` (README, CHANGELOG, stars, release tag) through the existing product pipeline.
+  - Product page at `/{locale}/product/dotmorph`, which is picked up by the sitemap and static params automatically.
+- **Per-product SEO fields on `IProduct`** (all optional):
+  - `platforms?: string` sets schema.org `operatingSystem` (DotMorph: `Linux`).
+  - `license?: string` sets the SPDX license in the JSON-LD (DotMorph: `Apache-2.0`; the default stays MIT).
+  - `keywords?: string[]` adds product keywords to the page metadata and the JSON-LD.
+
+### Fixed
+- Product pages for non-VS Code tools (DotScramble, DotAegis, DotGhostBoard, DotMorph) no longer say "Install directly from VS Code Marketplace" in the meta description. They no longer get VS Code extension keywords either.
+
+---
+
 ## [1.6.0] — 2026-10-02 — "Desktop Ecosystem, OpenDesktop Integration & Platform Modernization"
 
 ### Added

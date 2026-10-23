@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { extensionCallback } from "@/lib/extension-callback";
 import UserAvatar from "@/components/UserAvatar";
 import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
 
@@ -40,6 +41,7 @@ export default function Dashboard() {
   }, [status]);
 
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [vscodeError, setVscodeError] = useState("");
   const intentProcessed = useRef(false);
   const [vscodeFallbackUrl, setVscodeFallbackUrl] = useState<string | null>(null);
 
@@ -53,10 +55,12 @@ export default function Dashboard() {
         console.log("[DotSuite] VS Code auth intent detected, generating key...");
 
         try {
+          const scheme = localStorage.getItem("auth_scheme") || "vscode";
+          const destination = extensionCallback(`${scheme}://freerave.dotshare/login`);
           const res = await fetch("/api/keys", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ label: "VS Code Extension" })
+            body: JSON.stringify({ label: `DotShare · VS Code · ${new Date().toLocaleString()}`, source: "vscode", scopes: ["dotshare:read", "dotshare:write", "account:read"] })
           });
 
           if (res.ok) {
@@ -67,12 +71,9 @@ export default function Dashboard() {
               throw new Error("No token received from API");
             }
 
-            // 1. Sanitization
-            const safeToken = encodeURIComponent(token);
-
             // 2. Build link
-            const scheme = localStorage.getItem("auth_scheme") || "vscode";
-            const vscodeUrl = `${scheme}://freerave.dotshare/login?token=${safeToken}`;
+            destination.searchParams.set("token", token);
+            const vscodeUrl = destination.toString();
 
             setVscodeFallbackUrl(vscodeUrl);
 
@@ -87,11 +88,12 @@ export default function Dashboard() {
               window.location.href = vscodeUrl;
             }, 500);
           } else {
-            console.error("Failed to generate key for VS Code");
+            const failure = await res.json().catch(() => ({}));
+            setVscodeError(failure.error || "Unable to create a VS Code key. Manage your existing keys and try again.");
             localStorage.removeItem("auth_intent");
           }
         } catch (error) {
-          console.error("Failed to setup VS Code auth", error);
+          setVscodeError(error instanceof Error ? error.message : "Unable to connect to VS Code");
           localStorage.removeItem("auth_intent");
         } finally {
           setIsRedirecting(false);
@@ -127,6 +129,7 @@ export default function Dashboard() {
         </div>
       )}
 
+      {vscodeError && <div role="alert" className="m-6 rounded-xl border border-red-500/40 p-4"><p>{vscodeError}</p><Link href={`/${locale}/dashboard/keys`} className="underline">Manage API keys</Link></div>}
       {/* Header */}
       <div className="border-b border-(--card-border) bg-(--card-bg)">
         <div className="w-full px-6 md:px-12 lg:px-20 py-8">
@@ -263,7 +266,7 @@ export default function Dashboard() {
           </Link>
 
           <Link
-            href={`/${locale}/product/dotscramble`}
+            href={`/${locale}/dashboard/dotscramble`}
             className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl hover:border-blue-500/50 transition-colors group"
           >
             <div className="flex items-center gap-4">

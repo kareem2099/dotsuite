@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { sendEmail } from "@/lib/email";
 import { getContactNotificationTemplate } from "@/lib/emailTemplates";

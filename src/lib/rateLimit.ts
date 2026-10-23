@@ -1,5 +1,4 @@
-import { connectDB } from "@/lib/mongodb";
-import RateLimit from "@/models/RateLimit";
+import { connectDB } from "@/lib/postgres";
 
 export interface RateLimitResult {
   success: boolean;
@@ -18,21 +17,20 @@ export async function checkRateLimit(
   const now = new Date();
   const expiresAt = new Date(now.getTime() + windowSeconds * 1000);
 
-  // auto-expire records after windowSeconds using MongoDB TTL index
-  let record = await RateLimit.findOneAndUpdate(
-    { identifier, action, expiresAt: { $gt: now } },
-    { $inc: { count: 1 } },
-    { returnDocument: 'after' }
+  // One native upsert increments or resets the window under a PostgreSQL row
+  // lock. Parallel requests cannot each reset an expired window to one.
+  const { getPool, encode, decode, newId } = await import("./postgres");
+  const result = await getPool().query(`
+    INSERT INTO ds_documents(collection,id,data) VALUES('ratelimits',$1,$2::jsonb)
+    ON CONFLICT ((data->>'identifier'),(data->>'action')) WHERE collection='ratelimits'
+    DO UPDATE SET data = CASE
+      WHEN ds_scalar(ds_documents.data->'expiresAt') > to_jsonb($3::bigint)
+      THEN ds_patch(ds_documents.data,'{"$inc":{"count":1}}'::jsonb)
+      ELSE ds_patch(ds_documents.data,jsonb_build_object('$set',jsonb_build_object('count',1,'expiresAt',EXCLUDED.data->'expiresAt')))
+    END RETURNING data`,
+    (() => { const id = newId(); return [id, JSON.stringify(encode({ _id: id, identifier, action, count: 1, expiresAt })), now.getTime()]; })()
   );
-
-  // create new record if none found 
-  if (!record) {
-    record = await RateLimit.findOneAndUpdate(
-      { identifier, action },
-      { $set: { count: 1, expiresAt } },
-      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
-    );
-  }
+  const record = decode(result.rows[0].data) as { count: number; expiresAt: Date };
 
   const remaining = Math.max(0, maxAttempts - record.count);
   const resetIn = Math.max(0, Math.floor((record.expiresAt.getTime() - now.getTime()) / 1000));

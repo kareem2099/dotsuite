@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 
 async function checkBanStatus(userId: string): Promise<boolean> {
   const coreUrl = process.env.CORE_API_URL;
-  const secret = process.env.INTERNAL_SECRET;
+  const secret = process.env.INTERNAL_API_SECRET;
 
   if (!coreUrl || !secret || !userId) return false;
 

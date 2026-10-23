@@ -10,7 +10,7 @@ import TierBadge from "@/components/dotshare/TierBadge";
 import PlatformBadge from "@/components/dotshare/PlatformBadge";
 import PostStatusIcon from "@/components/dotshare/PostStatusIcon";
 import ConnectedAccounts from "@/components/dotshare/ConnectedAccounts";
-import { UNLIMITED_QUOTA } from "@/lib/rust-api";
+import { UNLIMITED_QUOTA } from "@/lib/billing-display";
 
 interface BillingStatus {
   tier: "free" | "pro" | "max";
@@ -21,6 +21,7 @@ interface BillingStatus {
   images_quota: number;
   ls_subscription_id: string | null;
   subscription_ends_at: string | null;
+  products?: { dotshare?: { payment_type: string | null; ends_at: number | null } };
 }
 
 interface Post {
@@ -42,7 +43,6 @@ export default function DotSharePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [billingLoading, setBillingLoading] = useState(true);
   const [postsLoading, setPostsLoading] = useState(true);
-  const [portalLoading, setPortalLoading] = useState(false);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -63,22 +63,6 @@ export default function DotSharePage() {
       .finally(() => setPostsLoading(false));
   }, [authStatus]);
 
-  const handleManageBilling = async () => {
-    setPortalLoading(true);
-    try {
-      const res = await fetch("/api/billing/portal");
-      if (res.ok) {
-        const { portal_url } = await res.json();
-        window.location.href = portal_url;
-      } else {
-        const err = await res.json();
-        alert(err.error || t("billingPortalError"));
-      }
-    } finally {
-      setPortalLoading(false);
-    }
-  };
-
   const handleCancelPost = async (postId: string) => {
     if (!confirm(t("confirmCancelPost"))) return;
     setCancellingId(postId);
@@ -94,9 +78,13 @@ export default function DotSharePage() {
     ? billing.tier.charAt(0).toUpperCase() + billing.tier.slice(1)
     : "Free";
 
-  const endsAt = billing?.subscription_ends_at
+  const endsAt = billing?.ls_subscription_id && billing?.subscription_ends_at
     ? new Date(billing.subscription_ends_at).toLocaleDateString()
     : null;
+
+  const oneTimeEnd = billing?.products?.dotshare?.payment_type === "one_time" && billing.products.dotshare.ends_at
+    ? new Date(billing.products.dotshare.ends_at).toLocaleDateString() : null;
+  const owner = billing?.products?.dotshare?.payment_type === "owner";
 
   return (
     <div className="min-h-screen">
@@ -132,9 +120,9 @@ export default function DotSharePage() {
             <span className="text-amber-400">⚠</span>
             <p className="text-sm text-amber-300">
               {t("subCancelled", { date: endsAt })}{" "}
-              <button onClick={handleManageBilling} className="underline hover:no-underline">
+              <Link href={`/${locale}/dashboard/dotshare/upgrade`} className="underline hover:no-underline">
                 {t("reactivate")}
-              </button>
+              </Link>
             </p>
           </div>
         )}
@@ -157,8 +145,8 @@ export default function DotSharePage() {
                     <TierBadge tier={billing.tier} />
                   </div>
                   <p className="text-sm text-(--text-muted)">
-                    {billing.is_paid ? (
-                      endsAt
+                    {owner ? (locale === "ar" ? "وصول المالك — بدون تجديد أو فواتير" : "Owner access — no renewal or invoices") : billing.is_paid ? (
+                      oneTimeEnd ? `Paid once — access until ${oneTimeEnd}. No automatic renewal.` : endsAt
                         ? t("cancelsOn", { date: endsAt })
                         : t("activeSubscription")
                     ) : (
@@ -167,20 +155,19 @@ export default function DotSharePage() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  {billing.is_paid && (
-                    <button
-                      onClick={handleManageBilling}
-                      disabled={portalLoading}
-                      className="px-4 py-2 border border-(--card-border) rounded-lg text-sm hover:border-(--primary) hover:text-(--primary) transition-colors disabled:opacity-50"
+                  {billing.is_paid && !owner && (
+                    <Link
+                      href={`/${locale}/dashboard/dotshare/upgrade`}
+                      className="px-4 py-2 border border-(--card-border) rounded-lg text-sm hover:border-(--primary) hover:text-(--primary) transition-colors"
                     >
-                      {portalLoading ? t("opening") : t("manageBilling")}
-                    </button>
+                      {t("manageBilling")}
+                    </Link>
                   )}
                   <Link
                     href={`/${locale}/dashboard/dotshare/upgrade`}
                     className="px-4 py-2 bg-(--primary) text-(--primary-text) rounded-lg text-sm font-semibold hover:bg-(--primary-hover) transition-colors"
                   >
-                    {billing.is_paid ? t("changePlan") : t("upgrade")}
+                    {owner ? (locale === "ar" ? "تفاصيل الوصول" : "Access details") : billing.is_paid ? t("changePlan") : t("upgrade")}
                   </Link>
                 </div>
               </div>

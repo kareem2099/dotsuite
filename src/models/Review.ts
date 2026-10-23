@@ -1,30 +1,18 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-export interface IReview extends Document {
-  productId: string;
-  userId: mongoose.Types.ObjectId;
-  rating: number;
-  comment: string;
-  createdAt: Date;
-  updatedAt: Date;
+import { RecordBase } from "@/lib/records";
+import { getPool, encode, type Data } from "@/lib/postgres";
+export default class Review extends RecordBase {
+  static collection = "reviews";
+  static references = ["userId"];
+  declare productId: string;
+  declare userId: string | { _id: string; name: string; image?: string };
+  declare rating: number;
+  declare comment: string;
+  protected async beforeSave() {
+    if (!Number.isFinite(this.rating) || this.rating < 1 || this.rating > 5 || !this.userId || !this.productId) throw new Error("Invalid review");
+    this.comment = this.comment.trim(); if (!this.comment || this.comment.length > 1000) throw new Error("Invalid review");
+  }
+  static async ratingStats(filter: Data) {
+    const r = await getPool().query("SELECT avg((ds_scalar(data->'rating')#>>'{}')::numeric)::float AS \"avgRating\", count(*)::int AS \"numReviews\" FROM ds_documents WHERE collection='reviews' AND ds_matches(data,$1::jsonb)", [JSON.stringify(encode(filter, this.references))]);
+    return { avgRating: r.rows[0]?.avgRating ?? 0, numReviews: r.rows[0]?.numReviews ?? 0 };
+  }
 }
-
-const ReviewSchema = new Schema<IReview>(
-  {
-    productId: { type: String, required: true },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    rating: { type: Number, required: true, min: 1, max: 5 },
-    comment: { type: String, required: true, trim: true, maxlength: 1000 },
-  },
-  { timestamps: true }
-);
-
-// avoid duplicate reviews by the same user for the same product
-ReviewSchema.index({ productId: 1, userId: 1 }, { unique: true });
-
-// sort reviews by newest first for a product
-ReviewSchema.index({ productId: 1, createdAt: -1 });
-ReviewSchema.index({ userId: 1 });
-
-export default mongoose.models.Review ||
-  mongoose.model<IReview>("Review", ReviewSchema);

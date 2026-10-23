@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rateLimit"; 
