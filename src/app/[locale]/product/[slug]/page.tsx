@@ -44,20 +44,27 @@ export async function generateMetadata({
   const description = translation.description;
   const categoryLabel = categoryLabels[product.category] ?? "Developer Tool";
 
+  const isExtension = product.category === "vscode";
   const seoTitle = `${title} — ${categoryLabel} | dotsuite`;
-  const seoDescription = `${description}. Free and open-source ${categoryLabel.toLowerCase()} by dotsuite. Trusted by 13,000+ developers. Install directly from VS Code Marketplace.`;
+  const seoDescription = `${description}. Free and open-source ${categoryLabel.toLowerCase()} by dotsuite. Trusted by 13,000+ developers. ${
+    isExtension ? "Install directly from VS Code Marketplace." : "Download it from GitHub."
+  }`;
 
-  const keywords = [
-    title,
-    `${title} VS Code`,
-    `${title} extension`,
-    `${title} download`,
-    categoryLabel,
-    "VS Code extension",
-    "developer productivity",
-    "dotsuite",
-    "open source developer tools",
-  ].filter(Boolean);
+  const keywords = (
+    isExtension
+      ? [
+          title,
+          `${title} VS Code`,
+          `${title} extension`,
+          `${title} download`,
+          categoryLabel,
+          "VS Code extension",
+          "developer productivity",
+        ]
+      : [title, `${title} download`, `${title} GitHub`, categoryLabel]
+  )
+    .concat(product.keywords ?? [], ["dotsuite", "open source developer tools"])
+    .filter(Boolean);
 
   const ogImageUrl = `${BASE_URL}/api/og?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(description)}&category=${encodeURIComponent(product.category)}&brand=dotsuite`;
 
@@ -126,9 +133,7 @@ export default async function ProductDetailPage({
     applicationCategory: product.category === "vscode"
       ? "DeveloperApplication"
       : "UtilitiesApplication",
-    operatingSystem: product.category === "vscode"
-      ? "Windows, macOS, Linux"
-      : "Windows, macOS, Linux",
+    operatingSystem: product.platforms ?? "Windows, macOS, Linux",
     url: `${BASE_URL}/${locale}/product/${product.slug}`,
     downloadUrl: product.extensionId
       ? `https://marketplace.visualstudio.com/items?itemName=FreeRave.${product.extensionId}`
@@ -159,10 +164,11 @@ export default async function ProductDetailPage({
       worstRating: "1",
     },
     codeRepository: `https://github.com/${product.githubRepo}`,
-    license: "https://opensource.org/licenses/MIT",
+    license: `https://opensource.org/licenses/${product.license ?? "MIT"}`,
     keywords: [
       translation.title,
       categoryLabels[product.category] ?? "Developer Tool",
+      ...(product.keywords ?? []),
       "dotsuite",
       "developer tools",
     ].join(", "),

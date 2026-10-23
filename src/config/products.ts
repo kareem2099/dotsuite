@@ -6,6 +6,9 @@ export interface IProduct {
   serviceUrl?: string;
   category: "vscode" | "python" | "nextjs";
   githubRepo: string;
+  platforms?: string; // schema.org operatingSystem, e.g. "Linux" (default: all three)
+  license?: string; // SPDX id, e.g. "Apache-2.0" (default: MIT)
+  keywords?: string[]; // extra SEO keywords for the product page
   hasLicense: boolean;
   price: number;
   order: number;
@@ -201,6 +204,54 @@ export const products: IProduct[] = [
       de: {
         title: "DotGhostBoard",
         description: "Fortschrittlicher kryptografischer und datenschutzorientierter Zwischenablage-Manager für Linux",
+      },
+    },
+  },
+  {
+    _id: "prod_dotmorph",
+    slug: "dotmorph",
+    category: "python",
+    githubRepo: "kareem2099/DotMorph",
+    platforms: "Linux",
+    license: "Apache-2.0",
+    keywords: [
+      "file converter for Linux",
+      "radial menu",
+      "PDF to PNG",
+      "HEIC to JPG",
+      "SVG to PNG",
+      "SVG to PDF",
+      "video to GIF",
+      "MOV to MP4",
+      "DOCX to PDF",
+      "Markdown to PDF",
+      "compress PDF",
+      "Nautilus right-click convert",
+      "GNOME Wayland",
+    ],
+    hasLicense: false,
+    price: 0,
+    order: 11,
+    translations: {
+      en: {
+        title: "DotMorph",
+        description: "Radial-menu file converter for Linux: 440+ conversions for images, PDF, SVG, video, audio and Office files from your file manager, a hotkey or a screen-edge dock",
+      },
+      ar: {
+        title: "DotMorph",
+        description: "محوّل ملفات لنظام لينكس بقائمة دائرية: أكثر من 440 تحويلاً للصور وPDF وSVG والفيديو والصوت وملفات Office من مدير الملفات أو اختصار لوحة المفاتيح أو شريط جانبي على حافة الشاشة",
+      },
+      fr: {
+        title: "DotMorph",
+        description: "Convertisseur de fichiers pour Linux avec menu radial : plus de 440 conversions d'images, PDF, SVG, vidéo, audio et documents Office depuis le gestionnaire de fichiers, un raccourci ou un dock en bord d'écran",
+      },
+      ru: {
+        title: "DotMorph",
+        description: "Конвертер файлов для Linux с радиальным меню: более 440 преобразований изображений, PDF, SVG, видео, аудио и документов Office из файлового менеджера, по горячей клавише или с края экрана",
+      },
+      de: {
+        title: "DotMorph",
+        description: "Dateikonverter für Linux mit Radialmenü: über 440 Konvertierungen für Bilder, PDF, SVG, Video, Audio und Office-Dateien aus dem Dateimanager, per Tastenkürzel oder über ein Dock am Bildschirmrand",
       },
     },
   },
