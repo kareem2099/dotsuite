@@ -212,6 +212,7 @@ export const products: IProduct[] = [
     slug: "dotmorph",
     category: "python",
     githubRepo: "kareem2099/DotMorph",
+    openDesktopUrl: "https://www.opendesktop.org/p/2380213/",
     platforms: "Linux",
     license: "Apache-2.0",
     keywords: [
