@@ -2,17 +2,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import SubscriptionDetails, { type BillingAccess as Access, type ManagedSubscription as Subscription } from "./SubscriptionDetails";
 
 type PaymentType = "subscription" | "one_time";
 type Cycle = "monthly" | "annually";
 type Plan = { product: string; tier: string; cycle: Cycle; payment_type: PaymentType; price_cents: number };
-type Access = { tier: string; payment_type: PaymentType | "owner" | null; subscription_id: string | null; ends_at: number | null; renews_at: number | null; one_time_ends_at: number | null };
 type Pending = { plan: Plan; starts_at: number; ready: boolean };
-type Subscription = {
-  status: string; cancelled: boolean; ends_at: number | null; renews_at: number | null;
-  can_cancel: boolean; can_resume: boolean; payment_method_url: string | null;
-  last_payment: { amount_cents: number; currency: string; paid_at: string | null } | null;
-};
 
 export default function BillingPurchase({ product }: { product: "dotshare" | "dotscramble" }) {
   const { locale } = useParams<{ locale: string }>();
@@ -77,9 +72,16 @@ export default function BillingPurchase({ product }: { product: "dotshare" | "do
       const data = await response.json();
       if (!response.ok) throw Error(data.error || "Unable to manage subscription");
       setSubscription(data); setConfirmation(null);
-      setAccess(current => current ? { ...current, ends_at: data.ends_at, renews_at: data.renews_at } : current);
+      // Historical subscription dates are not the account's current entitlement.
+      if (data.current_access) setAccess(data.current_access);
+      else {
+        const status = await fetch("/api/billing/status", { cache: "no-store" });
+        if (!status.ok) throw Error("Unable to refresh current paid access. Please refresh this page.");
+        const billing = await status.json();
+        setAccess(billing.products?.[product] ?? null);
+      }
       if (action === "resume") setPending(null);
-      if (action) setManagementMessage(action === "cancel" ? "Automatic renewal is stopped. Your paid access remains available until the end date below." : "Your subscription has resumed. Automatic renewal is enabled again.");
+      if (action) setManagementMessage(action === "cancel" ? "Automatic renewal is stopped." : "Your subscription has resumed. Automatic renewal is enabled again.");
     } catch (error) { setManagementMessage(error instanceof Error ? error.message : "Unable to manage subscription"); }
     finally { setBusy(false); }
   };
@@ -114,18 +116,7 @@ export default function BillingPurchase({ product }: { product: "dotshare" | "do
     {managing && <section ref={managementRef} aria-label="Subscription management" className="rounded-xl border p-6 space-y-4">
       <div className="flex justify-between gap-4"><h2 className="text-xl font-semibold">Manage {title} subscription</h2><button type="button" onClick={() => { setManaging(false); setConfirmation(null); }} className="underline text-sm">Close</button></div>
       {busy && <p role="status">Updating subscription…</p>}
-      {subscription && <>
-        <p><strong>{subscription.cancelled ? "Automatic renewal stopped" : subscription.status === "active" ? "Subscription active" : `Subscription status: ${subscription.status}`}</strong></p>
-        {subscription.ends_at && <p>Your paid access remains available until <strong>{date(subscription.ends_at)}</strong>. No automatic renewal is scheduled.</p>}
-        {!subscription.cancelled && subscription.renews_at && <p>Next renewal: <strong>{date(subscription.renews_at)}</strong>.</p>}
-        {subscription.last_payment && <p>Last payment: <strong>{new Intl.NumberFormat(locale, { style: "currency", currency: subscription.last_payment.currency }).format(subscription.last_payment.amount_cents / 100)}</strong> including applicable tax{subscription.last_payment.paid_at ? ` · ${date(Date.parse(subscription.last_payment.paid_at))}` : ""}.</p>}
-        <div className="flex flex-wrap gap-4">
-          {subscription.can_cancel && <button type="button" disabled={busy} onClick={() => setConfirmation("cancel")} className="border rounded-lg px-4 py-3">Cancel automatic renewal</button>}
-          {subscription.can_resume && <button type="button" disabled={busy} onClick={() => setConfirmation("resume")} className="border rounded-lg px-4 py-3">Resume subscription</button>}
-          <button type="button" disabled={busy} onClick={() => manage()} className="underline">Refresh status</button>
-          {subscription.payment_method_url && <a href={subscription.payment_method_url} target="_blank" rel="noopener noreferrer" className="underline">Update payment details on Lemon Squeezy ↗</a>}
-        </div>
-      </>}
+      {subscription && <SubscriptionDetails subscription={subscription} locale={locale} busy={busy} onChange={setConfirmation} onRefresh={() => manage()} />}
       {confirmation && <div role="group" aria-label="Confirm subscription change" className="rounded-lg border p-4 space-y-3">
         <p>{confirmation === "cancel" ? "Stop future automatic payments? Your current paid access will remain until its end date." : "Resume automatic renewal for this subscription? Future payments will follow your existing subscription agreement."}</p>
         <div className="flex gap-4"><button type="button" disabled={busy} onClick={() => manage(confirmation)} className="border rounded-lg px-4 py-2">{confirmation === "cancel" ? "Confirm cancellation" : "Confirm resume"}</button><button type="button" disabled={busy} onClick={() => setConfirmation(null)} className="underline">Keep current settings</button></div>
