@@ -252,7 +252,9 @@
     "verificationEmailSent": "Si un compte existe et n'est pas vérifié, un e-mail de vérification a été envoyé.",
     "sending": "Envoi...",
     "rememberPassword": "Vous souvenez-vous de votre mot de passe?",
-    "accountCreatedVerify": "Compte créé! Veuillez vérifier votre e-mail pour activer votre compte avant de vous connecter."
+    "accountCreatedVerify": "Compte créé! Veuillez vérifier votre e-mail pour activer votre compte avant de vous connecter.",
+    "resendCheckInbox": "Consultez votre boîte de réception, et vos courriers indésirables, pour trouver le lien de vérification.",
+    "sendAgain": "Renvoyer"
   },
   "Footer": {
     "brand": "Outils et solutions pour développeurs: VS Code, Next.js et Python.",

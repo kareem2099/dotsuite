@@ -73,6 +73,25 @@ export default function ResendVerification() {
       {/* Resend Verification Form */}
       <section className="max-w-md mx-auto px-6 pb-16">
         <div className="p-8 bg-(--card-bg) border border-(--card-border) rounded-xl">
+          {success && (
+            <div className="text-center space-y-4" role="status">
+              <div className="w-12 h-12 mx-auto rounded-full bg-green-500/10 text-green-500 flex items-center justify-center">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="font-medium">{t("verificationEmailSent")}</p>
+              <p className="text-sm text-(--text-muted)">{t("resendCheckInbox")}</p>
+              <button
+                type="button"
+                onClick={() => setSuccess(false)}
+                className="text-sm text-(--primary) font-semibold hover:underline"
+              >
+                {t("sendAgain")}
+              </button>
+            </div>
+          )}
+
           {!success && (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
 import { sendEmail } from "@/lib/email";
@@ -114,9 +114,9 @@ export async function POST(request: Request) {
 
     // 2. 🚀 Send confirmation email (fire and forget)
     const { subject, html, message } = getPasswordResetSuccessEmailTemplate();
-    sendEmail({ to: user.email, subject, html, text: message }).catch((err) => {
-      console.error("Failed to send password reset success email:", err);
-    });
+    // after() keeps the serverless function alive until the email is sent; a bare
+    // promise is cut off once the response goes out (sendEmail logs its own errors)
+    after(() => sendEmail({ to: user.email, subject, html, text: message }));
 
     return NextResponse.json(
       { message: "Password reset successful" },

@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
@@ -137,9 +137,9 @@ export async function POST(req: Request) {
 
     // 2. 🚀 Send confirmation email (fire and forget)
     const { subject, html, message } = getPasswordResetSuccessEmailTemplate();
-    sendEmail({ to: user.email, subject, html, text: message }).catch((err) => {
-      console.error("Failed to send password change confirmation email:", err);
-    });
+    // after() keeps the serverless function alive until the email is sent; a bare
+    // promise is cut off once the response goes out (sendEmail logs its own errors)
+    after(() => sendEmail({ to: user.email, subject, html, text: message }));
 
     return NextResponse.json(
       { message: "Password changed successfully" },

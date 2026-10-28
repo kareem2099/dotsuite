@@ -253,7 +253,9 @@
     "verificationEmailSent": "If an account exists and is not verified, a verification email has been sent.",
     "sending": "Sending...",
     "rememberPassword": "Remember your password?",
-    "accountCreatedVerify": "Account created! Please check your email to verify your account before logging in."
+    "accountCreatedVerify": "Account created! Please check your email to verify your account before logging in.",
+    "resendCheckInbox": "Check your inbox, and your spam folder, for the verification link.",
+    "sendAgain": "Send again"
   },
   "Footer": {
     "brand": "Developer tools and solutions for VS Code, Next.js, and Python.",

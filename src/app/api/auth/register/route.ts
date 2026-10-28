@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
 import { sendEmail } from "@/lib/email";
@@ -84,10 +84,9 @@ export async function POST(req: Request) {
     const verifyUrl = `${process.env.NEXTAUTH_URL}/${locale}/verify-email?token=${rawToken}`;
     const { subject, html, message } = getVerifyEmailTemplate(user.name, verifyUrl);
 
-    // Fire and forget
-    sendEmail({ to: email, subject, html, text: message }).catch((err) => {
-      console.error("Failed to send verification email:", err);
-    });
+    // after() keeps the serverless function alive until the email is sent; a bare
+    // promise is cut off once the response goes out (sendEmail logs its own errors)
+    after(() => sendEmail({ to: email, subject, html, text: message }));
 
     return NextResponse.json(
       {
