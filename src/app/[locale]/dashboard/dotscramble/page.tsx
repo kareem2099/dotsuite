@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import DevicesCard from "@/components/dotscramble/DevicesCard";
 
 export default function DotScramblePage() {
   const params = useParams();
@@ -83,24 +84,26 @@ export default function DotScramblePage() {
           </div>
         </div>
 
-        {/* API Keys section */}
+        {isMax && <DevicesCard />}
+
+        {/* Activation */}
         <div className="p-6 bg-(--card-bg) border border-(--card-border) rounded-xl mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold">How to activate Premium</h2>
+            <h2 className="text-lg font-bold">How to activate Pro in the app</h2>
             <Link
               href={`/${locale}/dashboard/keys`}
               className="text-sm text-(--primary) hover:underline"
             >
-              Get your API Key →
+              API keys →
             </Link>
           </div>
           <div className="text-sm text-(--text-muted) space-y-2">
-            <p>DotScramble uses your standard DotSuite API Key for authentication.</p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Open DotScramble on your computer.</li>
-              <li>Go to <strong>Settings</strong> and paste your API Key.</li>
-              <li>If you have the Max plan, your key will automatically unlock all Premium features!</li>
-              <li>A single key can be activated on up to <strong>2 devices</strong> simultaneously.</li>
+              <li>Open DotScramble and choose <strong>Upgrade</strong> in the toolbar (or <strong>Help → Upgrade to Pro</strong>).</li>
+              <li>Your browser opens this site: sign in and the app is activated automatically.</li>
+              <li>No browser on that computer? Create a key under <strong>API keys</strong> and use <strong>Enter key manually</strong> in the app.</li>
+              <li>Your account can be active on up to <strong>2 computers</strong> at a time; manage them under <strong>Devices</strong>.</li>
+              <li>To move Pro to another computer, use <strong>Help → Deactivate this device</strong> in the app first, or remove the old one above.</li>
             </ul>
           </div>
         </div>

@@ -12,7 +12,8 @@ export default function DotScrambleDesktopAuth() {
   
   const port = searchParams.get("port");
   const state = searchParams.get("state");
-  const isMissingParams = !port || !state;
+  // The app listens on an ephemeral local port; anything else is not a DotScramble link.
+  const isMissingParams = !port || !state || !/^\d{4,5}$/.test(port) || Number(port) > 65535;
 
   const [status, setStatus] = useState<"loading" | "error" | "success" | "upgrade_required">(
     isMissingParams ? "error" : "loading"
@@ -54,11 +55,13 @@ export default function DotScrambleDesktopAuth() {
         }
 
         // Each authorization is a separate connection. Never revoke another
-        // device's key solely because its display label matches.
+        // device's key solely because its display label matches; Core retires the
+        // key a machine used before once it activates with this one.
+        // The app only calls the license endpoints, so the key can do nothing else.
         const newKeyRes = await fetch("/api/keys", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ label: `DotScramble Desktop · ${new Date().toLocaleString()}`, source: "dotscramble", scopes: ["dotscramble:verify", "account:read"] }),
+          body: JSON.stringify({ label: `DotScramble Desktop · ${new Date().toLocaleString()}`, source: "dotscramble", scopes: ["dotscramble:verify"] }),
         });
         const newKeyData = await newKeyRes.json();
         if (!newKeyData.plaintext_key) {
@@ -67,15 +70,23 @@ export default function DotScrambleDesktopAuth() {
         const activeKey = newKeyData.plaintext_key;
 
         // 5. Send the key back to the local python server
-        const localRes = await fetch(`http://127.0.0.1:${port}/callback`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ key: activeKey, state }),
-        });
+        let delivered = false;
+        try {
+          const localRes = await fetch(`http://127.0.0.1:${port}/callback`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ key: activeKey, state }),
+          });
+          delivered = localRes.ok;
+        } catch {
+          delivered = false;
+        }
 
-        if (localRes.ok) {
+        if (delivered) {
           setStatus("success");
         } else {
+          // The app never got this key: revoke it rather than leave an unused key behind.
+          await fetch(`/api/keys/${newKeyData.key_prefix}`, { method: "DELETE" }).catch(() => {});
           throw new Error("Local app is not responding. Please make sure DotScramble is still open.");
         }
       } catch (err) {
