@@ -8,6 +8,7 @@ import Link from "next/link";
 import { extensionCallback } from "@/lib/extension-callback";
 import UserAvatar from "@/components/UserAvatar";
 import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
+import StaffLink from "@/components/admin/StaffLink";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -298,6 +299,9 @@ export default function Dashboard() {
               </div>
             </div>
           </Link>
+
+          {/* Admin and support: customers & refunds */}
+          <StaffLink locale={locale} />
 
           {/* Admin-only: Audit System */}
           {session.user?.email && (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "").split(",").map(e => e.trim()).includes(session.user.email) && (

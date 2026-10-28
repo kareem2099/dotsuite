@@ -24,28 +24,46 @@ export default function PrivacyPage() {
           </section>
 
           <section className="bg-(--card-bg) border border-(--card-border) rounded-xl p-6">
-            <h2 className="text-2xl font-semibold mb-4">3. Information Sharing</h2>
+            <h2 className="text-2xl font-semibold mb-4">3. DotScramble Desktop App</h2>
+            <p className="text-(--text-muted) mb-3">
+              DotScramble processes your photos on your computer. Photos, file names and their metadata never leave
+              your device. When Pro is activated, the app contacts DotSuite to check the license, at activation and
+              about once a day after that, and sends only:
+            </p>
+            <ul className="list-disc pl-6 text-(--text-muted) space-y-1 mb-3">
+              <li>an anonymous computer ID (a one-way hash of the operating system&apos;s machine ID), to enforce the 2-computer limit;</li>
+              <li>a computer name you can recognize in your Devices list (operating system and host name) and the app version;</li>
+              <li>daily counts of Pro use: how many photos were saved with Pro, processed by Batch or cleaned with Pro metadata modes, and how many AI detection or AI Evasion runs were made. Only numbers.</li>
+            </ul>
+            <p className="text-(--text-muted)">
+              We use this to run the license, to show your devices, and to review refund requests, which are judged on
+              whether Pro was used. Only DotSuite staff handling your account can see it. The Free plan sends nothing.
+            </p>
+          </section>
+
+          <section className="bg-(--card-bg) border border-(--card-border) rounded-xl p-6">
+            <h2 className="text-2xl font-semibold mb-4">4. Information Sharing</h2>
             <p className="text-(--text-muted)">
               We do not share your personal information with third parties except as described in this policy. We may share information with service providers who assist us in operating our platform.
             </p>
           </section>
 
           <section className="bg-(--card-bg) border border-(--card-border) rounded-xl p-6">
-            <h2 className="text-2xl font-semibold mb-4">4. Data Security</h2>
+            <h2 className="text-2xl font-semibold mb-4">5. Data Security</h2>
             <p className="text-(--text-muted)">
               We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.
             </p>
           </section>
 
           <section className="bg-(--card-bg) border border-(--card-border) rounded-xl p-6">
-            <h2 className="text-2xl font-semibold mb-4">5. Your Rights</h2>
+            <h2 className="text-2xl font-semibold mb-4">6. Your Rights</h2>
             <p className="text-(--text-muted)">
               You have the right to access, update, or delete your personal information at any time. You can manage your account settings or contact us for assistance.
             </p>
           </section>
 
           <section className="bg-(--card-bg) border border-(--card-border) rounded-xl p-6">
-            <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
+            <h2 className="text-2xl font-semibold mb-4">7. Contact Us</h2>
             <p className="text-(--text-muted)">
               If you have any questions about this Privacy Policy, please contact us through our website.
             </p>
