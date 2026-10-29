@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useConfirm } from "@/components/ConfirmModal";
 
 type Device = { machine_id: string; name: string | null; activated_at: string | null; last_seen_at: string | null };
-type DevicesResponse = { limit: number; devices: Device[] };
+type DevicesResponse = { limit: number; devices: Device[]; self_removals_left: number; self_removals_reset_at: string | null };
 
 async function fetchDevices(): Promise<DevicesResponse> {
   const res = await fetch("/api/dotscramble/devices", { cache: "no-store" });
@@ -34,7 +34,7 @@ export default function DevicesCard() {
 
   async function remove(device: Device) {
     const ok = await confirm(
-      `${device.name || "This device"} will return to the Free plan the next time DotScramble checks in, and its slot becomes available right away.`,
+      `${device.name || "This device"} will return to the Free plan the next time DotScramble checks in, and its slot becomes available right away. This uses 1 of your 2 removals for these 30 days.`,
       { title: "Remove this device?", confirmLabel: "Remove", variant: "danger" },
     );
     if (!ok) return;
@@ -63,10 +63,17 @@ export default function DevicesCard() {
           </span>
         )}
       </div>
-      <p className="text-sm text-(--text-muted) mb-4">
+      <p className="text-sm text-(--text-muted) mb-2">
         Your account can use DotScramble Max on {data?.limit ?? 2} computers at a time. Remove one you no
         longer use (a reinstalled system counts as a new computer) to activate another.
       </p>
+      {data && (
+        <p className={`text-sm mb-4 ${data.self_removals_left === 0 ? "text-yellow-500" : "text-(--text-muted)"}`}>
+          {data.self_removals_left > 0
+            ? `You can remove ${data.self_removals_left} more ${data.self_removals_left === 1 ? "device" : "devices"} yourself in these 30 days (deactivating in the app counts too).`
+            : `You've used your 2 removals for these 30 days${data.self_removals_reset_at ? `; the next one is available on ${when(data.self_removals_reset_at)}` : ""}. To change computers sooner, email support@dotsuite.dev.`}
+        </p>
+      )}
 
       {error && <p className="text-sm text-red-500 mb-3">{error}</p>}
 
@@ -89,7 +96,7 @@ export default function DevicesCard() {
               </div>
               <button
                 onClick={() => remove(device)}
-                disabled={removing === device.machine_id}
+                disabled={removing === device.machine_id || data.self_removals_left === 0}
                 className="self-start sm:self-auto px-3 py-1.5 text-sm rounded-lg border border-red-500/30 text-red-500 hover:bg-red-500/10 disabled:opacity-50 transition-colors"
               >
                 {removing === device.machine_id ? "Removing…" : "Remove"}

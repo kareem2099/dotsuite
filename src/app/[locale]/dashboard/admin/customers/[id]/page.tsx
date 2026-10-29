@@ -21,6 +21,7 @@ type Evidence = {
   usage: { days: UsageRow[]; total: Counts; since_latest_payment: Counts; since_day: string | null };
   events: { event: string; detail: string; at: string }[];
   refund_requests: RefundRequest[];
+  self_removals: { left: number; resets_at: string | null };
 };
 
 const USAGE_LABELS: [keyof Counts, string][] = [
@@ -94,6 +95,25 @@ export default function CustomerPage() {
     if (await post(`/api/admin/customers/${id}/refund-requests`, { payment_kind: logging.kind, payment_id: logging.id, reason })) {
       setLogging(null);
       setReason("");
+    }
+  }
+
+  async function removeDevice(device: Device) {
+    const ok = await confirm(
+      `Free ${device.name ?? "this computer"}'s slot? It returns to the Free plan at its next check-in. This doesn't use the customer's own removals.`,
+      { title: "Remove device", confirmLabel: "Remove", variant: "danger" },
+    );
+    if (!ok) return;
+    setBusy(true);
+    setError("");
+    try {
+      const res = await fetch(`/api/admin/customers/${id}/devices/${device.machine_id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? "Unable to remove the device");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Unable to remove the device");
+    } finally {
+      setBusy(false);
+      await load();
     }
   }
 
@@ -235,11 +255,11 @@ export default function CustomerPage() {
               )}
             </Card>
 
-            <Card title="Devices" aside={<span className="text-xs text-(--text-muted)">Active now: {data.devices.filter((d) => d.in_slot).length} of 2</span>}>
+            <Card title="Devices" aside={<span className="text-xs text-(--text-muted)">Active now: {data.devices.filter((d) => d.in_slot).length} of 2 · customer removals left: {data.self_removals.left} of 2{data.self_removals.resets_at ? ` (next on ${day(data.self_removals.resets_at)})` : ""}</span>}>
               {data.devices.length === 0 ? <p className="text-sm text-(--text-muted)">Never activated on any computer.</p> : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
-                    <thead className="text-left text-(--text-muted)"><tr><th className="py-1 pr-4">Computer</th><th className="pr-4">Activated</th><th className="pr-4">Last check-in</th><th className="pr-4">Version</th><th className="pr-4">Activated with</th><th>Now</th></tr></thead>
+                    <thead className="text-left text-(--text-muted)"><tr><th className="py-1 pr-4">Computer</th><th className="pr-4">Activated</th><th className="pr-4">Last check-in</th><th className="pr-4">Version</th><th className="pr-4">Activated with</th><th className="pr-4">Now</th><th /></tr></thead>
                     <tbody>
                       {data.devices.map((d) => (
                         <tr key={d.machine_id} className="border-t border-(--card-border)">
@@ -248,7 +268,12 @@ export default function CustomerPage() {
                           <td className="pr-4 whitespace-nowrap">{day(d.last_seen_at)}</td>
                           <td className="pr-4">{d.app_version ?? "≤1.5"}</td>
                           <td className="pr-4">{d.key ? `${d.key.source === "dotscramble" ? "Connect (browser)" : "key entered by hand"}${d.key.active ? "" : ", key revoked"}` : "—"}</td>
-                          <td>{d.in_slot ? "active" : "removed"}</td>
+                          <td className="pr-4">{d.in_slot ? "active" : "removed"}</td>
+                          <td className="text-right">
+                            {isAdmin && d.in_slot && (
+                              <button disabled={busy} onClick={() => removeDevice(d)} className="text-red-500 hover:underline disabled:opacity-50">Remove</button>
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </tbody>

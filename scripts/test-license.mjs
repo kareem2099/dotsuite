@@ -59,6 +59,10 @@ try {
  let list=await devices();assert.equal(list.limit,2);assert.equal(list.devices.length,1);
  assert.equal(list.devices[0].name,'Linux · laptop');assert.ok(list.devices[0].activated_at&&list.devices[0].last_seen_at);
  assert.equal((await license('activate',a.plaintext_key,{machine_id:'bad"id'})).status,400);
+ // The app reads the same list for its License & devices window
+ r=await request('/v1/license/devices',{headers:{Authorization:'Bearer '+a.plaintext_key}});
+ assert.equal(r.status,200);assert.equal(r.value.limit,2);assert.deepEqual(r.value.devices.map(d=>d.machine_id),['laptop1']);
+ assert.equal((await request('/v1/license/devices',{headers:{}})).status,401);
 
  // Connecting again on the same computer retires the key it replaces
  const b=await newKey();
@@ -155,5 +159,20 @@ try {
  ev=await staff(`/v1/admin/customers/${id}/dotscramble`);
  const denied=ev.value.refund_requests.find(r=>r.id===second);assert.equal(denied.status,'denied');assert.equal(denied.decided_by,'admin@dotsuite.dev');
  assert.ok(ev.value.events.some(e=>e.event==='refund.approved')&&ev.value.events.some(e=>e.event==='refund.denied'));
- console.log('License scenarios passed: activate, reconnect, ID migration, limit, website removal, deactivate, key revoke, manual keys, rotation, isolation, usage, staff evidence, refund approve/deny/retry.');
+ // A customer frees 2 slots per 30 days themselves (laptop1 on the website, third in the app); then support
+ const shared2=rotated.value.plaintext_key;
+ let dv=await request('/v1/license/devices',{headers:{Authorization:'Bearer '+shared2}});
+ assert.equal(dv.value.self_removals_left,0);assert.ok(dv.value.self_removals_reset_at);
+ r=await call('/internal/dotscramble/devices/shared','DELETE');
+ assert.equal(r.status,409);assert.match(JSON.stringify(r.value),/support@dotsuite\.dev/);
+ assert.equal((await license('deactivate',shared2,{machine_id:'shared'})).status,409);
+ assert.equal((await license('recheck',shared2,{machine_id:'shared'})).status,200,'a refused deactivation changes nothing');
+ assert.equal((await staff(`/v1/admin/customers/${id}/devices/shared`,'DELETE',undefined,null)).status,400,'staff email required');
+ assert.equal((await staff(`/v1/admin/customers/${id}/devices/shared`,'DELETE')).status,204,'support has no limit');
+ assert.equal((await staff(`/v1/admin/customers/${id}/devices/shared`,'DELETE')).status,404);
+ assert.equal((await license('recheck',shared2,{machine_id:'shared'})).status,401,'its key is retired');
+ ev=await staff(`/v1/admin/customers/${id}/dotscramble`);
+ assert.equal(ev.value.self_removals.left,0);assert.ok(ev.value.events.some(e=>e.event==='license.device_removed_by_staff'&&e.detail.includes('admin@dotsuite.dev')));
+ assert.ok(ev.value.events.some(e=>e.event==='license.self_removal_limited'));
+ console.log('License scenarios passed: activate, reconnect, ID migration, limit, website removal, deactivate, key revoke, manual keys, rotation, isolation, usage, staff evidence, refund approve/deny/retry, self-removal limit, staff removal.');
 } finally { await client.close(); lemon.close(); }

@@ -55,6 +55,7 @@ export async function forwardStaff(path: string, staffEmail: string, init: { met
       const message = typeof err === "string" ? err : err?.message ?? "Request failed";
       return NextResponse.json({ error: message }, { status: res.status, headers: privateHeaders });
     }
+    if (res.status === 204) return new NextResponse(null, { status: 204, headers: privateHeaders });
     return NextResponse.json(data, { status: res.status, headers: privateHeaders });
   } catch {
     return NextResponse.json({ error: "Core is unavailable. Try again." }, { status: 502, headers: privateHeaders });

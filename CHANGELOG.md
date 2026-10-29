@@ -9,10 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-- License: Apache License 2.0 for this revision and future releases; updated the license text, package metadata, translations, social images, and product metadata default. Third-party dependencies retain their own licenses. Earlier revisions retain their original license terms.
+---
+
+## [1.7.0] — 2026-10-29 — "Support Tools, Device Management & Safer Accounts"
 
 ### Added
+- **Customers & refunds for staff** (`/dashboard/admin/customers`):
+  - Two roles: `ADMIN_EMAILS` (everything) and `SUPPORT_EMAILS` (view only), enforced in every API route; a dashboard card for both.
+  - Search a customer by email or account ID.
+  - Customer page with DotScramble usage (since the latest payment, all time, per day), payments, devices (name, version, activation and last check-in, and whether it was activated through Connect or with a key entered by hand), activity, and refund requests.
+  - Refund requests are logged with the customer's reason and decided with a required note: **Approve & refund** issues a full refund through Lemon Squeezy (and cancels a refunded subscription), **Deny** records why. A payment can never be refunded twice.
+  - Admins can remove any of a customer's devices.
+- **DotScramble devices** on the DotScramble dashboard: the computers in use (2 per account) with a Remove button. Customers can remove 2 devices every 30 days themselves; after that the page explains when the next is available and to contact support.
+- **Privacy policy**: a section on exactly what the DotScramble desktop app sends (an anonymous computer ID, a computer name, the app version and daily counts of Pro use; never photos, file names or metadata).
 - **DotMorph 2.0.0 (`prod_dotmorph`)**:
   - Added **DotMorph**, the radial-menu file converter for Linux, to the product catalog (`src/config/products.ts`) under the Python / Linux category.
   - Localized title and description in all 5 languages (`en`, `ar`, `fr`, `de`, `ru`).
@@ -23,7 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `license?: string` sets the SPDX license in the JSON-LD (DotMorph: `Apache-2.0`; the default is Apache-2.0).
   - `keywords?: string[]` adds product keywords to the page metadata and the JSON-LD.
 
+### Changed
+- License: Apache License 2.0 for this revision and future releases; updated the license text, package metadata, translations, social images, and product metadata default. Third-party dependencies retain their own licenses. Earlier revisions retain their original license terms.
+
 ### Fixed
+- **Sign-up, welcome and password emails could be cut off before they were sent**: they were started without being awaited, so Vercel stopped the function first and new accounts never got their verification link. They now run in `after()`.
+- The resend verification page hid its form after a successful send without saying so; it now confirms and offers **Send again**.
+- **DotScramble Connect** gives the app a key that can only check the license, revokes the key when the app can't be reached, and a new connection on the same computer retires the old key (keys no longer pile up to the 10-key limit).
+- The DotScramble activation help described a Settings screen that doesn't exist and called the 2-device limit "per key"; it now matches the app.
 - Product pages for non-VS Code tools (DotScramble, DotAegis, DotGhostBoard, DotMorph) no longer say "Install directly from VS Code Marketplace" in the meta description. They no longer get VS Code extension keywords either.
 
 ---
