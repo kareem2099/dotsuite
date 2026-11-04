@@ -267,7 +267,10 @@
     "subscribeSuccess": "Thanks for subscribing!",
     "emailPlaceholder": "Enter your email",
     "allRightsReserved": "All rights reserved.",
-    "copyright": "© 2025 dotsuite."
+    "copyright": "© 2025 dotsuite.",
+    "privacy": "Privacy policy",
+    "deleteDotReminder": "Delete DotReminder account",
+    "terms": "Terms"
   },
   "Common": {
     "loading": "Loading...",

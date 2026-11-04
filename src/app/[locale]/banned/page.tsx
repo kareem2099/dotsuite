@@ -1,3 +1,4 @@
+import { SUPPORT_EMAIL } from "@/lib/support";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -111,7 +112,7 @@ export default function BannedPage() {
           If you believe this is an error, contact support:
         </p>
         <a
-          href="mailto:kareem209907@gmail.com"
+          href={`mailto:${SUPPORT_EMAIL}`}
           style={{
             color: "#9ca3af",
             fontSize: "0.875rem",
@@ -122,7 +123,7 @@ export default function BannedPage() {
             transition: "color 0.2s",
           }}
         >
-          kareem209907@gmail.com
+          {SUPPORT_EMAIL}
         </a>
 
         {/* Code badge */}

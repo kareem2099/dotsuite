@@ -1,9 +1,9 @@
+import { SUPPORT_EMAIL as CONTACT_EMAIL } from "@/lib/support";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
 
 const EFFECTIVE_DATE = "May 24, 2026";
-const CONTACT_EMAIL = "kareem209907@gmail.com";
 
 type Props = { params: Promise<{ locale: string }> };
 

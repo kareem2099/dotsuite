@@ -1,3 +1,4 @@
+import { SUPPORT_EMAIL } from "@/lib/support";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/postgres";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
@@ -50,15 +51,22 @@ export async function POST(req: Request) {
       name, email, subject, message
     );
 
-    await Promise.all([
+    const [, delivered] = await Promise.all([
       Contact.create({ name, email, subject, message }),
       sendEmail({
-        to: process.env.EMAIL_USER!,
+        to: SUPPORT_EMAIL,
         subject: emailSubject,
         html,
         text: emailText,
       }),
     ]);
+
+    if (!delivered) {
+      return NextResponse.json(
+        { error: "Email delivery is unavailable. Please email " + SUPPORT_EMAIL + " directly." },
+        { status: 503 }
+      );
+    }
 
     return NextResponse.json(
       { success: true, message: "Your message has been sent successfully!" },

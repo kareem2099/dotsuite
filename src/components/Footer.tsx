@@ -61,6 +61,21 @@ export default function Footer() {
                   {tNav("contact")}
                 </Link>
               </li>
+              <li>
+                <Link href={`/${locale}/privacy`} className="hover:text-(--primary) transition-colors">
+                  {t("privacy")}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/privacy#delete-dotreminder`} className="hover:text-(--primary) transition-colors">
+                  {t("deleteDotReminder")}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/terms`} className="hover:text-(--primary) transition-colors">
+                  {t("terms")}
+                </Link>
+              </li>
               {!session && (
                 <>
                   <li>

@@ -1,3 +1,4 @@
+import { SUPPORT_EMAIL } from "@/lib/support";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -151,7 +152,7 @@ const organizationSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    email: "kareem209907@gmail.com",
+    email: SUPPORT_EMAIL,
     contactType: "customer support",
     availableLanguage: ["English", "Arabic"],
   },

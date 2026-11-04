@@ -267,7 +267,10 @@
     "subscribeSuccess": "شكرًا على اشتراكك!",
     "emailPlaceholder": "أدخل بريدك الإلكتروني",
     "allRightsReserved": "جميع الحقوق محفوظة.",
-    "copyright": "© 2025 dotsuite."
+    "copyright": "© 2025 dotsuite.",
+    "privacy": "سياسة الخصوصية",
+    "deleteDotReminder": "حذف حساب DotReminder",
+    "terms": "الشروط"
   },
   "Common": {
     "loading": "جاري التحميل...",

@@ -1,5 +1,6 @@
 "use client";
 
+import { SUPPORT_EMAIL } from "@/lib/support";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
@@ -37,8 +38,8 @@ export default function ContactInfo() {
             </div>
             <div>
               <h4 className="font-medium">{t("emailUs")}</h4>
-              <a href="mailto:kareem209907@gmail.com" className="text-[#10b981] hover:underline text-sm">
-                kareem209907@gmail.com
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="text-[#10b981] hover:underline text-sm">
+                {SUPPORT_EMAIL}
               </a>
             </div>
           </div>

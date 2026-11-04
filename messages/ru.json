@@ -266,7 +266,10 @@
     "subscribeSuccess": "Спасибо за подписку!",
     "emailPlaceholder": "Введите вашу почту",
     "allRightsReserved": "Все права защищены.",
-    "copyright": "© 2025 dotsuite."
+    "copyright": "© 2025 dotsuite.",
+    "privacy": "Конфиденциальность",
+    "deleteDotReminder": "Удалить аккаунт DotReminder",
+    "terms": "Условия"
   },
   "Common": {
     "loading": "Загрузка...",
