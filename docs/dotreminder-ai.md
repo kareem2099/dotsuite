@@ -4,7 +4,7 @@
 
 ## Runtime
 
-Use Node **24.x**, as declared in package.json. Firebase Admin 14 and its JWKS dependency load ESM from CommonJS; the older production runtime failed before the request handler could run. Local Node 24 tests exercise this dependency combination.
+Use Node **24.x**, as declared in package.json. Firebase Admin is pinned to **13.10.0**, whose JWKS dependency supports the production CommonJS loader. Firebase Admin 14 loaded an ESM-only transitive dependency before the request handler could run. The gateway tests exercise the pinned verifier.
 
 ## Hosting configuration
 
