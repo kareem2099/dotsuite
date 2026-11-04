@@ -1,41 +1,60 @@
 import type { PrivacyLanguage } from "./privacy-language";
 
-const baseCopy = {
-  en: {
-    title: "Delete your DotReminder account & associated data",
-    intro: "You can request deletion at any time, including after uninstalling the app. A DotSuite account or app installation is not required. Requests are handled by the DotReminder support team.",
-    scope: "What is deleted",
-    items: ["Your DotReminder sign-in account and linked sign-in / verification information.", "Your profile, reminders (including saved locations and notes), categories and templates.", "Your account’s device-session records in our database."],
-    timing: "We verify that you own the account before deleting it. After verification, we complete the request within 30 days and email you when it is finished. If more information is needed to identify your account, we will explain what is needed. Never send a password, SMS code, authenticator code or identity document in your request.",
-    warning: "Completed deletion is permanent. Deleting your DotReminder account does not delete your Google, Facebook or separate DotSuite account. Reminders can continue to notify you while a request is pending.",
-    copies: "Local copies and provider data",
-    retention: "Deletion removes the account-linked records listed above from our active systems. To remove local drafts, preferences and scheduled alarms on each device, clear DotReminder’s app storage or uninstall it. Copies you exported and device backups are under your control. Provider security/operational logs and AI submissions can be subject to the provider policies linked below; they are not covered by a promise that every provider copy disappears within 30 days. We request provider deletion for identifiable account-linked data where supported. Anonymous aggregate statistics that no longer identify you cannot be linked back to an account. We do not deliberately retain the profile, reminder, category, template or session records listed above after completing deletion. If a legal obligation requires an exception, we explain the affected information, reason and applicable retention period in our response.",
-    email: "Account email address", uid: "Account ID (optional)",
-    hint: "Use the email you use with DotReminder. If you cannot access that inbox, email support and describe the issue; do not send credentials.",
-    submit: "Prepare deletion request email", fallback: "Or email us directly", draft: "Your email app will open a draft. Review it and press Send there. Opening this draft does not submit a request or delete your account.",
-    preview: "Request text — you can copy this into any email app", subject: "DotReminder — account and associated data deletion request",
-    body: "Please delete my DotReminder account and all associated account data: profile, reminders and saved locations, categories, templates and device-session records.\nAccount email: ", id: "\nAccount ID: ", ending: "\nPlease explain the account-ownership verification steps and confirm completion by email. I understand completed deletion is permanent.",
-  },
-  ar: {
-    title: "حذف حساب DotReminder والبيانات المرتبطة به",
-    intro: "يمكنك طلب الحذف في أي وقت، حتى بعد إزالة التطبيق. لا تحتاج إلى حساب DotSuite أو إعادة تثبيت التطبيق. يتولى فريق دعم DotReminder معالجة الطلبات.",
-    scope: "ما الذي يُحذف؟",
-    items: ["حساب تسجيل الدخول إلى DotReminder وبيانات تسجيل الدخول والتحقق المرتبطة به.", "ملفك الشخصي والتذكيرات، بما فيها المواقع والملاحظات المحفوظة، والفئات والقوالب.", "سجلات جلسات أجهزة حسابك في قاعدة بياناتنا."],
-    timing: "نتحقق من ملكيتك للحساب قبل حذفه. بعد التحقق، ننفذ الطلب خلال ٣٠ يومًا ونبلغك بالبريد عند اكتماله. إذا احتجنا معلومات إضافية لتحديد الحساب، نوضح المطلوب. لا ترسل كلمة مرور أو رمز SMS أو رمز تطبيق المصادقة أو مستند هوية ضمن الطلب.",
-    warning: "الحذف بعد اكتماله نهائي. حذف حساب DotReminder لا يحذف حساب Google أو Facebook أو حساب DotSuite المنفصل. قد تستمر تنبيهات التذكيرات أثناء معالجة الطلب.",
-    copies: "النسخ المحلية وبيانات مزوّدي الخدمات",
-    retention: "يحذف الطلب سجلات الحساب المذكورة أعلاه من أنظمتنا النشطة. لحذف المسودات والتفضيلات والتنبيهات المجدولة محليًا على كل جهاز، امسح بيانات DotReminder من إعدادات الجهاز أو أزل التطبيق. النسخ التي صدّرتها والنسخ الاحتياطية لجهازك تقع تحت تحكمك. قد تخضع سجلات الأمان والتشغيل ومدخلات الذكاء الاصطناعي لدى المزوّدين لسياساتهم المرتبطة أدناه؛ لا يشملها وعد باختفاء كل نسخة لدى كل مزوّد خلال ٣٠ يومًا. نطلب حذف البيانات المرتبطة بالحساب والقابلة للتحديد لدى المزوّدين حيثما تدعم خدماتهم ذلك. لا يمكن ربط الإحصاءات المجمّعة مجهولة الهوية بحساب بعينه. لا نحتفظ عمدًا بسجلات الملف الشخصي أو التذكيرات أو الفئات أو القوالب أو الجلسات المذكورة أعلاه بعد اكتمال الحذف. إذا تطلب التزام قانوني استثناءً، نوضح في ردنا البيانات المعنية والسبب ومدة الاحتفاظ المطبقة.",
-    email: "البريد الإلكتروني للحساب", uid: "معرّف الحساب (اختياري)",
-    hint: "استخدم بريد حسابك في DotReminder. إذا تعذر الوصول إليه، راسل الدعم واشرح المشكلة دون إرسال بيانات الدخول.",
-    submit: "تجهيز رسالة طلب الحذف", fallback: "أو راسلنا مباشرة", draft: "سيفتح تطبيق البريد مسودة. راجعها واضغط إرسال داخله. فتح المسودة وحده لا يرسل الطلب ولا يحذف الحساب.",
-    preview: "نص الطلب — يمكنك نسخه إلى أي تطبيق بريد", subject: "DotReminder — طلب حذف الحساب والبيانات المرتبطة به",
-    body: "أرجو حذف حسابي في DotReminder وجميع بياناته المرتبطة: الملف الشخصي والتذكيرات والمواقع المحفوظة والفئات والقوالب وسجلات جلسات الأجهزة.\nبريد الحساب: ", id: "\nمعرّف الحساب: ", ending: "\nأرجو توضيح خطوات التحقق من ملكية الحساب وتأكيد اكتمال الحذف بالبريد. أفهم أن الحذف بعد اكتماله نهائي.",
-  },
-};
+type DeletionRequestCopy = { title: string; intro: string; scope: string; items: string[]; timing: string; warning: string; copies: string; retention: string; email: string; uid: string; hint: string; submit: string; fallback: string; draft: string; preview: string; subject: string; body: string; id: string; ending: string };
 
 export const deletionRequestCopy = {
-  ...baseCopy,
-
+  "en": {
+    "title": "Delete your DotReminder account & associated data",
+    "intro": "You can request deletion at any time, including after uninstalling the app. A DotSuite account or app installation is not required. Requests are handled by the DotReminder support team.",
+    "scope": "What is deleted",
+    "items": [
+      "Your DotReminder sign-in account and linked sign-in / verification information.",
+      "Your profile, reminders (including saved locations and notes), categories and templates.",
+      "Your account’s device-session records in our database.",
+      "Your account-linked AI usage-limit records maintained by DotSuite."
+    ],
+    "timing": "We verify that you own the account before deleting it. After verification, we complete the request within 30 days and email you when it is finished. If more information is needed to identify your account, we will explain what is needed. Never send a password, SMS code, authenticator code or identity document in your request.",
+    "warning": "Completed deletion is permanent. Deleting your DotReminder account does not delete your Google, Facebook or separate DotSuite account. Reminders can continue to notify you while a request is pending.",
+    "copies": "Local copies and provider data",
+    "retention": "Deletion removes the account-linked records listed above from our active systems. To remove local drafts, preferences and scheduled alarms on each device, clear DotReminder’s app storage or uninstall it. Copies you exported and device backups are under your control. Provider security/operational logs and AI submissions can be subject to the provider policies linked below; they are not covered by a promise that every provider copy disappears within 30 days. We request provider deletion for identifiable account-linked data where supported. Anonymous aggregate statistics that no longer identify you cannot be linked back to an account. We do not deliberately retain the profile, reminder, category, template or session records listed above after completing deletion. If a legal obligation requires an exception, we explain the affected information, reason and applicable retention period in our response.",
+    "email": "Account email address",
+    "uid": "Account ID (optional)",
+    "hint": "Use the email you use with DotReminder. If you cannot access that inbox, email support and describe the issue; do not send credentials.",
+    "submit": "Prepare deletion request email",
+    "fallback": "Or email us directly",
+    "draft": "Your email app will open a draft. Review it and press Send there. Opening this draft does not submit a request or delete your account.",
+    "preview": "Request text — you can copy this into any email app",
+    "subject": "DotReminder — account and associated data deletion request",
+    "body": "Please delete my DotReminder account and all associated account data: profile, reminders and saved locations, categories, templates and device-session records.\nAccount email: ",
+    "id": "\nAccount ID: ",
+    "ending": "\nPlease explain the account-ownership verification steps and confirm completion by email. I understand completed deletion is permanent."
+  },
+  "ar": {
+    "title": "حذف حساب DotReminder والبيانات المرتبطة به",
+    "intro": "يمكنك طلب الحذف في أي وقت، حتى بعد إزالة التطبيق. لا تحتاج إلى حساب DotSuite أو إعادة تثبيت التطبيق. يتولى فريق دعم DotReminder معالجة الطلبات.",
+    "scope": "ما الذي يُحذف؟",
+    "items": [
+      "حساب تسجيل الدخول إلى DotReminder وبيانات تسجيل الدخول والتحقق المرتبطة به.",
+      "ملفك الشخصي والتذكيرات، بما فيها المواقع والملاحظات المحفوظة، والفئات والقوالب.",
+      "سجلات جلسات أجهزة حسابك في قاعدة بياناتنا.",
+      "سجلات حدود استخدام الذكاء الاصطناعي المرتبطة بحسابك والمحفوظة لدى DotSuite."
+    ],
+    "timing": "نتحقق من ملكيتك للحساب قبل حذفه. بعد التحقق، ننفذ الطلب خلال ٣٠ يومًا ونبلغك بالبريد عند اكتماله. إذا احتجنا معلومات إضافية لتحديد الحساب، نوضح المطلوب. لا ترسل كلمة مرور أو رمز SMS أو رمز تطبيق المصادقة أو مستند هوية ضمن الطلب.",
+    "warning": "الحذف بعد اكتماله نهائي. حذف حساب DotReminder لا يحذف حساب Google أو Facebook أو حساب DotSuite المنفصل. قد تستمر تنبيهات التذكيرات أثناء معالجة الطلب.",
+    "copies": "النسخ المحلية وبيانات مزوّدي الخدمات",
+    "retention": "يحذف الطلب سجلات الحساب المذكورة أعلاه من أنظمتنا النشطة. لحذف المسودات والتفضيلات والتنبيهات المجدولة محليًا على كل جهاز، امسح بيانات DotReminder من إعدادات الجهاز أو أزل التطبيق. النسخ التي صدّرتها والنسخ الاحتياطية لجهازك تقع تحت تحكمك. قد تخضع سجلات الأمان والتشغيل ومدخلات الذكاء الاصطناعي لدى المزوّدين لسياساتهم المرتبطة أدناه؛ لا يشملها وعد باختفاء كل نسخة لدى كل مزوّد خلال ٣٠ يومًا. نطلب حذف البيانات المرتبطة بالحساب والقابلة للتحديد لدى المزوّدين حيثما تدعم خدماتهم ذلك. لا يمكن ربط الإحصاءات المجمّعة مجهولة الهوية بحساب بعينه. لا نحتفظ عمدًا بسجلات الملف الشخصي أو التذكيرات أو الفئات أو القوالب أو الجلسات المذكورة أعلاه بعد اكتمال الحذف. إذا تطلب التزام قانوني استثناءً، نوضح في ردنا البيانات المعنية والسبب ومدة الاحتفاظ المطبقة.",
+    "email": "البريد الإلكتروني للحساب",
+    "uid": "معرّف الحساب (اختياري)",
+    "hint": "استخدم بريد حسابك في DotReminder. إذا تعذر الوصول إليه، راسل الدعم واشرح المشكلة دون إرسال بيانات الدخول.",
+    "submit": "تجهيز رسالة طلب الحذف",
+    "fallback": "أو راسلنا مباشرة",
+    "draft": "سيفتح تطبيق البريد مسودة. راجعها واضغط إرسال داخله. فتح المسودة وحده لا يرسل الطلب ولا يحذف الحساب.",
+    "preview": "نص الطلب — يمكنك نسخه إلى أي تطبيق بريد",
+    "subject": "DotReminder — طلب حذف الحساب والبيانات المرتبطة به",
+    "body": "أرجو حذف حسابي في DotReminder وجميع بياناته المرتبطة: الملف الشخصي والتذكيرات والمواقع المحفوظة والفئات والقوالب وسجلات جلسات الأجهزة.\nبريد الحساب: ",
+    "id": "\nمعرّف الحساب: ",
+    "ending": "\nأرجو توضيح خطوات التحقق من ملكية الحساب وتأكيد اكتمال الحذف بالبريد. أفهم أن الحذف بعد اكتماله نهائي."
+  },
   "de": {
     "title": "Ihr DotReminder-Konto und zugehörige Daten löschen",
     "intro": "Sie können die Löschung jederzeit beantragen, auch nach der Deinstallation. Ein DotSuite-Konto oder die Installation der App ist dafür nicht erforderlich. Der DotReminder-Support bearbeitet die Anfragen.",
@@ -43,7 +62,8 @@ export const deletionRequestCopy = {
     "items": [
       "Ihr DotReminder-Anmeldekonto und die zugehörigen Anmelde- und Verifizierungsinformationen.",
       "Ihr Profil, Erinnerungen einschließlich gespeicherter Standorte und Notizen, Kategorien und Vorlagen.",
-      "Die Gerätesitzungsdatensätze Ihres Kontos in unserer Datenbank."
+      "Die Gerätesitzungsdatensätze Ihres Kontos in unserer Datenbank.",
+      "Die bei DotSuite geführten kontobezogenen Datensätze für KI-Nutzungslimits."
     ],
     "timing": "Vor der Löschung prüfen wir, ob Ihnen das Konto gehört. Nach der Bestätigung schließen wir den Antrag innerhalb von 30 Tagen ab und informieren Sie per E-Mail. Falls wir weitere Angaben zur Zuordnung benötigen, erklären wir Ihnen diese. Senden Sie niemals Passwörter, SMS-Codes, Authenticator-Codes oder Ausweisdokumente mit Ihrem Antrag.",
     "warning": "Eine abgeschlossene Löschung ist endgültig. Die Löschung Ihres DotReminder-Kontos löscht nicht Ihr Google-, Facebook- oder separates DotSuite-Konto. Während der Bearbeitung können Erinnerungen weiterhin Benachrichtigungen auslösen.",
@@ -68,7 +88,8 @@ export const deletionRequestCopy = {
     "items": [
       "Votre compte de connexion DotReminder et les informations de connexion et de vérification associées.",
       "Votre profil, vos rappels, y compris les lieux et notes enregistrés, vos catégories et modèles.",
-      "Les enregistrements des sessions de vos appareils dans notre base de données."
+      "Les enregistrements des sessions de vos appareils dans notre base de données.",
+      "Les enregistrements des limites d’utilisation de l’IA liés à votre compte et conservés par DotSuite."
     ],
     "timing": "Nous vérifions que vous êtes titulaire du compte avant de le supprimer. Après vérification, nous exécutons la demande dans un délai de 30 jours et vous prévenons par e-mail. Si des informations supplémentaires sont nécessaires pour identifier le compte, nous vous indiquons lesquelles. N’envoyez jamais de mot de passe, de code SMS, de code d’authentification ou de pièce d’identité dans votre demande.",
     "warning": "La suppression, une fois terminée, est définitive. Supprimer votre compte DotReminder ne supprime pas vos comptes Google, Facebook ou votre compte DotSuite distinct. Les rappels peuvent continuer à produire des notifications pendant le traitement.",
@@ -93,7 +114,8 @@ export const deletionRequestCopy = {
     "items": [
       "Аккаунт входа DotReminder и связанные сведения для входа и проверки.",
       "Ваш профиль, напоминания, включая сохранённые места и заметки, категории и шаблоны.",
-      "Записи сеансов устройств вашего аккаунта в нашей базе данных."
+      "Записи сеансов устройств вашего аккаунта в нашей базе данных.",
+      "Связанные с вашим аккаунтом записи лимитов использования ИИ, хранящиеся у DotSuite."
     ],
     "timing": "Перед удалением мы проверяем, что аккаунт принадлежит вам. После проверки запрос выполняется в течение 30 дней; о завершении мы сообщаем по электронной почте. Если для определения аккаунта нужны дополнительные сведения, мы объясним, какие именно. Не отправляйте пароли, коды SMS, коды приложения-аутентификатора или документы, удостоверяющие личность.",
     "warning": "Завершённое удаление необратимо. Удаление аккаунта DotReminder не удаляет ваши аккаунты Google, Facebook или отдельный аккаунт DotSuite. Пока запрос обрабатывается, напоминания могут продолжать отправлять уведомления.",
@@ -111,5 +133,4 @@ export const deletionRequestCopy = {
     "id": "\nИдентификатор аккаунта: ",
     "ending": "\nПожалуйста, объясните порядок проверки владельца аккаунта и подтвердите удаление по электронной почте. Я понимаю, что завершённое удаление необратимо."
   }
-
-} satisfies Record<PrivacyLanguage, typeof baseCopy.en>;
+} satisfies Record<PrivacyLanguage, DeletionRequestCopy>;

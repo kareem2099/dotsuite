@@ -1,41 +1,68 @@
 import type { PrivacyLanguage } from "./privacy-language";
 
-const baseCopy = {
-  en: {
-    title: "DotReminder: privacy & account deletion",
-    intro: "DotReminder is a DotSuite app. This section explains the Android app’s data practices and how to request deletion of your account and associated data.",
-    updated: "Last updated: November 4, 2026",
-    request: "Request account and data deletion",
-    policy: "Read the DotReminder policy",
-    sections: [
-      ["Account and reminder data", "We use Firebase Authentication for sign-in and verification. It processes your user ID, email address, phone number if provided, linked Google or Facebook identity, and authentication and verification information. Firestore stores your profile, reminders (including titles, notes, dates, recurrence and optional locations), categories, templates and device session records. Session records include a generated session ID, device name/model and activity times. We use these records to provide your account, synchronize your reminders and show your signed-in devices."],
-      ["Permissions and information on your device", "Notifications and exact-alarm access let the app deliver reminders. Optional location access supports reminders based on a location you choose; a saved location and radius may be stored with that reminder. The app does not need access to your SMS inbox or contacts to verify a phone number. Biometric verification is performed by Android: DotReminder receives an authentication result, not your fingerprint or biometric template. App preferences, remembered email, scheduled-reminder information and temporary drafts may remain on your device."],
-      ["Optional AI assistance", "When you use AI chat, the text you submit and conversation context are sent to Google’s Gemini service to generate replies and reminder suggestions. Avoid submitting information you do not want processed by that service. Google’s applicable Gemini terms and retention rules govern that processing; we do not promise that these submissions are excluded from all provider retention or model improvement."],
-      ["Analytics, advertising and other providers", "The app includes Firebase Analytics and Google AdMob. Depending on device settings, permissions and applicable consent, these services may process app interactions, device and app information, IP addresses and advertising or app-instance identifiers for analytics, ad delivery, measurement and abuse prevention. Google/Firebase, Google sign-in, Facebook sign-in and the hosting/email providers used for support process information needed for their services. Do not assume that hiding an ad placement disables every SDK’s collection."],
-      ["Retention and control", "We retain your active account information and saved reminder data while you use the account, until you delete individual records or your verified account-deletion request is completed. You can edit or delete individual reminders, categories and templates in the app. For access, correction, deletion of specific information or a privacy question, email support@dotsuite.dev. Removing the app or signing out does not delete cloud data. The account-deletion process covers our account-linked records; independent provider logs, device backups and anonymous aggregate statistics are described separately there."],
-    ],
-    linksTitle: "Service-provider information",
-  },
-  ar: {
-    title: "DotReminder: الخصوصية وحذف الحساب",
-    intro: "DotReminder تطبيق من DotSuite. يوضح هذا القسم كيفية التعامل مع بيانات تطبيق أندرويد وطريقة طلب حذف الحساب والبيانات المرتبطة به.",
-    updated: "آخر تحديث: ٤ نوفمبر ٢٠٢٦",
-    request: "طلب حذف الحساب والبيانات",
-    policy: "قراءة سياسة DotReminder",
-    sections: [
-      ["بيانات الحساب والتذكيرات", "نستخدم Firebase Authentication لتسجيل الدخول والتحقق. تعالج الخدمة معرّف المستخدم والبريد الإلكتروني ورقم الهاتف عند تقديمه، وهوية Google أو Facebook المرتبطة، وبيانات المصادقة والتحقق. تخزن Firestore الملف الشخصي والتذكيرات، بما فيها العناوين والملاحظات والمواعيد والتكرار والمواقع الاختيارية، والفئات والقوالب وسجلات جلسات الأجهزة. تتضمن سجلات الجلسات معرّفًا مولّدًا واسم الجهاز وطرازه وأوقات النشاط. نستخدمها لتشغيل الحساب ومزامنة التذكيرات وعرض أجهزة تسجيل الدخول."],
-      ["الصلاحيات والبيانات على الجهاز", "تُستخدم صلاحيات الإشعارات والتنبيهات الدقيقة لتوصيل التذكيرات. يدعم إذن الموقع الاختياري التذكيرات المرتبطة بموقع تختاره، وقد يُحفظ الموقع ونطاقه مع التذكير. لا يحتاج التحقق من رقم الهاتف إلى قراءة صندوق رسائل SMS أو جهات الاتصال. يجري أندرويد التحقق بالبصمة، ويتلقى DotReminder نتيجة التحقق ولا يتلقى بصمتك أو قالبها. قد تبقى تفضيلات التطبيق والبريد المحفوظ وبيانات التنبيهات المجدولة والمسودات المؤقتة على جهازك."],
-      ["مساعدة الذكاء الاصطناعي الاختيارية", "عند استخدام محادثة الذكاء الاصطناعي، يُرسل النص الذي تقدمه وسياق المحادثة إلى خدمة Gemini من Google لإنتاج الردود واقتراح التذكيرات. تجنب تقديم معلومات لا ترغب في معالجتها بهذه الخدمة. تخضع المعالجة لشروط Gemini وقواعد الاحتفاظ المطبقة لدى Google؛ لا نَعِد باستثناء المدخلات من جميع أنواع احتفاظ المزوّد أو تحسين النماذج."],
-      ["التحليلات والإعلانات ومزوّدو الخدمات", "يتضمن التطبيق Firebase Analytics وGoogle AdMob. بحسب إعدادات الجهاز والصلاحيات والموافقة المطلوبة، قد تعالج هذه الخدمات تفاعلات التطبيق ومعلومات الجهاز والتطبيق وعنوان IP ومعرّفات الإعلانات أو نسخة التطبيق لأغراض التحليل وتوصيل الإعلانات وقياسها ومنع الإساءة. تعالج Google وFirebase وخدمات تسجيل الدخول من Google وFacebook ومزوّدو الاستضافة والبريد المستخدمون للدعم المعلومات اللازمة لخدماتهم. إخفاء موضع إعلان لا يعني تعطيل جميع عمليات جمع البيانات في حزم الخدمات."],
-      ["الاحتفاظ والتحكم في بياناتك", "نحتفظ ببيانات الحساب النشط والتذكيرات المحفوظة أثناء استخدام الحساب، إلى أن تحذف السجلات منفردة أو يكتمل طلب حذف الحساب بعد التحقق من ملكيته. يمكنك تعديل وحذف التذكيرات والفئات والقوالب من التطبيق. لطلب الوصول إلى بياناتك أو تصحيحها أو حذف معلومات محددة أو الاستفسار عن الخصوصية، تواصل بالبريد أدناه. إزالة التطبيق أو تسجيل الخروج لا يحذفان بيانات السحابة. يشمل مسار الحذف أدناه سجلاتنا المرتبطة بالحساب، ويوضح بصورة منفصلة وضع سجلات المزوّدين المستقلة ونسخ الجهاز والإحصاءات المجمّعة مجهولة الهوية."],
-    ],
-    linksTitle: "معلومات مزوّدي الخدمات",
-  },
-};
+type PrivacyPolicyCopy = { title: string; intro: string; updated: string; request: string; policy: string; sections: string[][]; linksTitle: string };
 
 export const privacyPolicyCopy = {
-  ...baseCopy,
-
+  "en": {
+    "title": "DotReminder: privacy & account deletion",
+    "intro": "DotReminder is a DotSuite app. This section explains the Android app’s data practices and how to request deletion of your account and associated data.",
+    "updated": "Last updated: November 4, 2026",
+    "request": "Request account and data deletion",
+    "policy": "Read the DotReminder policy",
+    "sections": [
+      [
+        "Account and reminder data",
+        "We use Firebase Authentication for sign-in and verification. It processes your user ID, email address, phone number if provided, linked Google or Facebook identity, and authentication and verification information. Firestore stores your profile, reminders (including titles, notes, dates, recurrence and optional locations), categories, templates and device session records. Session records include a generated session ID, device name/model and activity times. We use these records to provide your account, synchronize your reminders and show your signed-in devices."
+      ],
+      [
+        "Permissions and information on your device",
+        "Notifications and exact-alarm access let the app deliver reminders. Optional location access supports reminders based on a location you choose; a saved location and radius may be stored with that reminder. The app does not need access to your SMS inbox or contacts to verify a phone number. Biometric verification is performed by Android: DotReminder receives an authentication result, not your fingerprint or biometric template. App preferences, remembered email, scheduled-reminder information and temporary drafts may remain on your device."
+      ],
+      [
+        "Optional AI assistance",
+        "When you use AI chat, the text you submit and conversation context are sent to Google’s Gemini service to generate replies and reminder suggestions. Avoid submitting information you do not want processed by that service. Google’s applicable Gemini terms and retention rules govern that processing; we do not promise that these submissions are excluded from all provider retention or model improvement. Requests pass through the DotSuite backend, which verifies your Firebase account token and processes your account identifier, usage counters and a hashed network identifier to enforce access and usage limits. We do not store AI conversation content in this backend."
+      ],
+      [
+        "Analytics, advertising and other providers",
+        "The app includes Firebase Analytics and Google AdMob. Depending on device settings, permissions and applicable consent, these services may process app interactions, device and app information, IP addresses and advertising or app-instance identifiers for analytics, ad delivery, measurement and abuse prevention. Google/Firebase, Google sign-in, Facebook sign-in and the hosting/email providers used for support process information needed for their services. Do not assume that hiding an ad placement disables every SDK’s collection."
+      ],
+      [
+        "Retention and control",
+        "We retain your active account information and saved reminder data while you use the account, until you delete individual records or your verified account-deletion request is completed. You can edit or delete individual reminders, categories and templates in the app. For access, correction, deletion of specific information or a privacy question, email support@dotsuite.dev. Removing the app or signing out does not delete cloud data. The account-deletion process covers our account-linked records; independent provider logs, device backups and anonymous aggregate statistics are described separately there."
+      ]
+    ],
+    "linksTitle": "Service-provider information"
+  },
+  "ar": {
+    "title": "DotReminder: الخصوصية وحذف الحساب",
+    "intro": "DotReminder تطبيق من DotSuite. يوضح هذا القسم كيفية التعامل مع بيانات تطبيق أندرويد وطريقة طلب حذف الحساب والبيانات المرتبطة به.",
+    "updated": "آخر تحديث: ٤ نوفمبر ٢٠٢٦",
+    "request": "طلب حذف الحساب والبيانات",
+    "policy": "قراءة سياسة DotReminder",
+    "sections": [
+      [
+        "بيانات الحساب والتذكيرات",
+        "نستخدم Firebase Authentication لتسجيل الدخول والتحقق. تعالج الخدمة معرّف المستخدم والبريد الإلكتروني ورقم الهاتف عند تقديمه، وهوية Google أو Facebook المرتبطة، وبيانات المصادقة والتحقق. تخزن Firestore الملف الشخصي والتذكيرات، بما فيها العناوين والملاحظات والمواعيد والتكرار والمواقع الاختيارية، والفئات والقوالب وسجلات جلسات الأجهزة. تتضمن سجلات الجلسات معرّفًا مولّدًا واسم الجهاز وطرازه وأوقات النشاط. نستخدمها لتشغيل الحساب ومزامنة التذكيرات وعرض أجهزة تسجيل الدخول."
+      ],
+      [
+        "الصلاحيات والبيانات على الجهاز",
+        "تُستخدم صلاحيات الإشعارات والتنبيهات الدقيقة لتوصيل التذكيرات. يدعم إذن الموقع الاختياري التذكيرات المرتبطة بموقع تختاره، وقد يُحفظ الموقع ونطاقه مع التذكير. لا يحتاج التحقق من رقم الهاتف إلى قراءة صندوق رسائل SMS أو جهات الاتصال. يجري أندرويد التحقق بالبصمة، ويتلقى DotReminder نتيجة التحقق ولا يتلقى بصمتك أو قالبها. قد تبقى تفضيلات التطبيق والبريد المحفوظ وبيانات التنبيهات المجدولة والمسودات المؤقتة على جهازك."
+      ],
+      [
+        "مساعدة الذكاء الاصطناعي الاختيارية",
+        "عند استخدام محادثة الذكاء الاصطناعي، يُرسل النص الذي تقدمه وسياق المحادثة إلى خدمة Gemini من Google لإنتاج الردود واقتراح التذكيرات. تجنب تقديم معلومات لا ترغب في معالجتها بهذه الخدمة. تخضع المعالجة لشروط Gemini وقواعد الاحتفاظ المطبقة لدى Google؛ لا نَعِد باستثناء المدخلات من جميع أنواع احتفاظ المزوّد أو تحسين النماذج. تمر الطلبات عبر خادم DotSuite الذي يتحقق من توكن حساب Firebase ويعالج معرّف حسابك وعدادات الاستخدام ومعرّف شبكة مجزّأ لفرض حدود الوصول والاستخدام. لا نخزّن محتوى محادثة الذكاء الاصطناعي في هذا الخادم."
+      ],
+      [
+        "التحليلات والإعلانات ومزوّدو الخدمات",
+        "يتضمن التطبيق Firebase Analytics وGoogle AdMob. بحسب إعدادات الجهاز والصلاحيات والموافقة المطلوبة، قد تعالج هذه الخدمات تفاعلات التطبيق ومعلومات الجهاز والتطبيق وعنوان IP ومعرّفات الإعلانات أو نسخة التطبيق لأغراض التحليل وتوصيل الإعلانات وقياسها ومنع الإساءة. تعالج Google وFirebase وخدمات تسجيل الدخول من Google وFacebook ومزوّدو الاستضافة والبريد المستخدمون للدعم المعلومات اللازمة لخدماتهم. إخفاء موضع إعلان لا يعني تعطيل جميع عمليات جمع البيانات في حزم الخدمات."
+      ],
+      [
+        "الاحتفاظ والتحكم في بياناتك",
+        "نحتفظ ببيانات الحساب النشط والتذكيرات المحفوظة أثناء استخدام الحساب، إلى أن تحذف السجلات منفردة أو يكتمل طلب حذف الحساب بعد التحقق من ملكيته. يمكنك تعديل وحذف التذكيرات والفئات والقوالب من التطبيق. لطلب الوصول إلى بياناتك أو تصحيحها أو حذف معلومات محددة أو الاستفسار عن الخصوصية، تواصل بالبريد أدناه. إزالة التطبيق أو تسجيل الخروج لا يحذفان بيانات السحابة. يشمل مسار الحذف أدناه سجلاتنا المرتبطة بالحساب، ويوضح بصورة منفصلة وضع سجلات المزوّدين المستقلة ونسخ الجهاز والإحصاءات المجمّعة مجهولة الهوية."
+      ]
+    ],
+    "linksTitle": "معلومات مزوّدي الخدمات"
+  },
   "de": {
     "title": "DotReminder: Datenschutz und Kontolöschung",
     "intro": "DotReminder ist eine App von DotSuite. Dieser Abschnitt erläutert die Datenverarbeitung in der Android-App und wie Sie die Löschung Ihres Kontos und der zugehörigen Daten beantragen können.",
@@ -53,7 +80,7 @@ export const privacyPolicyCopy = {
       ],
       [
         "Optionale KI-Unterstützung",
-        "Bei Nutzung des KI-Chats werden Ihre Eingaben und der Gesprächskontext an den Gemini-Dienst von Google übermittelt, um Antworten und Erinnerungsvorschläge zu erzeugen. Geben Sie keine Informationen ein, die dieser Dienst nicht verarbeiten soll. Es gelten die jeweiligen Gemini-Bedingungen und Aufbewahrungsregeln von Google. Wir versprechen nicht, dass Eingaben von jeder Aufbewahrung oder Modellverbesserung beim Anbieter ausgeschlossen sind."
+        "Bei Nutzung des KI-Chats werden Ihre Eingaben und der Gesprächskontext an den Gemini-Dienst von Google übermittelt, um Antworten und Erinnerungsvorschläge zu erzeugen. Geben Sie keine Informationen ein, die dieser Dienst nicht verarbeiten soll. Es gelten die jeweiligen Gemini-Bedingungen und Aufbewahrungsregeln von Google. Wir versprechen nicht, dass Eingaben von jeder Aufbewahrung oder Modellverbesserung beim Anbieter ausgeschlossen sind. Anfragen laufen über das DotSuite-Backend. Es prüft Ihr Firebase-Kontotoken und verarbeitet Ihre Kontokennung, Nutzungszähler und eine gehashte Netzwerkkennung zur Durchsetzung von Zugriffs- und Nutzungslimits. Gesprächsinhalte werden in diesem Backend nicht gespeichert."
       ],
       [
         "Analyse, Werbung und andere Dienstleister",
@@ -83,7 +110,7 @@ export const privacyPolicyCopy = {
       ],
       [
         "Assistance facultative par IA",
-        "Lorsque vous utilisez la conversation IA, le texte envoyé et le contexte de la conversation sont transmis au service Gemini de Google afin de générer des réponses et des suggestions de rappels. N’envoyez pas d’informations que vous ne souhaitez pas voir traitées par ce service. Les conditions Gemini et les règles de conservation applicables de Google régissent ce traitement ; nous ne garantissons pas que ces saisies sont exclues de toute conservation ou amélioration des modèles par le fournisseur."
+        "Lorsque vous utilisez la conversation IA, le texte envoyé et le contexte de la conversation sont transmis au service Gemini de Google afin de générer des réponses et des suggestions de rappels. N’envoyez pas d’informations que vous ne souhaitez pas voir traitées par ce service. Les conditions Gemini et les règles de conservation applicables de Google régissent ce traitement ; nous ne garantissons pas que ces saisies sont exclues de toute conservation ou amélioration des modèles par le fournisseur. Les demandes passent par le serveur DotSuite, qui vérifie le jeton du compte Firebase et traite l’identifiant du compte, des compteurs d’utilisation et un identifiant réseau haché pour appliquer les limites d’accès et d’utilisation. Nous ne conservons pas le contenu des conversations IA dans ce serveur."
       ],
       [
         "Analyse, publicité et autres prestataires",
@@ -113,7 +140,7 @@ export const privacyPolicyCopy = {
       ],
       [
         "Необязательная помощь ИИ",
-        "При использовании ИИ-чата отправленный текст и контекст беседы передаются сервису Gemini компании Google для создания ответов и предложений напоминаний. Не отправляйте сведения, которые вы не хотите передавать этому сервису. Обработка регулируется применимыми условиями Gemini и правилами хранения Google; мы не обещаем исключить эти данные из всех видов хранения или улучшения моделей у поставщика."
+        "При использовании ИИ-чата отправленный текст и контекст беседы передаются сервису Gemini компании Google для создания ответов и предложений напоминаний. Не отправляйте сведения, которые вы не хотите передавать этому сервису. Обработка регулируется применимыми условиями Gemini и правилами хранения Google; мы не обещаем исключить эти данные из всех видов хранения или улучшения моделей у поставщика. Запросы проходят через сервер DotSuite, который проверяет токен аккаунта Firebase и обрабатывает идентификатор аккаунта, счётчики использования и хешированный сетевой идентификатор для ограничения доступа и использования. Содержание бесед с ИИ на этом сервере не сохраняется."
       ],
       [
         "Аналитика, реклама и другие поставщики",
@@ -126,5 +153,4 @@ export const privacyPolicyCopy = {
     ],
     "linksTitle": "Информация поставщиков услуг"
   }
-
-} satisfies Record<PrivacyLanguage, typeof baseCopy.en>;
+} satisfies Record<PrivacyLanguage, PrivacyPolicyCopy>;
