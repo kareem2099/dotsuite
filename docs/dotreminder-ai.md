@@ -2,6 +2,10 @@
 
 `POST /api/dotreminder/ai` is used by the Android application. It does not accept a Gemini key, model URL or model name from the app.
 
+## Runtime
+
+Use Node **24.x**, as declared in package.json. Firebase Admin 14 and its JWKS dependency load ESM from CommonJS; the older production runtime failed before the request handler could run. Local Node 24 tests exercise this dependency combination.
+
 ## Hosting configuration
 
 - `DOTREMINDER_GEMINI_API_KEY`: production-only sensitive environment variable in the existing hosting project. Never prefix it with `NEXT_PUBLIC_`, print it, or commit it.
