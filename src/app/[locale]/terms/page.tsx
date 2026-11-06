@@ -1,4 +1,6 @@
 import { SUPPORT_EMAIL as CONTACT_EMAIL } from "@/lib/support";
+import { getPrivacyLanguage } from "@/components/privacy/privacy-language";
+import { dotReminderTermsLabels, dotReminderTermsPath } from "@/lib/dotreminder-terms";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
@@ -18,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TermsPage({ params }: Props) {
   const { locale } = await params;
+  const language = getPrivacyLanguage(locale);
   const t = await getTranslations({ locale, namespace: "Terms" });
 
   const prohibited = [
@@ -48,6 +51,12 @@ export default async function TermsPage({ params }: Props) {
           <p className="text-(--text-muted) mt-3 text-sm leading-relaxed">
             {t("intro")}
           </p>
+        </div>
+
+        <div className="mb-8 rounded-xl border border-(--primary)/40 bg-(--card-bg) p-5">
+          <Link href={dotReminderTermsPath(language)} className="text-(--primary) underline underline-offset-4 font-semibold">
+            {dotReminderTermsLabels[language].terms}
+          </Link>
         </div>
 
         <div className="space-y-6">

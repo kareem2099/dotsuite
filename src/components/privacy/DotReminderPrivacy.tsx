@@ -1,6 +1,7 @@
 import DeletionRequest from "./DeletionRequest";
 import { privacyPolicyCopy } from "./privacy-policy-copy";
 import { getPrivacyLanguage } from "./privacy-language";
+import { dotReminderTermsLabels, dotReminderTermsPath } from "@/lib/dotreminder-terms";
 
 export default function DotReminderPrivacy({ locale }: { locale: string }) {
   const language = getPrivacyLanguage(locale);
@@ -15,6 +16,7 @@ export default function DotReminderPrivacy({ locale }: { locale: string }) {
         <nav aria-label={t.title} className="flex flex-wrap gap-3 mt-6">
           <a href="#delete-dotreminder" className="rounded-xl px-5 py-3 bg-(--primary) text-(--background) font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{t.request}</a>
           <a href="#dotreminder-data" className="rounded-xl border border-(--card-border) px-5 py-3 focus-visible:outline-2 focus-visible:outline-offset-4">{t.policy}</a>
+          <a href={dotReminderTermsPath(language)} className="rounded-xl border border-(--card-border) px-5 py-3 focus-visible:outline-2 focus-visible:outline-offset-4">{dotReminderTermsLabels[language].terms}</a>
         </nav>
       </section>
       <DeletionRequest language={language} />

@@ -15,6 +15,7 @@ const publicPages = [
   "/about",
   "/contact",
   "/terms",
+  "/dotreminder/terms",
   "/privacy",
   "/banned",
 ];
