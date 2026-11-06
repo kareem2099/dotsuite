@@ -65,22 +65,22 @@ export const dotShredzillaPolicyCopy = {
   },
   "de": {
     "title": "DotShredzilla: Datenschutz und Kontolöschung",
-    "intro": "DotShredzilla ist ein Trainingstracker von DotSuite für Android. Dieser Abschnitt erklärt, welche Daten die App speichert, warum, und wie du dein Konto und alle zugehörigen Daten löschst.",
+    "intro": "DotShredzilla ist ein Trainingstracker von DotSuite für Android. Dieser Abschnitt erklärt, welche Daten die App speichert, warum, und wie Sie Ihr Konto und alle zugehörigen Daten löschen.",
     "updated": "Zuletzt aktualisiert: 6. November 2026",
     "request": "Konto und Daten löschen",
     "policy": "Datenschutzhinweise zu DotShredzilla lesen",
     "sections": [
       [
         "Konto- und Trainingsdaten",
-        "Wir verwenden Firebase Authentication für die Anmeldung mit E-Mail und Passwort oder mit Google. Dabei werden deine Nutzer-ID, E-Mail-Adresse, dein Anzeigename und Authentifizierungsinformationen verarbeitet. Firestore speichert dein Profil (Geschlecht, Alter, Größe und Gewicht aus der Einrichtung), deine Einstellungen (Einheiten, Pausenzeit, Design, Erinnerungen, Wochenziel, Deload-Wochen und Messrhythmus), deine Übungsbibliothek und Trainingslisten, jeden erfassten Satz (Übung, Wiederholungen, Gewicht oder Platten, Seite, Satzart, Tempo, Notizen und Zeit), abgeschlossene Trainings, persönliche Rekorde und Körpermaße. Wir nutzen diese Daten nur, um die App zu betreiben: Verlauf, Fortschrittsdiagramme, Vorschläge, Rekorde und Auswertungen anzuzeigen und sie zwischen deinen Geräten zu synchronisieren."
+        "Wir verwenden Firebase Authentication für die Anmeldung mit E-Mail und Passwort oder mit Google. Dabei werden Ihre Nutzer-ID, E-Mail-Adresse, Ihr Anzeigename und Authentifizierungsinformationen verarbeitet. Firestore speichert Ihr Profil (Geschlecht, Alter, Größe und Gewicht aus der Einrichtung), Ihre Einstellungen (Einheiten, Pausenzeit, Design, Erinnerungen, Wochenziel, Deload-Wochen und Messrhythmus), Ihre Übungsbibliothek und Trainingslisten, jeden erfassten Satz (Übung, Wiederholungen, Gewicht oder Platten, Seite, Satzart, Tempo, Notizen und Zeit), abgeschlossene Trainings, persönliche Rekorde und Körpermaße. Wir nutzen diese Daten nur, um die App zu betreiben: Verlauf, Fortschrittsdiagramme, Vorschläge, Rekorde und Auswertungen anzuzeigen und sie zwischen Ihren Geräten zu synchronisieren."
       ],
       [
         "Gesundheits- und Fitnessdaten",
-        "Körpergewicht, Körpermaße und Trainingsverlauf sind Gesundheits- und Fitnessdaten. Wir verwenden sie nur, um dir die Funktionen der App bereitzustellen. Wir verkaufen sie nicht, nutzen sie nicht für Werbung und geben sie nicht an Werbetreibende weiter. Auswertungen und Vorschläge in der App sind allgemeine Fitnessinformationen und keine medizinische Beratung."
+        "Körpergewicht, Körpermaße und Trainingsverlauf sind Gesundheits- und Fitnessdaten. Wir verwenden sie nur, um Ihnen die Funktionen der App bereitzustellen. Wir verkaufen sie nicht, nutzen sie nicht für Werbung und geben sie nicht an Werbetreibende weiter. Auswertungen und Vorschläge in der App sind allgemeine Fitnessinformationen und keine medizinische Beratung."
       ],
       [
-        "Berechtigungen und Informationen auf deinem Gerät",
-        "Benachrichtigungen zeigen den Pausentimer, Trainingserinnerungen und App-Mitteilungen. Vibration und eine kurze Wake-Lock-Sperre sorgen dafür, dass der Hinweis zum Pausenende auch bei ausgeschaltetem Bildschirm pünktlich kommt. Kamera- und Fotozugriff sind optional und dienen nur der Auswahl eines Profilbilds, das auf deinem Gerät bleibt und nicht hochgeladen wird. Der Netzwerkstatus zeigt an, wenn du offline bist; offline erfasste Sätze bleiben auf dem Gerät und werden synchronisiert, sobald du wieder online bist. Wenn du eine Trainingszusammenfassung teilst, geht das Bild nur an die App, die du auswählst."
+        "Berechtigungen und Informationen auf Ihrem Gerät",
+        "Benachrichtigungen zeigen den Pausentimer, Trainingserinnerungen und App-Mitteilungen. Vibration und eine kurze Wake-Lock-Sperre sorgen dafür, dass der Hinweis zum Pausenende auch bei ausgeschaltetem Bildschirm pünktlich kommt. Kamera- und Fotozugriff sind optional und dienen nur der Auswahl eines Profilbilds, das auf Ihrem Gerät bleibt und nicht hochgeladen wird. Der Netzwerkstatus zeigt an, wenn Sie offline sind; offline erfasste Sätze bleiben auf dem Gerät und werden synchronisiert, sobald Sie wieder online sind. Wenn Sie eine Trainingszusammenfassung teilen, geht das Bild nur an die App, die Sie auswählen."
       ],
       [
         "Analyse, Werbung und weitere Anbieter",
@@ -88,7 +88,7 @@ export const dotShredzillaPolicyCopy = {
       ],
       [
         "Speicherdauer und Kontrolle",
-        "Wir speichern dein Konto und deine Trainingsdaten, solange du das Konto nutzt, bis du einzelne Einträge oder dein Konto löschst. In der App kannst du Sätze, abgeschlossene Trainings, persönliche Rekorde und Körpermaße jederzeit bearbeiten oder löschen. Das Löschen des Kontos in der App (Settings, dann Account, dann Delete account) entfernt dein Konto und alle zugehörigen Daten sofort. Du kannst die Löschung auch per E-Mail an support@dotsuite.dev beantragen. Das Entfernen der App oder das Abmelden löscht keine Cloud-Daten."
+        "Wir speichern Ihr Konto und Ihre Trainingsdaten, solange Sie das Konto nutzen, bis Sie einzelne Einträge oder Ihr Konto löschen. In der App können Sie Sätze, abgeschlossene Trainings, persönliche Rekorde und Körpermaße jederzeit bearbeiten oder löschen. Das Löschen des Kontos in der App (Settings, dann Account, dann Delete account) entfernt Ihr Konto und alle zugehörigen Daten sofort. Sie können die Löschung auch per E-Mail an support@dotsuite.dev beantragen. Das Entfernen der App oder das Abmelden löscht keine Cloud-Daten."
       ]
     ],
     "linksTitle": "Informationen der Dienstleister"
@@ -214,31 +214,31 @@ export const dotShredzillaDeletionCopy = {
   },
   "de": {
     "title": "DotShredzilla-Konto und zugehörige Daten löschen",
-    "intro": "Du kannst dein Konto und deine Daten jederzeit löschen, auch nach der Deinstallation der App. Ein DotSuite-Konto ist nicht erforderlich.",
-    "inApp": "Am schnellsten: Öffne in der App Settings, dann Account, dann Delete account. Dein Konto und alle unten aufgeführten Daten werden sofort gelöscht. Eventuell musst du dich vorher erneut anmelden.",
+    "intro": "Sie können Ihr Konto und Ihre Daten jederzeit löschen, auch nach der Deinstallation der App. Ein DotSuite-Konto ist nicht erforderlich.",
+    "inApp": "Am schnellsten: Öffnen Sie in der App Settings, dann Account, dann Delete account. Ihr Konto und alle unten aufgeführten Daten werden sofort gelöscht. Eventuell müssen Sie sich vorher erneut anmelden.",
     "scope": "Was gelöscht wird",
     "items": [
-      "Dein DotShredzilla-Anmeldekonto (E-Mail oder Google-Anmeldung).",
-      "Dein Profil und deine Einstellungen, einschließlich Geschlecht, Alter, Größe, Gewicht, Einheiten, Ziele und Erinnerungen.",
-      "Deine Übungsbibliothek, Trainingslisten und Programme.",
+      "Ihr DotShredzilla-Anmeldekonto (E-Mail oder Google-Anmeldung).",
+      "Ihr Profil und Ihre Einstellungen, einschließlich Geschlecht, Alter, Größe, Gewicht, Einheiten, Ziele und Erinnerungen.",
+      "Ihre Übungsbibliothek, Trainingslisten und Programme.",
       "Jeder erfasste Satz, jedes abgeschlossene Training und jeder persönliche Rekord.",
-      "Deine Körpermaße und Einträge zum Körpergewicht."
+      "Ihre Körpermaße und Einträge zum Körpergewicht."
     ],
-    "timing": "Bei Anfragen per E-Mail prüfen wir vor der Löschung, dass dir das Konto gehört. Nach der Prüfung erledigen wir die Anfrage innerhalb von 30 Tagen und benachrichtigen dich per E-Mail. Falls wir weitere Angaben zur Identifizierung deines Kontos brauchen, erklären wir, was nötig ist. Sende niemals ein Passwort oder einen Bestätigungscode.",
-    "warning": "Eine abgeschlossene Löschung ist endgültig, dein Trainingsverlauf kann nicht wiederhergestellt werden. Das Löschen deines DotShredzilla-Kontos löscht weder dein Google-Konto noch ein separates DotSuite-Konto.",
+    "timing": "Bei Anfragen per E-Mail prüfen wir vor der Löschung, dass Ihnen das Konto gehört. Nach der Prüfung erledigen wir die Anfrage innerhalb von 30 Tagen und benachrichtigen Sie per E-Mail. Falls wir weitere Angaben zur Identifizierung Ihres Kontos brauchen, erklären wir, was nötig ist. Senden Sie niemals ein Passwort oder einen Bestätigungscode.",
+    "warning": "Eine abgeschlossene Löschung ist endgültig, Ihr Trainingsverlauf kann nicht wiederhergestellt werden. Das Löschen Ihres DotShredzilla-Kontos löscht weder Ihr Google-Konto noch ein separates DotSuite-Konto.",
     "copies": "Lokale Kopien und Daten bei Anbietern",
-    "retention": "Die Löschung entfernt die oben aufgeführten kontobezogenen Datensätze aus unseren aktiven Systemen. Dein Profilbild, offline gespeicherte Daten, die noch synchronisiert werden müssen, und App-Einstellungen bleiben auf deinem Gerät, bis du den App-Speicher von DotShredzilla löschst oder die App deinstallierst. Geteilte Trainingszusammenfassungen liegen bei den Personen und Apps, an die du sie gesendet hast. Sicherheits- und Betriebsprotokolle der Anbieter können den unten verlinkten Richtlinien unterliegen; für sie gilt kein Versprechen, dass jede Kopie beim Anbieter innerhalb von 30 Tagen verschwindet. Anonyme aggregierte Statistiken, die dich nicht mehr identifizieren, lassen sich keinem Konto zuordnen. Falls eine gesetzliche Pflicht eine Ausnahme erfordert, nennen wir in unserer Antwort die betroffenen Informationen, den Grund und die geltende Speicherdauer.",
+    "retention": "Die Löschung entfernt die oben aufgeführten kontobezogenen Datensätze aus unseren aktiven Systemen. Ihr Profilbild, offline gespeicherte Daten, die noch synchronisiert werden müssen, und App-Einstellungen bleiben auf Ihrem Gerät, bis Sie den App-Speicher von DotShredzilla löschen oder die App deinstallieren. Geteilte Trainingszusammenfassungen liegen bei den Personen und Apps, an die Sie sie gesendet haben. Sicherheits- und Betriebsprotokolle der Anbieter können den unten verlinkten Richtlinien unterliegen; für sie gilt kein Versprechen, dass jede Kopie beim Anbieter innerhalb von 30 Tagen verschwindet. Anonyme aggregierte Statistiken, die Sie nicht mehr identifizieren, lassen sich keinem Konto zuordnen. Falls eine gesetzliche Pflicht eine Ausnahme erfordert, nennen wir in unserer Antwort die betroffenen Informationen, den Grund und die geltende Speicherdauer.",
     "email": "E-Mail-Adresse des Kontos",
     "uid": "Konto-ID (optional)",
-    "hint": "Verwende die E-Mail, mit der du dich bei DotShredzilla anmeldest. Wenn du keinen Zugriff darauf hast, schreibe dem Support und beschreibe das Problem; sende keine Zugangsdaten.",
+    "hint": "Verwenden Sie die E-Mail, mit der Sie sich bei DotShredzilla anmelden. Wenn Sie keinen Zugriff darauf haben, schreiben Sie dem Support und beschreiben Sie das Problem; senden Sie keine Zugangsdaten.",
     "submit": "E-Mail zur Löschanfrage vorbereiten",
-    "fallback": "Oder schreib uns direkt",
-    "draft": "Deine E-Mail-App öffnet einen Entwurf. Prüfe ihn und tippe dort auf Senden. Das Öffnen des Entwurfs sendet keine Anfrage und löscht dein Konto nicht.",
-    "preview": "Text der Anfrage — du kannst ihn in jede E-Mail-App kopieren",
+    "fallback": "Oder schreiben Sie uns direkt",
+    "draft": "Ihre E-Mail-App öffnet einen Entwurf. Prüfen Sie ihn und tippen Sie dort auf Senden. Das Öffnen des Entwurfs sendet keine Anfrage und löscht Ihr Konto nicht.",
+    "preview": "Text der Anfrage — Sie können ihn in jede E-Mail-App kopieren",
     "subject": "DotShredzilla — Anfrage zur Löschung von Konto und zugehörigen Daten",
-    "body": "Bitte lösche mein DotShredzilla-Konto und alle zugehörigen Daten: Profil und Einstellungen, Übungsbibliothek und Trainingslisten, erfasste Sätze, Trainings, persönliche Rekorde und Körpermaße.\nE-Mail des Kontos: ",
+    "body": "Bitte löschen Sie mein DotShredzilla-Konto und alle zugehörigen Daten: Profil und Einstellungen, Übungsbibliothek und Trainingslisten, erfasste Sätze, Trainings, persönliche Rekorde und Körpermaße.\nE-Mail des Kontos: ",
     "id": "\nKonto-ID: ",
-    "ending": "\nBitte erkläre die Schritte zur Bestätigung der Kontoinhaberschaft und bestätige den Abschluss per E-Mail. Mir ist bewusst, dass eine abgeschlossene Löschung endgültig ist."
+    "ending": "\nBitte erklären Sie die Schritte zur Bestätigung der Kontoinhaberschaft und bestätigen Sie den Abschluss per E-Mail. Mir ist bewusst, dass eine abgeschlossene Löschung endgültig ist."
   },
   "fr": {
     "title": "Supprimer votre compte DotShredzilla et les données associées",

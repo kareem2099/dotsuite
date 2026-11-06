@@ -1,9 +1,8 @@
 import documents from "@/content/dotreminder-terms.json";
-import { getPrivacyLanguage, type PrivacyLanguage } from "@/components/privacy/privacy-language";
+import type { PrivacyLanguage } from "@/components/privacy/privacy-language";
+import { appTermsPath, type AppTerms, type TermsLabels } from "@/lib/app-terms";
 
 // Text is generated from DotReminder/docs/legal via scripts/export-terms.py.
-// Bundle the public legal copy so viewing it never depends on GitHub availability.
-export const dotReminderTermsPath = (language: PrivacyLanguage) => `/${language}/dotreminder/terms`;
 
 export const dotReminderTermsLabels = {
   en: {
@@ -31,11 +30,13 @@ export const dotReminderTermsLabels = {
     deletion: "Запросить удаление аккаунта", source: "Исходный документ",
     description: "Условия использования DotReminder: напоминания, дополнительный ИИ, управление аккаунтом и законные права.",
   },
-} satisfies Record<PrivacyLanguage, Record<string, string>>;
+} satisfies Record<PrivacyLanguage, TermsLabels>;
 
-export function getDotReminderTerms(locale: string) {
-  const language = getPrivacyLanguage(locale);
-  const markdown = documents[language];
-  const [heading, ...body] = markdown.split("\n");
-  return { language, title: heading.replace(/^#\s+/, ""), body: body.join("\n").trim(), labels: dotReminderTermsLabels[language] };
-}
+export const dotReminderTerms: AppTerms = {
+  slug: "dotreminder",
+  documents,
+  labels: dotReminderTermsLabels,
+  sourceRepo: "kareem2099/DotReminder",
+};
+
+export const dotReminderTermsPath = (language: PrivacyLanguage) => appTermsPath(dotReminderTerms, language);

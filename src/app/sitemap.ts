@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/contact", priority: pagePriorities.contact, changeFrequency: "monthly" as const },
     { path: "/terms", priority: pagePriorities.terms, changeFrequency: "yearly" as const },
     { path: "/dotreminder/terms", priority: pagePriorities.terms, changeFrequency: "yearly" as const },
+    { path: "/dotshredzilla/terms", priority: pagePriorities.terms, changeFrequency: "yearly" as const },
     { path: "/privacy", priority: pagePriorities.privacy, changeFrequency: "yearly" as const },
   ];
 

@@ -1,6 +1,7 @@
 import { SUPPORT_EMAIL as CONTACT_EMAIL } from "@/lib/support";
 import { getPrivacyLanguage } from "@/components/privacy/privacy-language";
 import { dotReminderTermsLabels, dotReminderTermsPath } from "@/lib/dotreminder-terms";
+import { dotShredzillaTermsLabels, dotShredzillaTermsPath } from "@/lib/dotshredzilla-terms";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
@@ -53,9 +54,12 @@ export default async function TermsPage({ params }: Props) {
           </p>
         </div>
 
-        <div className="mb-8 rounded-xl border border-(--primary)/40 bg-(--card-bg) p-5">
+        <div className="mb-8 rounded-xl border border-(--primary)/40 bg-(--card-bg) p-5 flex flex-wrap gap-x-6 gap-y-3">
           <Link href={dotReminderTermsPath(language)} className="text-(--primary) underline underline-offset-4 font-semibold">
             {dotReminderTermsLabels[language].terms}
+          </Link>
+          <Link href={dotShredzillaTermsPath(language)} className="text-(--primary) underline underline-offset-4 font-semibold">
+            {dotShredzillaTermsLabels[language].terms}
           </Link>
         </div>
 
