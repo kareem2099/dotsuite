@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import DotReminderPrivacy from "@/components/privacy/DotReminderPrivacy";
+import DotShredzillaPrivacy from "@/components/privacy/DotShredzillaPrivacy";
 import { generalPrivacyCopy, privacyPageCopy } from "@/components/privacy/general-privacy-copy";
 import { getPrivacyLanguage, privacyLanguages, privacyLanguageNames } from "@/components/privacy/privacy-language";
 import { SUPPORT_EMAIL } from "@/lib/support";
@@ -37,6 +38,7 @@ export default async function PrivacyPage({ params }: Props) {
           ))}
         </nav>
         <DotReminderPrivacy locale={language} />
+        <DotShredzillaPrivacy locale={language} />
         <h2 className="text-2xl font-semibold mb-6">{t.generalTitle}</h2>
         <div className="space-y-6">
           {generalPrivacyCopy[language].map((section, index) => (

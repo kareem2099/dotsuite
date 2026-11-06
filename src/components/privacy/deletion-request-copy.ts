@@ -1,6 +1,7 @@
 import type { PrivacyLanguage } from "./privacy-language";
 
-type DeletionRequestCopy = { title: string; intro: string; scope: string; items: string[]; timing: string; warning: string; copies: string; retention: string; email: string; uid: string; hint: string; submit: string; fallback: string; draft: string; preview: string; subject: string; body: string; id: string; ending: string };
+/** [inApp] describes deleting from inside the app, for apps that offer it. */
+export type DeletionRequestCopy = { title: string; intro: string; inApp?: string; scope: string; items: string[]; timing: string; warning: string; copies: string; retention: string; email: string; uid: string; hint: string; submit: string; fallback: string; draft: string; preview: string; subject: string; body: string; id: string; ending: string };
 
 export const deletionRequestCopy = {
   "en": {

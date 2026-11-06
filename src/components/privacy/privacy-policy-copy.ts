@@ -1,6 +1,6 @@
 import type { PrivacyLanguage } from "./privacy-language";
 
-type PrivacyPolicyCopy = { title: string; intro: string; updated: string; request: string; policy: string; sections: string[][]; linksTitle: string };
+export type PrivacyPolicyCopy = { title: string; intro: string; updated: string; request: string; policy: string; sections: string[][]; linksTitle: string };
 
 export const privacyPolicyCopy = {
   "en": {
