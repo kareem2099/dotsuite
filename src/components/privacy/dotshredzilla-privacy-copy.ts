@@ -6,7 +6,7 @@ export const dotShredzillaPolicyCopy = {
   "en": {
     "title": "DotShredzilla: privacy & account deletion",
     "intro": "DotShredzilla is a DotSuite workout tracker for Android. This section explains what the app stores, why, and how to delete your account and all associated data.",
-    "updated": "Last updated: November 6, 2026",
+    "updated": "Last updated: November 7, 2026",
     "request": "Delete account and data",
     "policy": "Read the DotShredzilla policy",
     "sections": [
@@ -24,7 +24,11 @@ export const dotShredzillaPolicyCopy = {
       ],
       [
         "Analytics, advertising and other providers",
-        "The app includes Firebase Analytics and Google AdMob. Depending on device settings, permissions and applicable consent, these services may process app interactions, device and app information, IP addresses and advertising or app-instance identifiers for analytics, ad delivery, measurement and abuse prevention. Firebase Remote Config and Google Play are used to check for app updates, and Firebase Cloud Messaging delivers notifications. Google/Firebase, Google sign-in and the hosting/email providers used for support process information needed for their services."
+        "The app includes Firebase Analytics, and Google AdMob serves only the rewarded ads you choose to watch on the Pro page. Depending on device settings, permissions and applicable consent, these services may process app interactions, device and app information, IP addresses and advertising or app-instance identifiers for analytics, ad delivery, measurement and abuse prevention. Firebase Remote Config and Google Play are used to check for app updates, and Firebase Cloud Messaging delivers notifications. Google/Firebase, Google sign-in and the hosting/email providers used for support process information needed for their services."
+      ],
+      [
+        "DotShredzilla Pro, purchases and rewarded ads",
+        "Pro for life and tips are bought through Google Play Billing. Google Play handles the payment; we never receive your card or payment details, only the purchase status needed to unlock Pro or thank you for a tip. Pro for life is linked to your Google Play account. Rewarded ads are optional and only play when you start one on the Pro page. When you finish one, Google AdMob sends our server (a Firebase Cloud Function) your DotShredzilla user ID and a transaction ID, signed by Google. The server then saves your Pro time on your account: when it ends, when your recent rewarded ads were watched (for the 24-hour limit) and recent transaction IDs (so each ad counts once). Your account also stores how many tips you sent, for the Supporter badge, and your chosen accent theme. We use this data only to provide Pro, and it is deleted with your account."
       ],
       [
         "Retention and control",
@@ -36,7 +40,7 @@ export const dotShredzillaPolicyCopy = {
   "ar": {
     "title": "DotShredzilla: الخصوصية وحذف الحساب",
     "intro": "DotShredzilla تطبيق من DotSuite لتسجيل التمارين على أندرويد. يوضح هذا القسم البيانات التي يحفظها التطبيق وسبب حفظها وطريقة حذف حسابك وكل البيانات المرتبطة به.",
-    "updated": "آخر تحديث: ٦ نوفمبر ٢٠٢٦",
+    "updated": "آخر تحديث: ٧ نوفمبر ٢٠٢٦",
     "request": "حذف الحساب والبيانات",
     "policy": "قراءة سياسة DotShredzilla",
     "sections": [
@@ -54,7 +58,11 @@ export const dotShredzillaPolicyCopy = {
       ],
       [
         "التحليلات والإعلانات ومزوّدو الخدمات الآخرون",
-        "يتضمن التطبيق Firebase Analytics وGoogle AdMob. وبحسب إعدادات الجهاز والأذونات والموافقة المطبقة، قد تعالج هذه الخدمات تفاعلات التطبيق ومعلومات الجهاز والتطبيق وعناوين IP ومعرّفات الإعلانات أو نسخة التطبيق لأغراض التحليلات وعرض الإعلانات والقياس ومنع إساءة الاستخدام. ويُستخدم Firebase Remote Config وGoogle Play للتحقق من تحديثات التطبيق، ويوصل Firebase Cloud Messaging الإشعارات. ويعالج Google/Firebase وتسجيل الدخول بحساب Google ومزوّدو الاستضافة والبريد المستخدمون في الدعم المعلومات اللازمة لخدماتهم."
+        "يتضمن التطبيق Firebase Analytics، ولا يعرض Google AdMob إلا الإعلانات بمكافأة التي تختار مشاهدتها من صفحة Pro. وبحسب إعدادات الجهاز والأذونات والموافقة المطبقة، قد تعالج هذه الخدمات تفاعلات التطبيق ومعلومات الجهاز والتطبيق وعناوين IP ومعرّفات الإعلانات أو نسخة التطبيق لأغراض التحليلات وعرض الإعلانات والقياس ومنع إساءة الاستخدام. ويُستخدم Firebase Remote Config وGoogle Play للتحقق من تحديثات التطبيق، ويوصل Firebase Cloud Messaging الإشعارات. ويعالج Google/Firebase وتسجيل الدخول بحساب Google ومزوّدو الاستضافة والبريد المستخدمون في الدعم المعلومات اللازمة لخدماتهم."
+      ],
+      [
+        "DotShredzilla Pro والمشتريات والإعلانات بمكافأة",
+        "يُشترى Pro مدى الحياة والتبرعات عبر Google Play Billing. يتولى Google Play عملية الدفع، ولا نستلم أبدًا بيانات بطاقتك أو الدفع، بل فقط حالة الشراء اللازمة لفتح Pro أو لشكرك على التبرع. ويرتبط Pro مدى الحياة بحساب Google Play. الإعلانات بمكافأة اختيارية ولا تعمل إلا إذا بدأتها من صفحة Pro. عند إكمال إعلان، يرسل Google AdMob إلى خادمنا (Firebase Cloud Function) معرّف المستخدم في DotShredzilla ومعرّف العملية بتوقيع من Google. ثم يحفظ الخادم وقت Pro في حسابك: موعد انتهائه، وأوقات الإعلانات بمكافأة الأخيرة (لحد الـ ٢٤ ساعة)، ومعرّفات العمليات الأخيرة (حتى يُحتسب كل إعلان مرة واحدة). ويحفظ حسابك أيضًا عدد التبرعات لإظهار شارة Supporter، واللون المميز الذي اخترته. نستخدم هذه البيانات فقط لتقديم Pro، وتُحذف مع حسابك."
       ],
       [
         "مدة الاحتفاظ والتحكم",
@@ -66,7 +74,7 @@ export const dotShredzillaPolicyCopy = {
   "de": {
     "title": "DotShredzilla: Datenschutz und Kontolöschung",
     "intro": "DotShredzilla ist ein Trainingstracker von DotSuite für Android. Dieser Abschnitt erklärt, welche Daten die App speichert, warum, und wie Sie Ihr Konto und alle zugehörigen Daten löschen.",
-    "updated": "Zuletzt aktualisiert: 6. November 2026",
+    "updated": "Zuletzt aktualisiert: 7. November 2026",
     "request": "Konto und Daten löschen",
     "policy": "Datenschutzhinweise zu DotShredzilla lesen",
     "sections": [
@@ -84,7 +92,11 @@ export const dotShredzillaPolicyCopy = {
       ],
       [
         "Analyse, Werbung und weitere Anbieter",
-        "Die App enthält Firebase Analytics und Google AdMob. Abhängig von Geräteeinstellungen, Berechtigungen und einer anwendbaren Einwilligung können diese Dienste App-Interaktionen, Geräte- und App-Informationen, IP-Adressen sowie Werbe- oder App-Instanz-IDs für Analyse, Anzeigenauslieferung, Messung und Missbrauchsverhinderung verarbeiten. Firebase Remote Config und Google Play werden zur Prüfung auf App-Updates verwendet, Firebase Cloud Messaging stellt Benachrichtigungen zu. Google/Firebase, die Google-Anmeldung sowie die für den Support genutzten Hosting- und E-Mail-Anbieter verarbeiten die für ihre Dienste nötigen Informationen."
+        "Die App enthält Firebase Analytics; Google AdMob liefert nur die Werbung mit Belohnung aus, die Sie auf der Pro-Seite selbst starten. Abhängig von Geräteeinstellungen, Berechtigungen und einer anwendbaren Einwilligung können diese Dienste App-Interaktionen, Geräte- und App-Informationen, IP-Adressen sowie Werbe- oder App-Instanz-IDs für Analyse, Anzeigenauslieferung, Messung und Missbrauchsverhinderung verarbeiten. Firebase Remote Config und Google Play werden zur Prüfung auf App-Updates verwendet, Firebase Cloud Messaging stellt Benachrichtigungen zu. Google/Firebase, die Google-Anmeldung sowie die für den Support genutzten Hosting- und E-Mail-Anbieter verarbeiten die für ihre Dienste nötigen Informationen."
+      ],
+      [
+        "DotShredzilla Pro, Käufe und Werbung mit Belohnung",
+        "Pro auf Lebenszeit und Trinkgelder werden über Google Play Billing gekauft. Google Play wickelt die Zahlung ab; wir erhalten nie Ihre Karten- oder Zahlungsdaten, sondern nur den Kaufstatus, der nötig ist, um Pro freizuschalten oder uns für ein Trinkgeld zu bedanken. Pro auf Lebenszeit ist mit Ihrem Google-Play-Konto verknüpft. Werbung mit Belohnung ist freiwillig und läuft nur, wenn Sie sie auf der Pro-Seite starten. Wenn Sie eine Werbung zu Ende sehen, sendet Google AdMob unserem Server (einer Firebase Cloud Function) Ihre DotShredzilla-Nutzer-ID und eine Transaktions-ID, von Google signiert. Der Server speichert dann Ihre Pro-Zeit in Ihrem Konto: wann sie endet, wann Ihre letzten Werbungen angesehen wurden (für die 24-Stunden-Grenze) und die letzten Transaktions-IDs (damit jede Werbung nur einmal zählt). Ihr Konto speichert außerdem, wie viele Trinkgelder Sie gegeben haben (für das Supporter-Abzeichen), und Ihre gewählte Akzentfarbe. Wir nutzen diese Daten nur, um Pro bereitzustellen; sie werden mit Ihrem Konto gelöscht."
       ],
       [
         "Speicherdauer und Kontrolle",
@@ -96,7 +108,7 @@ export const dotShredzillaPolicyCopy = {
   "fr": {
     "title": "DotShredzilla : confidentialité et suppression du compte",
     "intro": "DotShredzilla est une application de suivi d'entraînement de DotSuite pour Android. Cette section explique quelles données l'application conserve, pourquoi, et comment supprimer votre compte et toutes les données associées.",
-    "updated": "Dernière mise à jour : 6 novembre 2026",
+    "updated": "Dernière mise à jour : 7 novembre 2026",
     "request": "Supprimer le compte et les données",
     "policy": "Lire la politique de DotShredzilla",
     "sections": [
@@ -114,7 +126,11 @@ export const dotShredzillaPolicyCopy = {
       ],
       [
         "Statistiques, publicité et autres prestataires",
-        "L'application inclut Firebase Analytics et Google AdMob. Selon les paramètres de l'appareil, les autorisations et le consentement applicable, ces services peuvent traiter les interactions avec l'application, des informations sur l'appareil et l'application, les adresses IP et les identifiants publicitaires ou d'instance d'application à des fins de statistiques, de diffusion publicitaire, de mesure et de prévention des abus. Firebase Remote Config et Google Play servent à vérifier les mises à jour, et Firebase Cloud Messaging envoie les notifications. Google/Firebase, la connexion Google et les prestataires d'hébergement et d'e-mail utilisés pour l'assistance traitent les informations nécessaires à leurs services."
+        "L'application inclut Firebase Analytics, et Google AdMob ne diffuse que les publicités avec récompense que vous choisissez de regarder sur la page Pro. Selon les paramètres de l'appareil, les autorisations et le consentement applicable, ces services peuvent traiter les interactions avec l'application, des informations sur l'appareil et l'application, les adresses IP et les identifiants publicitaires ou d'instance d'application à des fins de statistiques, de diffusion publicitaire, de mesure et de prévention des abus. Firebase Remote Config et Google Play servent à vérifier les mises à jour, et Firebase Cloud Messaging envoie les notifications. Google/Firebase, la connexion Google et les prestataires d'hébergement et d'e-mail utilisés pour l'assistance traitent les informations nécessaires à leurs services."
+      ],
+      [
+        "DotShredzilla Pro, achats et publicités avec récompense",
+        "Pro à vie et les pourboires sont achetés via Google Play Billing. Google Play gère le paiement ; nous ne recevons jamais vos données de carte ou de paiement, seulement le statut d'achat nécessaire pour débloquer Pro ou vous remercier d'un pourboire. Pro à vie est lié à votre compte Google Play. Les publicités avec récompense sont facultatives et ne se lancent que si vous en démarrez une sur la page Pro. Quand vous en terminez une, Google AdMob envoie à notre serveur (une Firebase Cloud Function) votre identifiant utilisateur DotShredzilla et un identifiant de transaction, signés par Google. Le serveur enregistre alors votre temps Pro dans votre compte : sa date de fin, les heures de vos dernières publicités avec récompense (pour la limite sur 24 heures) et les derniers identifiants de transaction (pour que chaque publicité ne compte qu'une fois). Votre compte conserve aussi le nombre de pourboires envoyés, pour le badge Supporter, et la couleur d'accent choisie. Nous utilisons ces données uniquement pour fournir Pro, et elles sont supprimées avec votre compte."
       ],
       [
         "Conservation et contrôle",
@@ -126,7 +142,7 @@ export const dotShredzillaPolicyCopy = {
   "ru": {
     "title": "DotShredzilla: конфиденциальность и удаление аккаунта",
     "intro": "DotShredzilla — трекер тренировок от DotSuite для Android. В этом разделе объясняется, какие данные хранит приложение, зачем, и как удалить аккаунт и все связанные с ним данные.",
-    "updated": "Последнее обновление: 6 ноября 2026 г.",
+    "updated": "Последнее обновление: 7 ноября 2026 г.",
     "request": "Удалить аккаунт и данные",
     "policy": "Прочитать политику DotShredzilla",
     "sections": [
@@ -144,7 +160,11 @@ export const dotShredzillaPolicyCopy = {
       ],
       [
         "Аналитика, реклама и другие поставщики",
-        "Приложение использует Firebase Analytics и Google AdMob. В зависимости от настроек устройства, разрешений и применимого согласия эти сервисы могут обрабатывать взаимодействия с приложением, сведения об устройстве и приложении, IP-адреса и рекламные идентификаторы или идентификаторы экземпляра приложения для аналитики, показа рекламы, измерений и предотвращения злоупотреблений. Firebase Remote Config и Google Play используются для проверки обновлений, а Firebase Cloud Messaging доставляет уведомления. Google/Firebase, вход через Google и поставщики хостинга и почты, используемые для поддержки, обрабатывают сведения, необходимые для их услуг."
+        "Приложение использует Firebase Analytics, а Google AdMob показывает только ролики с вознаграждением, которые вы сами запускаете на странице Pro. В зависимости от настроек устройства, разрешений и применимого согласия эти сервисы могут обрабатывать взаимодействия с приложением, сведения об устройстве и приложении, IP-адреса и рекламные идентификаторы или идентификаторы экземпляра приложения для аналитики, показа рекламы, измерений и предотвращения злоупотреблений. Firebase Remote Config и Google Play используются для проверки обновлений, а Firebase Cloud Messaging доставляет уведомления. Google/Firebase, вход через Google и поставщики хостинга и почты, используемые для поддержки, обрабатывают сведения, необходимые для их услуг."
+      ],
+      [
+        "DotShredzilla Pro, покупки и реклама с вознаграждением",
+        "Pro навсегда и чаевые покупаются через Google Play Billing. Оплату обрабатывает Google Play; мы никогда не получаем данные вашей карты или платежа — только статус покупки, нужный, чтобы открыть Pro или поблагодарить за чаевые. Pro навсегда привязан к вашему аккаунту Google Play. Реклама с вознаграждением необязательна и запускается, только если вы сами начнёте ролик на странице Pro. Когда вы досмотрите ролик, Google AdMob отправляет нашему серверу (Firebase Cloud Function) ваш идентификатор пользователя DotShredzilla и идентификатор транзакции, подписанные Google. Затем сервер сохраняет в вашем аккаунте время Pro: когда оно закончится, когда были просмотрены последние ролики (для ограничения за 24 часа) и последние идентификаторы транзакций (чтобы каждый ролик засчитывался один раз). В аккаунте также хранится число отправленных чаевых — для значка Supporter — и выбранный акцентный цвет. Мы используем эти данные только для работы Pro, и они удаляются вместе с аккаунтом."
       ],
       [
         "Хранение и управление",
@@ -166,7 +186,8 @@ export const dotShredzillaDeletionCopy = {
       "Your profile and settings, including gender, age, height, weight, units, goals and reminders.",
       "Your exercise library, workout lists and programs.",
       "Every logged set, finished workout and personal record.",
-      "Your body measurements and body-weight entries."
+      "Your body measurements and body-weight entries.",
+      "Your Pro time from rewarded ads, Supporter badge and accent theme (Pro for life stays with your Google Play account)."
     ],
     "timing": "For requests by email, we verify that you own the account before deleting it. After verification, we complete the request within 30 days and email you when it is finished. If more information is needed to identify your account, we will explain what is needed. Never send a password or verification code in your request.",
     "warning": "Completed deletion is permanent and your training history cannot be recovered. Deleting your DotShredzilla account does not delete your Google account or a separate DotSuite account.",
@@ -194,7 +215,8 @@ export const dotShredzillaDeletionCopy = {
       "ملفك الشخصي وإعداداتك، بما في ذلك الجنس والعمر والطول والوزن والوحدات والأهداف والتذكيرات.",
       "مكتبة التمارين وقوائم التمرين والبرامج.",
       "كل مجموعة مسجلة وكل تمرين مكتمل وكل رقم قياسي.",
-      "قياسات الجسم وسجلات وزن الجسم."
+      "قياسات الجسم وسجلات وزن الجسم.",
+      "وقت Pro المكتسب من الإعلانات بمكافأة وشارة Supporter واللون المميز (أما Pro مدى الحياة فيبقى مع حساب Google Play)."
     ],
     "timing": "في الطلبات عبر البريد نتحقق أولًا من ملكيتك للحساب قبل حذفه. وبعد التحقق ننفّذ الطلب خلال ٣٠ يومًا ونراسلك عند اكتماله. وإذا احتجنا معلومات إضافية لتحديد حسابك سنوضح ما نحتاجه. لا ترسل أبدًا كلمة مرور أو رمز تحقق في طلبك.",
     "warning": "الحذف المكتمل نهائي ولا يمكن استرجاع سجل تمارينك. حذف حساب DotShredzilla لا يحذف حساب Google أو حساب DotSuite المنفصل.",
@@ -222,7 +244,8 @@ export const dotShredzillaDeletionCopy = {
       "Ihr Profil und Ihre Einstellungen, einschließlich Geschlecht, Alter, Größe, Gewicht, Einheiten, Ziele und Erinnerungen.",
       "Ihre Übungsbibliothek, Trainingslisten und Programme.",
       "Jeder erfasste Satz, jedes abgeschlossene Training und jeder persönliche Rekord.",
-      "Ihre Körpermaße und Einträge zum Körpergewicht."
+      "Ihre Körpermaße und Einträge zum Körpergewicht.",
+      "Ihre Pro-Zeit aus Werbung mit Belohnung, das Supporter-Abzeichen und die Akzentfarbe (Pro auf Lebenszeit bleibt bei Ihrem Google-Play-Konto)."
     ],
     "timing": "Bei Anfragen per E-Mail prüfen wir vor der Löschung, dass Ihnen das Konto gehört. Nach der Prüfung erledigen wir die Anfrage innerhalb von 30 Tagen und benachrichtigen Sie per E-Mail. Falls wir weitere Angaben zur Identifizierung Ihres Kontos brauchen, erklären wir, was nötig ist. Senden Sie niemals ein Passwort oder einen Bestätigungscode.",
     "warning": "Eine abgeschlossene Löschung ist endgültig, Ihr Trainingsverlauf kann nicht wiederhergestellt werden. Das Löschen Ihres DotShredzilla-Kontos löscht weder Ihr Google-Konto noch ein separates DotSuite-Konto.",
@@ -250,7 +273,8 @@ export const dotShredzillaDeletionCopy = {
       "Votre profil et vos réglages, y compris le genre, l'âge, la taille, le poids, les unités, les objectifs et les rappels.",
       "Votre bibliothèque d'exercices, vos listes d'entraînement et vos programmes.",
       "Chaque série enregistrée, séance terminée et record personnel.",
-      "Vos mensurations et vos relevés de poids."
+      "Vos mensurations et vos relevés de poids.",
+      "Votre temps Pro obtenu par publicité, le badge Supporter et la couleur d'accent (Pro à vie reste lié à votre compte Google Play)."
     ],
     "timing": "Pour les demandes par e-mail, nous vérifions que le compte vous appartient avant de le supprimer. Après vérification, nous traitons la demande sous 30 jours et vous prévenons par e-mail. Si d'autres informations sont nécessaires pour identifier votre compte, nous vous indiquerons lesquelles. N'envoyez jamais de mot de passe ni de code de vérification.",
     "warning": "Une suppression terminée est définitive et votre historique d'entraînement ne peut pas être récupéré. Supprimer votre compte DotShredzilla ne supprime ni votre compte Google ni un compte DotSuite distinct.",
@@ -278,7 +302,8 @@ export const dotShredzillaDeletionCopy = {
       "Профиль и настройки, включая пол, возраст, рост, вес, единицы, цели и напоминания.",
       "Библиотека упражнений, списки тренировок и программы.",
       "Все записанные подходы, завершённые тренировки и личные рекорды.",
-      "Замеры тела и записи веса."
+      "Замеры тела и записи веса.",
+      "Время Pro, полученное за рекламу, значок Supporter и акцентный цвет (Pro навсегда остаётся привязанным к аккаунту Google Play)."
     ],
     "timing": "При запросе по почте мы сначала проверяем, что аккаунт принадлежит вам. После проверки выполняем запрос в течение 30 дней и сообщаем об этом по почте. Если для поиска аккаунта понадобятся дополнительные сведения, мы объясним, какие именно. Никогда не отправляйте пароль или код подтверждения.",
     "warning": "Завершённое удаление необратимо, историю тренировок восстановить нельзя. Удаление аккаунта DotShredzilla не удаляет ваш аккаунт Google или отдельный аккаунт DotSuite.",
