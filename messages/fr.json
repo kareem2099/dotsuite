@@ -78,7 +78,8 @@
     "version": "Version",
     "productNotFound": "Produit non trouvé.",
     "relatedProducts": "Produits similaires",
-    "viewLiveService": "Lancer le service"
+    "viewLiveService": "Lancer le service",
+    "docs": "Docs"
   },
   "Home": {
     "title": "Construisez mieux avec",
@@ -733,5 +734,18 @@
     "apiUsageTitle": "Intégration API / CI/CD",
     "apiUsageDesc": "Utilisez DotAegis dans vos pipelines GitHub Actions ou GitLab CI.",
     "keysLink": "Gérer les clés d'API →"
+  },
+  "Docs": {
+    "title": "Documentation",
+    "search": "Rechercher dans la doc…",
+    "noResults": "Aucun résultat",
+    "menu": "Menu de la doc",
+    "onThisPage": "Sur cette page",
+    "copyPage": "Copier la page",
+    "copied": "Copié",
+    "editOnGitHub": "Modifier sur GitHub",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "englishOnly": "Cette documentation est disponible en anglais."
   }
 }

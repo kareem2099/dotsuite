@@ -31,6 +31,7 @@ interface ProductData {
     readme: string | null;
     changelog: string | null;
   };
+  hasDocs?: boolean;
   openVsx: {
     version: string | null;
     downloads: number;
@@ -342,6 +343,14 @@ export default function ProductClient({ initialData, locale }: ProductClientProp
                     : `⭐ ${t("reviews")}${totalReviews > 0 ? ` (${totalReviews})` : ""}`}
             </button>
           ))}
+          {data.hasDocs && (
+            <Link
+              href={`/${locale}/product/${product.slug}/docs`}
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors text-(--text-muted) hover:text-(--foreground)"
+            >
+              📚 {t("docs")}
+            </Link>
+          )}
         </div>
 
         {/* Content */}

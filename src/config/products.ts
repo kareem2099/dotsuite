@@ -6,6 +6,7 @@ export interface IProduct {
   serviceUrl?: string;
   category: "vscode" | "python" | "nextjs";
   githubRepo: string;
+  docsBranch?: string;
   platforms?: string; // schema.org operatingSystem, e.g. "Linux" (default: all three)
   license?: string; // SPDX id, e.g. "Apache-2.0" (default: Apache-2.0)
   keywords?: string[]; // extra SEO keywords for the product page
@@ -130,8 +131,9 @@ export const products: IProduct[] = [
     extensionId: "dotshare",
     category: "vscode",
     githubRepo: "kareem2099/DotShare",
+    docsBranch: "master",
     hasLicense: true,
-    price: 5,
+    price: 0,
     order: 7,
     translations: {
       en: { title: "DotShare", description: "Share code snippets directly from VS Code" },

@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, startTransition } from "react";
 
 // ── Platform Definitions ───────────────────────────────────────────────────────
 
-type PlatformId = "telegram" | "x" | "linkedin" | "devto" | "bluesky";
+type PlatformId = "telegram" | "x" | "linkedin" | "devto" | "bluesky" | "mastodon";
 
 interface PlatformConfig {
   id: PlatformId;
@@ -89,6 +89,19 @@ const PLATFORMS: PlatformConfig[] = [
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-400">
         <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.588 3.477 6.162 3.195-3.838.416-7.218 2.186-3.228 7.758C7.177 25.153 9.542 22.68 12 20.76c2.458 1.92 4.596 4.365 8.442 7.428 4.05-5.632.644-7.37-3.272-7.758 2.574.282 5.377-.568 6.162-3.195C23.622 9.418 24 4.458 24 3.768c0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C16.046 4.747 13.087 8.686 12 10.8z" />
       </svg>
+    ),
+  },
+
+  {
+    id: "mastodon",
+    label: "Mastodon",
+    description: "Post to any Mastodon instance",
+    glowColor: "rgba(99, 100, 255, 0.15)",
+    borderColor: "rgba(99, 100, 255, 0.35)",
+    iconBg: "bg-indigo-500/10",
+    oauthSupported: false,
+    icon: (
+      <span aria-hidden="true" className="text-base leading-none">🐘</span>
     ),
   },
 ];

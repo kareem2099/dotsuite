@@ -78,7 +78,8 @@
     "version": "Версия",
     "productNotFound": "Продукт не найден.",
     "relatedProducts": "Похожие продукты",
-    "viewLiveService": "Открыть сервис"
+    "viewLiveService": "Открыть сервис",
+    "docs": "Документация"
   },
   "Home": {
     "title": "Создавайте лучше с",
@@ -733,5 +734,18 @@
     "apiUsageTitle": "Прямая интеграция с API / CI/CD",
     "apiUsageDesc": "Используйте DotAegis в GitHub Actions или хуках git для блокировки утечек.",
     "keysLink": "Управление API ключами →"
+  },
+  "Docs": {
+    "title": "Документация",
+    "search": "Поиск по документации…",
+    "noResults": "Ничего не найдено",
+    "menu": "Меню документации",
+    "onThisPage": "На этой странице",
+    "copyPage": "Копировать страницу",
+    "copied": "Скопировано",
+    "editOnGitHub": "Изменить на GitHub",
+    "previous": "Назад",
+    "next": "Далее",
+    "englishOnly": "Эта документация доступна на английском языке."
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 type Platform =
-  | "x" | "linkedin" | "bluesky"
+  | "x" | "linkedin" | "bluesky" | "mastodon"
   | "devto" | "telegram" | "discord";
 
 interface PlatformBadgeProps {
@@ -12,6 +12,7 @@ const PLATFORM_CONFIG: Record<Platform, { label: string; color: string; icon: st
   x:        { label: "X",        color: "bg-zinc-800 text-zinc-300 border-zinc-700",      icon: "✕" },
   linkedin: { label: "LinkedIn", color: "bg-blue-900/40 text-blue-300 border-blue-700/50", icon: "in" },
   bluesky:  { label: "Bluesky",  color: "bg-sky-900/40 text-sky-300 border-sky-700/50",    icon: "☁" },
+  mastodon: { label: "Mastodon", color: "bg-indigo-900/40 text-indigo-300 border-indigo-700/50", icon: "🐘" },
 
   devto:    { label: "Dev.to",   color: "bg-zinc-900 text-zinc-200 border-zinc-700",        icon: "DEV" },
 

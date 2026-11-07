@@ -79,7 +79,8 @@
     "version": "الإصدار",
     "productNotFound": "لم يتم العثور على المنتج.",
     "relatedProducts": "منتجات مشابهة",
-    "viewLiveService": "تشغيل الخدمة"
+    "viewLiveService": "تشغيل الخدمة",
+    "docs": "التوثيق"
   },
   "Home": {
     "title": "ابني بشكل أفضل مع",
@@ -734,5 +735,18 @@
     "apiUsageTitle": "التكامل مع CI/CD و API المباشر",
     "apiUsageDesc": "استخدم DotAegis في GitHub Actions أو الـ Pre-commit hooks لمنع رفع المفاتيح للـ Repository.",
     "keysLink": "إدارة مفاتيح API ←"
+  },
+  "Docs": {
+    "title": "التوثيق",
+    "search": "ابحث في التوثيق…",
+    "noResults": "لا توجد نتائج",
+    "menu": "قائمة التوثيق",
+    "onThisPage": "في هذه الصفحة",
+    "copyPage": "نسخ الصفحة",
+    "copied": "تم النسخ",
+    "editOnGitHub": "تعديل على GitHub",
+    "previous": "السابق",
+    "next": "التالي",
+    "englishOnly": "هذا التوثيق متاح باللغة الإنجليزية."
   }
 }

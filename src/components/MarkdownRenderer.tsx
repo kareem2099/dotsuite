@@ -4,6 +4,8 @@ import React, { useState, useEffect, useMemo, ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import Link from "next/link";
+import { rehypeHeadingIds } from "@/lib/headingSlug";
 import Prism from "prismjs";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-typescript";
@@ -54,6 +56,10 @@ interface MarkdownRendererProps {
   className?: string;
   showToolbar?: boolean;
   docTitle?: string;
+  /** Give headings GitHub-style ids so #anchors and a table of contents can target them */
+  headingAnchors?: boolean;
+  /** Links starting with this prefix are site routes and are left as-is (not resolved to GitHub) */
+  internalLinkPrefix?: string;
 }
 
 // Helper to resolve relative GitHub URLs and proxy external images for reliable loading
@@ -325,6 +331,8 @@ export default function MarkdownRenderer({
   className = "",
   showToolbar = true,
   docTitle,
+  headingAnchors = false,
+  internalLinkPrefix,
 }: MarkdownRendererProps) {
   const [viewMode, setViewMode] = useState<"rendered" | "raw">("rendered");
   const [copiedMd, setCopiedMd] = useState(false);
@@ -445,7 +453,7 @@ export default function MarkdownRenderer({
         <div className="prose max-w-none readme-content">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
+            rehypePlugins={headingAnchors ? [rehypeRaw, rehypeHeadingIds] : [rehypeRaw]}
             components={{
               // Custom Code & Pre
               code({ className, children, ...props }) {
@@ -476,6 +484,16 @@ export default function MarkdownRenderer({
               // Custom Links (External links in new tab, resolve relative GitHub links)
               a({ href, children, ...props }) {
                 const hrefStr = typeof href === "string" ? href : "";
+                if (internalLinkPrefix && hrefStr.startsWith(internalLinkPrefix)) {
+                  return (
+                    <Link
+                      href={hrefStr}
+                      className="text-(--primary) hover:underline font-medium break-words transition-colors"
+                    >
+                      {children}
+                    </Link>
+                  );
+                }
                 const resolvedHref = resolveGitHubUrl(hrefStr, githubRepo, branch, false);
                 const isExternal =
                   resolvedHref.startsWith("http://") || resolvedHref.startsWith("https://");

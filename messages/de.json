@@ -78,7 +78,8 @@
     "version": "Version",
     "productNotFound": "Produkt nicht gefunden.",
     "relatedProducts": "Ähnliche Produkte",
-    "viewLiveService": "Dienst starten"
+    "viewLiveService": "Dienst starten",
+    "docs": "Doku"
   },
   "Home": {
     "title": "Bessere bauen mit",
@@ -733,5 +734,18 @@
     "apiUsageTitle": "Direkte API / CI/CD Integration",
     "apiUsageDesc": "Nutzen Sie DotAegis in GitHub Actions oder GitLab CI Pipelines.",
     "keysLink": "API-Schlüssel verwalten →"
+  },
+  "Docs": {
+    "title": "Dokumentation",
+    "search": "Doku durchsuchen…",
+    "noResults": "Keine Ergebnisse",
+    "menu": "Doku-Menü",
+    "onThisPage": "Auf dieser Seite",
+    "copyPage": "Seite kopieren",
+    "copied": "Kopiert",
+    "editOnGitHub": "Auf GitHub bearbeiten",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "englishOnly": "Diese Dokumentation ist auf Englisch verfügbar."
   }
 }

@@ -1,4 +1,5 @@
 import { products as staticProducts, IProduct } from "@/config/products";
+import { getDocsIndex } from "@/lib/productDocs";
 
 export interface ProductDetails {
   product: IProduct;
@@ -12,6 +13,8 @@ export interface ProductDetails {
     readme: string | null;
     changelog: string | null;
   };
+  /** The repo has docs/index.json, so /product/[slug]/docs exists */
+  hasDocs: boolean;
   openVsx: {
     version: string | null;
     downloads: number;
@@ -61,11 +64,13 @@ export async function getProductDetails(slug: string): Promise<ProductDetails | 
     return {
       product,
       github: defaultGithub,
+      hasDocs: false,
       openVsx: null,
     };
   }
 
   try {
+    const docsIndexPromise = product.docsBranch ? getDocsIndex(repo, product.docsBranch) : null;
     const [repoRes, readmeRes, releasesRes, changelogRes, packageRes, openVsxRes] =
       await Promise.allSettled([
         fetch(`https://api.github.com/repos/${repo}`, getFetchOptions(repo)),
@@ -160,6 +165,7 @@ export async function getProductDetails(slug: string): Promise<ProductDetails | 
         readme,
         changelog: changelogText,
       },
+      hasDocs: (await docsIndexPromise) !== null,
       openVsx: openVsxData
         ? {
             version: openVsxData?.version ?? null,
@@ -174,6 +180,7 @@ export async function getProductDetails(slug: string): Promise<ProductDetails | 
     return {
       product,
       github: defaultGithub,
+      hasDocs: false,
       openVsx: null,
     };
   }

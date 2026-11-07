@@ -79,7 +79,8 @@
     "version": "Version",
     "productNotFound": "Product not found.",
     "relatedProducts": "Related Products",
-    "viewLiveService": "Launch Service"
+    "viewLiveService": "Launch Service",
+    "docs": "Docs"
   },
   "Home": {
     "title": "Build better with",
@@ -734,5 +735,18 @@
     "apiUsageTitle": "Direct API / CI/CD Integration",
     "apiUsageDesc": "Use DotAegis in your GitHub Actions, GitLab CI, or pre-commit hooks to block leaks before git push.",
     "keysLink": "Manage API Keys →"
+  },
+  "Docs": {
+    "title": "Documentation",
+    "search": "Search docs…",
+    "noResults": "No results",
+    "menu": "Docs menu",
+    "onThisPage": "On this page",
+    "copyPage": "Copy page",
+    "copied": "Copied",
+    "editOnGitHub": "Edit on GitHub",
+    "previous": "Previous",
+    "next": "Next",
+    "englishOnly": "This documentation is available in English."
   }
 }
