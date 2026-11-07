@@ -2,6 +2,7 @@ import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
 import createIntlMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
+import { appDocuments, mobileAppIds } from "./config/mobile-apps";
 
 // 1. Public pages that don't require login (exact match only — no wildcards)
 const publicPages = [
@@ -15,8 +16,7 @@ const publicPages = [
   "/about",
   "/contact",
   "/terms",
-  "/dotreminder/terms",
-  "/dotshredzilla/terms",
+  ...mobileAppIds.flatMap(app => appDocuments.map(document => `/${app}/${document}`)),
   "/privacy",
   "/banned",
 ];

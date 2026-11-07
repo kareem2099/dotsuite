@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { products } from "@/config/products";
+import { appDocuments, mobileAppIds } from "@/config/mobile-apps";
 
 const BASE_URL = process.env.NEXTAUTH_URL || "https://dotsuite.dev";
 const locales = ["en", "ar", "fr", "de", "ru"] as const;
@@ -25,8 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/about", priority: pagePriorities.about, changeFrequency: "monthly" as const },
     { path: "/contact", priority: pagePriorities.contact, changeFrequency: "monthly" as const },
     { path: "/terms", priority: pagePriorities.terms, changeFrequency: "yearly" as const },
-    { path: "/dotreminder/terms", priority: pagePriorities.terms, changeFrequency: "yearly" as const },
-    { path: "/dotshredzilla/terms", priority: pagePriorities.terms, changeFrequency: "yearly" as const },
+    ...mobileAppIds.flatMap(app => [
+      { path: `/product/${app}`, priority: pagePriorities.productDetail, changeFrequency: "monthly" as const },
+      ...appDocuments.map(document => ({
+        path: `/${app}/${document}`, priority: document === "terms" ? pagePriorities.terms : pagePriorities.privacy, changeFrequency: "yearly" as const,
+      })),
+    ]),
     { path: "/privacy", priority: pagePriorities.privacy, changeFrequency: "yearly" as const },
   ];
 

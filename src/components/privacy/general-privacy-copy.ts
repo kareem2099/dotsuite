@@ -5,40 +5,30 @@ type GeneralPrivacySection = { title: string; paragraphs: string[]; bullets?: st
 export const privacyPageCopy = {
   "en": {
     "pageTitle": "Privacy policy",
-    "metadataTitle": "Privacy & DotReminder account deletion",
-    "description": "DotSuite privacy policy and requests to delete your DotReminder account and associated data. No sign-in or app installation required.",
     "back": "Back to home",
     "languages": "Languages",
     "generalTitle": "DotSuite & DotScramble"
   },
   "ar": {
     "pageTitle": "سياسة الخصوصية",
-    "metadataTitle": "الخصوصية وحذف حساب DotReminder",
-    "description": "سياسة خصوصية DotSuite وطلب حذف حساب DotReminder والبيانات المرتبطة به دون تسجيل دخول أو تثبيت التطبيق.",
     "back": "العودة للرئيسية",
     "languages": "اللغات",
     "generalTitle": "DotSuite وDotScramble"
   },
   "de": {
     "pageTitle": "Datenschutzerklärung",
-    "metadataTitle": "Datenschutz und DotReminder-Kontolöschung",
-    "description": "Datenschutzhinweise von DotSuite und Antrag auf Löschung Ihres DotReminder-Kontos und zugehöriger Daten. Ohne Anmeldung oder App-Installation.",
     "back": "Zur Startseite",
     "languages": "Sprachen",
     "generalTitle": "DotSuite und DotScramble"
   },
   "fr": {
     "pageTitle": "Politique de confidentialité",
-    "metadataTitle": "Confidentialité et suppression du compte DotReminder",
-    "description": "Politique de confidentialité de DotSuite et demande de suppression du compte DotReminder et des données associées, sans connexion ni installation.",
     "back": "Retour à l’accueil",
     "languages": "Langues",
     "generalTitle": "DotSuite et DotScramble"
   },
   "ru": {
     "pageTitle": "Политика конфиденциальности",
-    "metadataTitle": "Конфиденциальность и удаление аккаунта DotReminder",
-    "description": "Политика конфиденциальности DotSuite и запрос на удаление аккаунта DotReminder и связанных данных. Вход и установка приложения не требуются.",
     "back": "На главную",
     "languages": "Языки",
     "generalTitle": "DotSuite и DotScramble"

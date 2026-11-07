@@ -1,52 +1,87 @@
+import type { Metadata } from "next";
+import AppLegalNav from "@/components/mobile/AppLegalNav";
+import { mobileApps, mobileDocumentPath, type MobileAppId } from "@/config/mobile-apps";
+import { dotReminderTermsLabels } from "@/lib/dotreminder-terms";
+import { dotShredzillaTermsLabels } from "@/lib/dotshredzilla-terms";
 import DeletionRequest from "./DeletionRequest";
-import type { DeletionRequestCopy } from "./deletion-request-copy";
-import type { PrivacyLanguage } from "./privacy-language";
-import type { PrivacyPolicyCopy } from "./privacy-policy-copy";
+import { deletionRequestCopy } from "./deletion-request-copy";
+import { dotShredzillaDeletionCopy, dotShredzillaPolicyCopy } from "./dotshredzilla-privacy-copy";
+import { getPrivacyLanguage, privacyLanguages } from "./privacy-language";
+import { privacyPolicyCopy } from "./privacy-policy-copy";
 
-type LinkItem = { href: string; label: string };
+export type PrivacyDocument = "privacy" | "delete-account";
 
-type Props = {
-  /** Anchor prefix: #appId, #delete-appId and #appId-data. */
-  appId: string;
-  language: PrivacyLanguage;
-  policy: PrivacyPolicyCopy;
-  deletion: DeletionRequestCopy;
-  providerLinks: LinkItem[];
-  /** Extra buttons next to "request deletion" and "read the policy", e.g. the app's terms. */
-  extraLinks?: LinkItem[];
+const googlePrivacy = { href: "https://policies.google.com/privacy", label: "Google / Firebase / AdMob" };
+const appCopy = {
+  dotreminder: {
+    policy: privacyPolicyCopy,
+    deletion: deletionRequestCopy,
+    labels: dotReminderTermsLabels,
+    providers: [
+      googlePrivacy,
+      { href: "https://ai.google.dev/gemini-api/terms", label: "Gemini API" },
+      { href: "https://www.facebook.com/privacy/policy/", label: "Facebook" },
+    ],
+  },
+  dotshredzilla: {
+    policy: dotShredzillaPolicyCopy,
+    deletion: dotShredzillaDeletionCopy,
+    labels: dotShredzillaTermsLabels,
+    providers: [googlePrivacy],
+  },
 };
 
-/** One app's privacy section on the shared privacy page: intro, deletion request and data practices. */
-export default function AppPrivacy({ appId, language, policy: t, deletion, providerLinks, extraLinks = [] }: Props) {
+function getCopy(app: MobileAppId, locale: string, document: PrivacyDocument) {
+  const language = getPrivacyLanguage(locale);
+  const copy = appCopy[app];
+  const policy = copy.policy[language];
+  const deletion = copy.deletion[language];
+  const labels = copy.labels[language];
+  const title = document === "privacy" ? `${mobileApps[app].name} · ${labels.privacy}` : deletion.title;
+  return { language, policy, deletion, labels, title, providers: copy.providers };
+}
+
+export function appPrivacyMetadata(app: MobileAppId, locale: string, document: PrivacyDocument): Metadata {
+  const { language, policy, deletion, title } = getCopy(app, locale, document);
+  const description = document === "privacy" ? policy.intro : deletion.intro;
+  const path = mobileDocumentPath(language, app, document);
+  return {
+    title, description,
+    alternates: {
+      canonical: path,
+      languages: Object.fromEntries(privacyLanguages.map(other => [other, mobileDocumentPath(other, app, document)])),
+    },
+    openGraph: { type: "article", title, description, url: path, images: [] },
+    twitter: { card: "summary", title, description, images: [] },
+  };
+}
+
+export default function AppPrivacy({ app, locale, document }: { app: MobileAppId; locale: string; document: PrivacyDocument }) {
+  const { language, policy, deletion, labels, title, providers } = getCopy(app, locale, document);
   return (
-    <div lang={language} dir={language === "ar" ? "rtl" : "ltr"} className="space-y-6 mb-12">
-      <section id={appId} className="scroll-mt-28 rounded-2xl border border-(--primary)/40 bg-(--card-bg) p-6 md:p-8">
-        <p className="text-xs uppercase tracking-widest text-(--primary) font-semibold mb-3">DotSuite · Android</p>
-        <h2 className="text-3xl font-bold mb-4">{t.title}</h2>
-        <p className="text-(--text-muted) leading-8">{t.intro}</p>
-        <p className="text-sm text-(--text-muted) mt-3">{t.updated}</p>
-        <nav aria-label={t.title} className="flex flex-wrap gap-3 mt-6">
-          <a href={`#delete-${appId}`} className="rounded-xl px-5 py-3 bg-(--primary) text-(--background) font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{t.request}</a>
-          <a href={`#${appId}-data`} className="rounded-xl border border-(--card-border) px-5 py-3 focus-visible:outline-2 focus-visible:outline-offset-4">{t.policy}</a>
-          {extraLinks.map(link => (
-            <a key={link.href} href={link.href} className="rounded-xl border border-(--card-border) px-5 py-3 focus-visible:outline-2 focus-visible:outline-offset-4">{link.label}</a>
-          ))}
-        </nav>
-      </section>
-      <DeletionRequest appId={appId} copy={deletion} />
-      <section id={`${appId}-data`} className="scroll-mt-28 rounded-2xl border border-(--card-border) bg-(--card-bg) p-6 md:p-8 space-y-7">
-        {t.sections.map(([title, text]) => (
-          <div key={title}>
-            <h3 className="text-xl font-semibold mb-3">{title}</h3>
-            <p className="text-(--text-muted) leading-8">{text}</p>
+    <div lang={language} dir={language === "ar" ? "rtl" : "ltr"} className="max-w-4xl mx-auto px-5 sm:px-6 py-12 sm:py-16">
+      <p className="text-xs uppercase tracking-widest text-(--primary) font-semibold mb-3">DotSuite · Android</p>
+      <AppLegalNav app={app} language={language} document={document} languagesLabel={labels.languages} />
+      {document === "privacy" ? (
+        <article id={app} className="rounded-2xl border border-(--card-border) bg-(--card-bg) p-5 sm:p-8">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 break-words">{title}</h1>
+          <p className="text-(--text-muted) leading-8">{policy.intro}</p>
+          <p className="text-sm text-(--text-muted) mt-3">{policy.updated}</p>
+          <div id={`${app}-data`} className="mt-8 space-y-7 scroll-mt-28">
+            {policy.sections.map(([heading, text]) => (
+              <section key={heading}>
+                <h2 className="text-xl font-semibold mb-3">{heading}</h2>
+                <p className="text-(--text-muted) leading-8">{text}</p>
+              </section>
+            ))}
           </div>
-        ))}
-        <div>
-          <h3 className="font-semibold mb-3">{t.linksTitle}</h3>
-          <ul className="flex flex-wrap gap-x-5 gap-y-3 text-(--primary) underline underline-offset-4">
-            {providerLinks.map(link => <li key={link.href}><a href={link.href}>{link.label}</a></li>)}
-          </ul>
-        </div>
+        </article>
+      ) : <DeletionRequest appId={app} copy={deletion} />}
+      <section className="mt-6 rounded-2xl border border-(--card-border) bg-(--card-bg) p-5 sm:p-8">
+        <h2 className="font-semibold mb-3">{policy.linksTitle}</h2>
+        <ul className="flex flex-wrap gap-x-5 gap-y-3 text-(--primary) underline underline-offset-4">
+          {providers.map(link => <li key={link.href}><a href={link.href}>{link.label}</a></li>)}
+        </ul>
       </section>
     </div>
   );

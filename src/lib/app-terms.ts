@@ -1,3 +1,4 @@
+import type { MobileAppId } from "@/config/mobile-apps";
 import { getPrivacyLanguage, type PrivacyLanguage } from "@/components/privacy/privacy-language";
 
 export type TermsLabels = {
@@ -11,7 +12,7 @@ export type TermsLabels = {
  */
 export type AppTerms = {
   /** URL segment and privacy-page anchor, e.g. "dotreminder". */
-  slug: string;
+  slug: MobileAppId;
   documents: Record<PrivacyLanguage, string>;
   labels: Record<PrivacyLanguage, TermsLabels>;
   /** GitHub repository holding docs/legal, e.g. "kareem2099/DotReminder". */

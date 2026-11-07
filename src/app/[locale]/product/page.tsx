@@ -7,6 +7,9 @@ import ProductCardSkeleton from "@/components/skeletons/ProductCardSkeleton";
 import useDebounce from "@/hooks/useDebounce";
 import TagFilter from "@/components/TagFilter";
 import ProductCard from "@/components/ProductCard";
+import MobileCatalog from "@/components/mobile/MobileCatalog";
+import { mobileAppCopy } from "@/config/mobile-app-copy";
+import { getPrivacyLanguage } from "@/components/privacy/privacy-language";
 
 interface Product {
   _id: string;
@@ -24,6 +27,7 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const locale = (params.locale as string) || "en";
+  const catalogCopy = mobileAppCopy[getPrivacyLanguage(locale)];
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -109,12 +113,15 @@ export default function ProductsPage() {
           {t("title").split(" ")[0]} <span className="text-(--primary)">{t("title").split(" ").slice(1).join(" ")}</span>
         </h1>
         <p className="text-xl text-(--text-muted) max-w-2xl mx-auto">
-          {t("subtitle")}
+          {catalogCopy.catalogIntro}
         </p>
       </section>
 
+      <MobileCatalog locale={locale} />
+
       {/* Search + Filter */}
       <section className="max-w-6xl mx-auto px-6 mb-10">
+        <h2 className="text-2xl font-bold mb-5">{catalogCopy.tools}</h2>
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="relative flex-1">

@@ -67,11 +67,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/privacy#delete-dotreminder`} className="hover:text-(--primary) transition-colors">
-                  {t("deleteDotReminder")}
-                </Link>
-              </li>
-              <li>
                 <Link href={`/${locale}/terms`} className="hover:text-(--primary) transition-colors">
                   {t("terms")}
                 </Link>

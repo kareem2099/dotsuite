@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import DotReminderPrivacy from "@/components/privacy/DotReminderPrivacy";
-import DotShredzillaPrivacy from "@/components/privacy/DotShredzillaPrivacy";
+import LegacyAppPrivacyLinks from "@/components/privacy/LegacyAppPrivacyLinks";
 import { generalPrivacyCopy, privacyPageCopy } from "@/components/privacy/general-privacy-copy";
 import { getPrivacyLanguage, privacyLanguages, privacyLanguageNames } from "@/components/privacy/privacy-language";
 import { SUPPORT_EMAIL } from "@/lib/support";
@@ -12,8 +11,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const language = getPrivacyLanguage((await params).locale);
   const t = privacyPageCopy[language];
   return {
-    title: t.metadataTitle,
-    description: t.description,
+    title: t.pageTitle,
+    description: `${t.pageTitle} · ${t.generalTitle}`,
     alternates: {
       canonical: `https://dotsuite.dev/${language}/privacy`,
       languages: Object.fromEntries(privacyLanguages.map(locale => [locale, `https://dotsuite.dev/${locale}/privacy`])),
@@ -37,8 +36,6 @@ export default async function PrivacyPage({ params }: Props) {
             </Link>
           ))}
         </nav>
-        <DotReminderPrivacy locale={language} />
-        <DotShredzillaPrivacy locale={language} />
         <h2 className="text-2xl font-semibold mb-6">{t.generalTitle}</h2>
         <div className="space-y-6">
           {generalPrivacyCopy[language].map((section, index) => (
@@ -51,6 +48,7 @@ export default async function PrivacyPage({ params }: Props) {
             </section>
           ))}
         </div>
+        <LegacyAppPrivacyLinks language={language} />
         <div className="mt-12 text-center">
           <Link href={`/${language}`} className="text-(--primary) hover:text-(--primary-hover) transition-colors">{t.back}</Link>
         </div>
