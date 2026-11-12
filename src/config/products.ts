@@ -84,11 +84,11 @@ export const products: IProduct[] = [
     price: 0,
     order: 4,
     translations: {
-      en: { title: "DotFetch", description: "Fetch and display system info in VS Code" },
-      ar: { title: "DotFetch", description: "عرض معلومات النظام في VS Code" },
-      fr: { title: "DotFetch", description: "Affichez les infos système dans VS Code" },
-      ru: { title: "DotFetch", description: "Системная информация в VS Code" },
-      de: { title: "DotFetch", description: "Systeminfos in VS Code anzeigen" },
+      en: { title: "DotFetch", description: "HTTP client for VS Code with environments, scripts and tests" },
+      ar: { title: "DotFetch", description: "عميل HTTP داخل VS Code مع البيئات والسكربتات والاختبارات" },
+      fr: { title: "DotFetch", description: "Client HTTP pour VS Code avec environnements, scripts et tests" },
+      ru: { title: "DotFetch", description: "HTTP-клиент для VS Code с окружениями, скриптами и тестами" },
+      de: { title: "DotFetch", description: "HTTP-Client für VS Code mit Umgebungen, Skripten und Tests" },
     },
   },
   {
