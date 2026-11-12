@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rateLimit"; 
+import { rustInternal } from "@/lib/rust-api";
 
 // Zod Schema for profile update
 const profileUpdateSchema = z.object({
@@ -145,6 +146,19 @@ export async function DELETE(req: Request) {
           { status: 403 }
         );
       }
+    }
+
+    // Delete everything the account owns on the DotSuite core first: connected
+    // platform credentials, scheduled posts and their images, API keys and
+    // licence data. If that fails, keep the account so the user can retry
+    // instead of leaving data behind that no account can reach.
+    const cleanup = await rustInternal("/internal/users/data", { method: "DELETE" }, String(user._id)).catch(() => null);
+    if (!cleanup?.ok) {
+      console.error(`[Account] core data deletion failed: ${cleanup?.status ?? "unreachable"}`);
+      return NextResponse.json(
+        { error: "We couldn't delete your connected accounts and scheduled posts right now, so your account was not deleted. Please try again in a few minutes." },
+        { status: 503 }
+      );
     }
 
     await User.findOneAndDelete({ email: session.user.email });

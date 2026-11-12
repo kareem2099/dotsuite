@@ -10,7 +10,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { rustInternal } from "@/lib/rust-api";
 
-const ALLOWED_PLATFORMS = ["telegram", "x", "linkedin"] as const;
+// Every platform DotSuite can hold a credential for (synced from the extension or connected here).
+const ALLOWED_PLATFORMS = ["telegram", "x", "linkedin", "bluesky", "mastodon", "devto"] as const;
 
 export async function DELETE(req: NextRequest) {
   try {

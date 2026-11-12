@@ -69,12 +69,10 @@ function Block({ block }: { block: DotShareBlock }) {
 export default async function DotSharePrivacyPage({ params }: Props) {
   const language = getPrivacyLanguage((await params).locale);
   const t = dotSharePrivacyCopy[language];
-  // German, French and Russian show the English policy with a note in that language.
-  const contentLanguage = t.translationNote ? "en" : language;
-  const rtl = contentLanguage === "ar";
+  const rtl = language === "ar";
 
   return (
-    <div lang={contentLanguage} dir={rtl ? "rtl" : "ltr"} className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div lang={language} dir={rtl ? "rtl" : "ltr"} className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
       <p className="text-xs uppercase tracking-widest text-(--primary) font-semibold mb-3">{t.eyebrow}</p>
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 break-words">{t.title}</h1>
       <p className="text-sm text-(--text-muted)">{t.updated}</p>
@@ -88,10 +86,6 @@ export default async function DotSharePrivacyPage({ params }: Props) {
           </Link>
         ))}
       </nav>
-
-      {t.translationNote && (
-        <p lang={language} dir="ltr" className="mt-6 rounded-xl border border-(--card-border) bg-(--card-bg) px-4 py-3 text-sm">{t.translationNote}</p>
-      )}
 
       <div className="mt-8 space-y-4">
         {t.intro.map(paragraph => <p key={paragraph} className="text-lg text-(--text-muted) leading-8">{rich(paragraph)}</p>)}

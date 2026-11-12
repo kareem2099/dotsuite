@@ -157,6 +157,8 @@ interface PlatformCardProps {
   isLoading: boolean;
   /** Starts the server-side sign-in that saves this account for cloud scheduling. */
   connectHref?: string;
+  /** Deletes the stored credential from DotSuite. */
+  onDisconnect?: () => void;
 }
 
 function ConnectButton({ href, connected, label }: { href: string; connected: boolean; label: string }) {
@@ -174,7 +176,7 @@ function ConnectButton({ href, connected, label }: { href: string; connected: bo
   );
 }
 
-function PlatformCard({ platform, connected, authMethod, isLoading, connectHref }: PlatformCardProps) {
+function PlatformCard({ platform, connected, authMethod, isLoading, connectHref, onDisconnect }: PlatformCardProps) {
   return (
     <div
       className="relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300"
@@ -222,6 +224,16 @@ function PlatformCard({ platform, connected, authMethod, isLoading, connectHref 
 
       {/* Status, plus a one-click sign-in where DotSuite can connect the account itself */}
       <div className="shrink-0 flex items-center gap-2">
+        {!isLoading && connected && onDisconnect && (
+          <button
+            type="button"
+            onClick={onDisconnect}
+            title={`Delete the ${platform.label} credential stored on DotSuite`}
+            className="px-2.5 py-1.5 rounded-lg text-[10px] font-semibold border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors"
+          >
+            Disconnect
+          </button>
+        )}
         {!isLoading && connectHref && <ConnectButton href={connectHref} connected={connected} label={platform.label} />}
         {isLoading ? (
           <div className="w-8 h-8 flex items-center justify-center">
@@ -289,6 +301,7 @@ export default function ConnectedAccounts() {
   const [connections, setConnections] = useState<ConnectionState>({});
   const [authMethods, setAuthMethods] = useState<AuthMethodState>({});
   const [syncing, setSyncing] = useState(false);
+  const [busy, setBusy] = useState<PlatformId | null>(null);
 
   // Fetch current connection status from Rust via internal API — read-only
   const fetchConnections = useCallback(async (quiet = false) => {
@@ -339,6 +352,20 @@ export default function ConnectedAccounts() {
     ["connected", "error", "reason"].forEach(key => url.searchParams.delete(key));
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
   }, []);
+
+  const disconnect = async (platform: PlatformConfig) => {
+    if (!window.confirm(`Disconnect ${platform.label}? DotSuite deletes its stored credential, and scheduled posts to ${platform.label} can no longer publish until you connect it again. Your posts on ${platform.label} stay where they are.`)) return;
+    setBusy(platform.id);
+    try {
+      const res = await fetch(`/api/oauth/disconnect?platform=${platform.id}`, { method: "DELETE" });
+      setNotice(res.ok
+        ? { ok: true, text: `${platform.label} was disconnected and its credential deleted from DotSuite. To fully revoke access, also remove DotShare in your ${platform.label} settings.` }
+        : { ok: false, text: `${platform.label} couldn't be disconnected. Please try again.` });
+      await fetchConnections(true);
+    } finally {
+      setBusy(null);
+    }
+  };
 
   const connectHref = (id: PlatformId) =>
     `/api/connect/${id}?${new URLSearchParams({ target: "cloud", returnTo: `/${locale}/dashboard/dotshare` })}`;
@@ -424,8 +451,9 @@ export default function ConnectedAccounts() {
             platform={platform}
             connected={!!connections[platform.id]}
             authMethod={authMethods[platform.id]}
-            isLoading={false}
+            isLoading={busy === platform.id}
             connectHref={platform.oauthSupported ? connectHref(platform.id) : undefined}
+            onDisconnect={() => disconnect(platform)}
           />
         ))}
       </div>
@@ -442,7 +470,8 @@ export default function ConnectedAccounts() {
           Connect X and LinkedIn here so scheduled posts can publish while your editor is closed.
           Other platforms use your own keys, added in the{" "}
           <span className="text-zinc-400 font-medium">DotShare extension</span>. Tokens are stored
-          encrypted and never shown on this page.
+          encrypted and never shown on this page; Disconnect deletes them from DotSuite.{" "}
+          <a href={`/${locale}/dotshare/privacy`} className="text-zinc-400 underline underline-offset-2 hover:text-zinc-300">Privacy</a>
         </p>
       </div>
     </div>

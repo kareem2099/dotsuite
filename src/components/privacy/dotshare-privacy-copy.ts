@@ -1,4 +1,5 @@
 import type { PrivacyLanguage } from "./privacy-language";
+import { de, fr, ru } from "./dotshare-privacy-translations";
 
 /**
  * DotShare privacy policy. Every statement here describes current code in the
@@ -19,7 +20,6 @@ export interface DotSharePrivacyCopy {
   title: string;
   description: string;
   updated: string;
-  translationNote?: string;
   intro: string[];
   glanceTitle: string;
   glance: { head: string[]; rows: string[][] };
@@ -103,7 +103,7 @@ const en: DotSharePrivacyCopy = {
       id: "github",
       title: "4. GitHub Gists and CodeSnap",
       blocks: [
-        { p: "Creating a Gist uses your GitHub sign-in in VS Code (the `gist` permission) and sends the selected code to GitHub as a public or secret gist, as you choose. A secret gist is still viewable by anyone who has its link. CodeSnap screenshots are drawn inside VS Code and saved on your device. They leave it only if you attach one to a post." },
+        { p: "Creating a Gist uses your GitHub sign-in in VS Code (the `gist` permission) and sends the selected code to GitHub as a public or secret gist, as you choose. A secret gist is still viewable by anyone who has its link. CodeSnap screenshots are drawn inside VS Code and saved on your device. They leave it only if you attach one to a post. If you embed a live CodeSnap image of a gist (a `dotsuite.dev/api/codesnap/gist/…` link), dotsuite.dev reads that gist from GitHub's public API whenever the image is requested, at most once every 10 minutes, and draws it. Nothing is stored except the cached image." },
       ],
     },
     {
@@ -142,7 +142,7 @@ const en: DotSharePrivacyCopy = {
         { list: [
           "**Credentials.** You add them in one of two ways. Connect LinkedIn or X in the dashboard (section 5). Or, from the extension, agree to the consent prompt shown before your first cloud schedule; Mastodon asks separately. The extension then sends the stored credentials of the platforms you schedule to (Telegram, LinkedIn, X, Bluesky, Mastodon or Dev.to). The server encrypts them with AES-256-GCM before storing them and uses them only to publish the posts you schedule.",
           "**Scheduled posts.** The post text, chosen platforms, image URLs, time and status, plus retry count and the last error if publishing fails. Posts stay in your history after they publish.",
-          "**Images.** Images you schedule are uploaded to DotSuite storage on Cloudflare R2 and served from a public, unguessable URL so the platforms can fetch them. Anyone with that URL can view the image, and it isn't deleted automatically after publishing.",
+          "**Images.** Images you schedule are uploaded to DotSuite storage on Cloudflare R2 and served from a public, unguessable URL so the platforms can fetch them. Anyone with that URL can view the image. Images stay after publishing and are deleted with the post when you delete your DotSuite account.",
           "**Device identifier.** Requests from the extension and CLI include a one-way SHA-256 hash of a device identifier (VS Code's machine ID, or your computer's hostname and OS username for the CLI). It's used for device limits and abuse prevention and can't be reversed into the original value.",
           "**Activity records.** Posting activity is used for rate limits and abuse prevention and deleted after 7 days. Security audit logs are deleted after 90 days.",
           "**Infrastructure.** The DotSuite API runs at `core.dotsuite.dev` on Railway with a PostgreSQL database. Images are stored on Cloudflare R2. Payments for paid plans are handled by Lemon Squeezy, and DotSuite never receives your card details.",
@@ -154,11 +154,12 @@ const en: DotSharePrivacyCopy = {
       title: "7. Your choices, and how to delete your data",
       blocks: [
         { list: [
-          "**Remove credentials from the extension.** Run **DotShare: Clear All Credentials** from the Command Palette (DotShare 3.7.0 and later). It deletes every platform token and key, your AI provider keys, the GitHub token, your DotSuite key and your cloud-sync consent from this device. You can also disconnect LinkedIn, X or GitHub one at a time in Settings, or sign out of DotSuite with **DotShare: Logout / Clear Token**.",
+          "**Remove credentials from the extension.** Use **Clear all credentials** at the bottom of DotShare's Settings, or run **DotShare: Clear All Credentials** from the Command Palette (DotShare 3.7.0 and later). Either way, you confirm first. It deletes every platform token and key, your AI provider keys, the GitHub token, your DotSuite key and your cloud-sync consent from this device. You can also disconnect LinkedIn, X or GitHub one at a time in Settings, or sign out of DotSuite with **DotShare: Logout / Clear Token**.",
           "**Remove CLI accounts:** `dotshare-agent accounts remove <id>` deletes the account and its keyring entry. Your local library stays in `~/.dotshare` until you delete that folder.",
           "**Revoke access at the platform.** Removing a credential locally doesn't revoke it. Revoke it where it was issued: LinkedIn (Settings → Data privacy → Permitted services), X (Settings → Security and account access → Apps and sessions), Mastodon (Preferences → Account → Authorized apps), Bluesky (Settings → App passwords), Telegram (@BotFather → revoke token), Discord (delete the webhook) and Dev.to (Settings → Extensions → API keys).",
           "**Cancel scheduled posts** from the extension, or with `cancel_scheduled_post` / `dotshare-agent cloud cancel`.",
-          "**Delete cloud data.** Email support@dotsuite.dev from your account's address to delete your stored platform credentials, scheduled posts and uploaded images. We confirm and complete verified requests within 30 days. Deleting your DotSuite account in the dashboard removes the account itself; send this request as well so cloud data is removed too.",
+          "**Disconnect a platform from DotSuite.** In your DotSuite dashboard, under DotShare → Connected Accounts, select **Disconnect** on any connected platform. Its stored credential is deleted immediately.",
+          "**Delete everything.** Deleting your DotSuite account (Dashboard → Settings → Delete account) first deletes all your connected platform credentials, scheduled posts and their images, API keys and licence data, then the account itself. If any of that fails, the account is kept so you can try again. Billing, refund and security-audit records are kept for their legal and security retention periods. Images you uploaded but never attached to a scheduled post aren't linked to your account, so ask support@dotsuite.dev if you need one removed.",
           "**Access or correction.** Ask at the same address what DotSuite stores about your DotShare use, or ask us to correct it.",
         ] },
       ],
@@ -260,7 +261,7 @@ const ar: DotSharePrivacyCopy = {
       id: "github",
       title: "٤. GitHub Gists و CodeSnap",
       blocks: [
-        { p: "يستخدم إنشاء Gist تسجيل دخولك إلى GitHub في VS Code (صلاحية `gist`)، ويرسل الكود المحدد إلى GitHub كـ gist عام أو سري حسب اختيارك. يستطيع أي شخص لديه رابط الـ gist السري أن يراه. أما لقطات CodeSnap فتُرسم داخل VS Code وتُحفظ على جهازك، ولا تغادره إلا إذا أرفقتها بمنشور." },
+        { p: "يستخدم إنشاء Gist تسجيل دخولك إلى GitHub في VS Code (صلاحية `gist`)، ويرسل الكود المحدد إلى GitHub كـ gist عام أو سري حسب اختيارك. يستطيع أي شخص لديه رابط الـ gist السري أن يراه. أما لقطات CodeSnap فتُرسم داخل VS Code وتُحفظ على جهازك، ولا تغادره إلا إذا أرفقتها بمنشور. وإذا أدرجت صورة CodeSnap حيّة لـ gist (رابط `dotsuite.dev/api/codesnap/gist/…`)، يقرأ dotsuite.dev ذلك الـ gist من واجهة GitHub العامة عند طلب الصورة، مرة كل ١٠ دقائق على الأكثر، ويرسمها. لا يُحفظ شيء سوى الصورة المخزنة مؤقتًا." },
       ],
     },
     {
@@ -299,7 +300,7 @@ const ar: DotSharePrivacyCopy = {
         { list: [
           "**بيانات الدخول.** تُضاف بإحدى طريقتين: ربط LinkedIn أو X من لوحة التحكم (القسم ٥)، أو الموافقة من الإضافة على طلب الموافقة الذي يظهر قبل أول جدولة سحابية، ويُطلب لـ Mastodon موافقة منفصلة. بعدها ترسل الإضافة بيانات الدخول المحفوظة للمنصات التي تجدول عليها (Telegram أو LinkedIn أو X أو Bluesky أو Mastodon أو Dev.to). يشفّرها الخادم بـ AES-256-GCM قبل حفظها، ولا يستخدمها إلا لنشر المنشورات التي تجدولها.",
           "**المنشورات المجدولة.** نص المنشور، والمنصات المختارة، وروابط الصور، والموعد، والحالة، إضافة إلى عدد المحاولات وآخر خطأ إذا فشل النشر. تبقى المنشورات في سجلك بعد نشرها.",
-          "**الصور.** تُرفع الصور التي تجدولها إلى تخزين DotSuite على Cloudflare R2، وتُقدَّم من رابط عام يصعب تخمينه حتى تستطيع المنصات جلبها. يستطيع أي شخص لديه الرابط رؤية الصورة، ولا تُحذف تلقائيًا بعد النشر.",
+          "**الصور.** تُرفع الصور التي تجدولها إلى تخزين DotSuite على Cloudflare R2، وتُقدَّم من رابط عام يصعب تخمينه حتى تستطيع المنصات جلبها. يستطيع أي شخص لديه الرابط رؤية الصورة. تبقى الصور بعد النشر، وتُحذف مع المنشور عند حذف حسابك في DotSuite.",
           "**معرّف الجهاز.** تتضمن الطلبات من الإضافة وسطر الأوامر بصمة SHA-256 أحادية الاتجاه لمعرّف الجهاز (معرّف الجهاز في VS Code، أو اسم الجهاز واسم مستخدم النظام في سطر الأوامر). تُستخدم لحدود الأجهزة ومنع إساءة الاستخدام، ولا يمكن استرجاع القيمة الأصلية منها.",
           "**سجلات النشاط.** يُستخدم نشاط النشر لحدود المعدل ومنع إساءة الاستخدام ويُحذف بعد ٧ أيام. وتُحذف سجلات التدقيق الأمني بعد ٩٠ يومًا.",
           "**البنية التحتية.** تعمل واجهة DotSuite البرمجية على `core.dotsuite.dev` في Railway مع قاعدة بيانات PostgreSQL. وتُخزَّن الصور على Cloudflare R2. وتتولى Lemon Squeezy مدفوعات الخطط المدفوعة، ولا تستلم DotSuite بيانات بطاقتك أبدًا.",
@@ -311,11 +312,12 @@ const ar: DotSharePrivacyCopy = {
       title: "٧. اختياراتك وطريقة حذف بياناتك",
       blocks: [
         { list: [
-          "**إزالة بيانات الدخول من الإضافة.** نفّذ أمر **DotShare: Clear All Credentials** من لوحة الأوامر (DotShare 3.7.0 وما بعده). يحذف كل توكنات المنصات ومفاتيحها، ومفاتيح مزوّدي الذكاء الاصطناعي، وتوكن GitHub، ومفتاح DotSuite، وموافقتك على المزامنة السحابية من هذا الجهاز. ويمكنك أيضًا فصل LinkedIn أو X أو GitHub كلٌّ على حدة من الإعدادات، أو تسجيل الخروج من DotSuite بأمر **DotShare: Logout / Clear Token**.",
+          "**إزالة بيانات الدخول من الإضافة.** استخدم زر **Clear all credentials** في أسفل إعدادات DotShare، أو نفّذ أمر **DotShare: Clear All Credentials** من لوحة الأوامر (DotShare 3.7.0 وما بعده). في الحالتين تؤكد أولًا. يحذف كل توكنات المنصات ومفاتيحها، ومفاتيح مزوّدي الذكاء الاصطناعي، وتوكن GitHub، ومفتاح DotSuite، وموافقتك على المزامنة السحابية من هذا الجهاز. ويمكنك أيضًا فصل LinkedIn أو X أو GitHub كلٌّ على حدة من الإعدادات، أو تسجيل الخروج من DotSuite بأمر **DotShare: Logout / Clear Token**.",
           "**إزالة حسابات سطر الأوامر:** يحذف `dotshare-agent accounts remove <id>` الحساب وبيانات دخوله من مخزن النظام. تبقى مكتبتك المحلية في `~/.dotshare` حتى تحذف ذلك المجلد.",
           "**إلغاء الوصول من المنصة.** حذف بيانات الدخول محليًا لا يلغيها. ألغِها من حيث أُصدرت: LinkedIn (الإعدادات ← خصوصية البيانات ← الخدمات المسموح بها)، و X (الإعدادات ← الأمان والوصول إلى الحساب ← التطبيقات والجلسات)، و Mastodon (التفضيلات ← الحساب ← التطبيقات المصرّح لها)، و Bluesky (الإعدادات ← كلمات مرور التطبيقات)، و Telegram (@BotFather ← إلغاء التوكن)، و Discord (حذف الـ webhook)، و Dev.to (الإعدادات ← Extensions ← مفاتيح API).",
           "**إلغاء المنشورات المجدولة** من الإضافة، أو عبر `cancel_scheduled_post` أو `dotshare-agent cloud cancel`.",
-          "**حذف البيانات السحابية.** راسل support@dotsuite.dev من البريد المسجّل في حسابك لحذف بيانات دخول المنصات المحفوظة والمنشورات المجدولة والصور المرفوعة. نؤكد الطلبات التي نتحقق منها وننفذها خلال ٣٠ يومًا. حذف حساب DotSuite من لوحة التحكم يحذف الحساب نفسه؛ أرسل هذا الطلب أيضًا لتُحذف البيانات السحابية كذلك.",
+          "**فصل منصة عن DotSuite.** من لوحة تحكم DotSuite، في DotShare ← Connected Accounts، اختر **Disconnect** على أي منصة متصلة، فتُحذف بيانات دخولها المحفوظة فورًا.",
+          "**حذف كل شيء.** حذف حسابك في DotSuite (لوحة التحكم ← الإعدادات ← حذف الحساب) يحذف أولًا كل بيانات دخول المنصات المتصلة، والمنشورات المجدولة وصورها، ومفاتيح API، وبيانات التراخيص، ثم الحساب نفسه. إذا فشل أي جزء من ذلك، يبقى الحساب حتى تحاول مرة أخرى. وتُحفظ سجلات الفوترة والاسترداد والتدقيق الأمني طوال مدد الاحتفاظ القانونية والأمنية الخاصة بها. أما الصور التي رفعتها ولم ترفقها بمنشور مجدول فليست مرتبطة بحسابك، فراسل support@dotsuite.dev إذا أردت حذف إحداها.",
           "**الاطلاع والتصحيح.** يمكنك أن تسأل على العنوان نفسه عمّا تحفظه DotSuite عن استخدامك لـ DotShare، أو أن تطلب تصحيحه.",
         ] },
       ],
@@ -344,12 +346,4 @@ const ar: DotSharePrivacyCopy = {
   related: { title: "روابط ذات صلة", general: "سياسة خصوصية DotSuite (الحساب والفوترة والموقع)", terms: "شروط خدمة DotSuite", github: "الكود المصدري لـ DotShare" },
 };
 
-const englishFor = (translationNote: string): DotSharePrivacyCopy => ({ ...en, translationNote });
-
-export const dotSharePrivacyCopy: Record<PrivacyLanguage, DotSharePrivacyCopy> = {
-  en,
-  ar,
-  de: englishFor("Diese Richtlinie ist auf Englisch und Arabisch verfügbar. Die englische Fassung ist maßgeblich."),
-  fr: englishFor("Cette politique est disponible en anglais et en arabe. La version anglaise fait foi."),
-  ru: englishFor("Эта политика доступна на английском и арабском языках. Действует английская версия."),
-};
+export const dotSharePrivacyCopy: Record<PrivacyLanguage, DotSharePrivacyCopy> = { en, ar, de, fr, ru };
