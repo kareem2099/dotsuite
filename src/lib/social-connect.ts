@@ -23,6 +23,8 @@ interface Provider {
   clientIdEnv: string;
   /** Confidential clients send a secret; X is a public client and uses PKCE instead. */
   clientSecretEnv?: string;
+  /** Sent with HTTP Basic auth when set, making X a confidential client (X_CLIENT_SECRET). */
+  basicSecretEnv?: string;
   pkce: boolean;
   /** Seconds to assume when the provider omits expires_in. */
   defaultExpiresIn: number;
@@ -47,6 +49,7 @@ export const PROVIDERS: Record<ConnectPlatform, Provider> = {
     // media.write lets DotShare upload images through the v2 media endpoint.
     scopes: ["tweet.read", "tweet.write", "users.read", "media.write", "offline.access"],
     clientIdEnv: "X_CLIENT_ID",
+    basicSecretEnv: "X_CLIENT_SECRET",
     pkce: true,
     defaultExpiresIn: 2 * 60 * 60,
   },
@@ -115,7 +118,7 @@ export function cliRequest(query: URLSearchParams): CliRequest | null {
 const CLI_INFO = Buffer.from("dotshare-connect-v1");
 
 /** Loopback URL carrying `token` encrypted to the CLI's key (ECDH + HKDF + AES-256-GCM). */
-export function cliRedirect(cli: CliRequest, platform: ConnectPlatform, token: TokenResult): string {
+export function cliRedirect(cli: CliRequest, platform: ConnectPlatform, token: TokenResult | null): string {
   const peer = createPublicKey({ key: { kty: "OKP", crv: "X25519", x: cli.key }, format: "jwk" });
   const own = generateKeyPairSync("x25519");
   const ownKey = Buffer.from(own.publicKey.export({ format: "jwk" }).x!, "base64url");
@@ -124,7 +127,9 @@ export function cliRedirect(cli: CliRequest, platform: ConnectPlatform, token: T
   const iv = randomBytes(12);
   const cipher = createCipheriv("aes-256-gcm", key, iv);
   cipher.setAAD(CLI_INFO);
-  const body = Buffer.concat([cipher.update(JSON.stringify({ nonce: cli.nonce, platform, token })), cipher.final()]);
+  // A null token means the account was connected on DotSuite and stays there.
+  const result = token ? { nonce: cli.nonce, platform, token } : { nonce: cli.nonce, platform, via: "dotsuite" };
+  const body = Buffer.concat([cipher.update(JSON.stringify(result)), cipher.final()]);
   const payload = Buffer.concat([ownKey, iv, cipher.getAuthTag(), body]).toString("base64url");
   return `http://127.0.0.1:${cli.port}/callback?${new URLSearchParams({ payload })}`;
 }
@@ -242,8 +247,9 @@ async function tokenRequest(platform: ConnectPlatform, params: Record<string, st
   const body = new URLSearchParams({ client_id: clientId, ...params });
   const headers: Record<string, string> = { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" };
   if (provider.clientSecretEnv) body.set("client_secret", process.env[provider.clientSecretEnv]!);
-  // X public clients authenticate with the client ID alone.
-  else headers.Authorization = `Basic ${Buffer.from(`${clientId}:`).toString("base64")}`;
+  // X as a confidential client sends its secret, so tokens it issues can only be
+  // refreshed here; without one it authenticates with the client ID alone.
+  else headers.Authorization = `Basic ${Buffer.from(`${clientId}:${(provider.basicSecretEnv && process.env[provider.basicSecretEnv]) || ""}`).toString("base64")}`;
 
   const response = await fetch(provider.tokenUrl, { method: "POST", headers, body, redirect: "error", signal: AbortSignal.timeout(15000), cache: "no-store" });
   const data = (await response.json().catch(() => ({}))) as Record<string, unknown>;
@@ -271,6 +277,21 @@ export async function refreshX(refreshToken: string): Promise<TokenResult> {
   const data = await tokenRequest("x", { grant_type: "refresh_token", refresh_token: refreshToken });
   const result = withExpiry(data, PROVIDERS.x.defaultExpiresIn);
   return result.refresh_token ? result : { ...result, warning: "refresh_token_missing_reauth_required" };
+}
+
+// ── X tokens stay on the server ─────────────────────────────────────────────
+
+/**
+ * With X_SERVER_ONLY=true, X tokens issued by DotShare's X app never leave
+ * DotSuite: every X sign-in is saved to the signed-in DotSuite account and X
+ * posts go through the DotSuite API, which meters them against the plan's X
+ * budget. Turn it on once DotShare versions that post through DotSuite ship.
+ */
+export const xServerOnly = (): boolean => process.env.X_SERVER_ONLY === "true";
+
+/** Editor deep link for an account connected on DotSuite: no tokens. */
+export function editorConnectedLink(platform: ConnectPlatform, scheme: EditorScheme): string {
+  return `${scheme}://freerave.dotshare/auth?${new URLSearchParams({ platform, via: "dotsuite" })}`;
 }
 
 // ── Returning to the editor ─────────────────────────────────────────────────

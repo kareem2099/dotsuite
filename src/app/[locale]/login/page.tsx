@@ -30,6 +30,12 @@ export default function Login() {
   const isRTL = locale === "ar";
 
   const [showPassword, setShowPassword] = useState(false);
+  // Same-site paths only, so a crafted link can't send users elsewhere after login.
+  const [callbackUrl] = useState(() => {
+    if (typeof window === "undefined") return `/${locale}/dashboard`;
+    const value = new URLSearchParams(window.location.search).get("callbackUrl");
+    return value && value.startsWith("/") && !value.startsWith("//") && !value.includes("\\") ? value : `/${locale}/dashboard`;
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   // Magic link auth intent and auto-redirect
@@ -47,9 +53,9 @@ export default function Login() {
 
     // 2. Redirect if already authenticated
     if (status === "authenticated") {
-      router.push(`/${locale}/dashboard`);
+      router.push(callbackUrl);
     }
-  }, [status, router, locale]);
+  }, [status, router, callbackUrl]);
 
   const {
     register,
@@ -78,7 +84,7 @@ export default function Login() {
           toast.error(result.error);
         }
       } else {
-        router.push(`/${locale}/dashboard`);
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch {
@@ -208,8 +214,8 @@ export default function Login() {
 
           {/* Social Login - Using Separate Components */}
           <div className="space-y-3">
-            <GoogleLogin />
-            <GitHubLogin />
+            <GoogleLogin callbackUrl={callbackUrl} />
+            <GitHubLogin callbackUrl={callbackUrl} />
           </div>
         </div>
 

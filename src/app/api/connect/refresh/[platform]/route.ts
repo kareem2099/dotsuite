@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
-import { isConfigured, refreshX } from "@/lib/social-connect";
+import { isConfigured, refreshX, xServerOnly } from "@/lib/social-connect";
 
 type Context = { params: Promise<{ platform: string }> };
 
@@ -16,6 +16,10 @@ const NO_STORE = { "Cache-Control": "no-store" };
 export async function POST(req: NextRequest, { params }: Context) {
   if ((await params).platform !== "x") {
     return NextResponse.json({ error: "Only X tokens can be refreshed." }, { status: 404, headers: NO_STORE });
+  }
+  if (xServerOnly()) {
+    // X tokens now stay on DotSuite, which posts and refreshes them itself.
+    return NextResponse.json({ error: "X posting now goes through your DotSuite account. Update DotShare and connect X again.", reauth_required: true }, { status: 410, headers: NO_STORE });
   }
   if (!isConfigured("x")) {
     return NextResponse.json({ error: "X sign-in isn't set up on the server." }, { status: 503, headers: NO_STORE });

@@ -17,7 +17,7 @@ import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { editorScheme } from "@/lib/extension-callback";
 import {
   ConnectTarget, PAGE_HEADERS, PROVIDERS, STATE_COOKIE_MAX_AGE, STATE_COOKIE_PATH,
-  authorizeUrl, cliRequest, connectPlatform, isConfigured, newConnectState, redirectUri, resultPage,
+  authorizeUrl, cliRequest, connectPlatform, xServerOnly, isConfigured, newConnectState, redirectUri, resultPage,
   safeReturnPath, sealState, stateCookieName,
 } from "@/lib/social-connect";
 
@@ -50,12 +50,15 @@ export async function GET(req: NextRequest, { params }: Context) {
   }
   const returnTo = safeReturnPath(query.get("returnTo"), DEFAULT_RETURN);
 
+  // Accounts saved to DotSuite need the signed-in user: cloud connections, and
+  // every X connection once X tokens stay on the server.
   let userId: string | undefined;
-  if (target === "cloud") {
+  if (target === "cloud" || (platform === "x" && xServerOnly())) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       const locale = returnTo.split("/")[1] || "en";
-      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+      const back = `${req.nextUrl.pathname}${req.nextUrl.search}`;
+      return NextResponse.redirect(new URL(`/${locale}/login?${new URLSearchParams({ callbackUrl: back })}`, req.url));
     }
     userId = session.user.id;
   }

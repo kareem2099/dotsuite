@@ -10,6 +10,7 @@ import TierBadge from "@/components/dotshare/TierBadge";
 import PlatformBadge from "@/components/dotshare/PlatformBadge";
 import PostStatusIcon from "@/components/dotshare/PostStatusIcon";
 import ConnectedAccounts from "@/components/dotshare/ConnectedAccounts";
+import XBudget from "@/components/dotshare/XBudget";
 import { UNLIMITED_QUOTA } from "@/lib/billing-display";
 
 interface BillingStatus {
@@ -198,6 +199,11 @@ export default function DotSharePage() {
         {/* ── Section B: Connected Accounts ── */}
         <div className="mb-6">
           <ConnectedAccounts />
+        </div>
+
+        {/* ── X budget (posts through DotShare's X app are paid per post) ── */}
+        <div className="mb-6">
+          <XBudget />
         </div>
 
         {/* ── Section C: API Keys ── */}

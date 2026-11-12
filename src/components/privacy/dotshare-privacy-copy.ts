@@ -48,6 +48,7 @@ const en: DotSharePrivacyCopy = {
       ["Drafts, post history and receipts", "On your device. CLI and MCP records are encrypted (AES-256-GCM).", "No one, until you publish"],
       ["Repository context for AI drafts", "Not stored by DotShare", "The AI provider you choose, with your own key, when you ask for a draft"],
       ["Sign-in tokens from LinkedIn and X", "Passed to your editor or CLI. dotsuite.dev keeps them only when you connect an account for cloud scheduling.", "Your editor or CLI, and DotSuite for cloud scheduling"],
+      ["X posts through DotShare's X app", "DotSuite: the X token (encrypted) and a record of each post's cost, without the post text", "X, published by DotSuite and charged to your plan's X budget"],
       ["Scheduled posts and their images", "DotSuite servers (only if you schedule in the cloud)", "DotSuite's scheduler, which publishes them to the platforms you chose"],
     ],
   },
@@ -118,6 +119,7 @@ const en: DotSharePrivacyCopy = {
           "**CLI sign-in** (`dotshare-agent accounts connect`): the tokens are encrypted to a one-time key that exists only in the waiting CLI process and are sent to it on `127.0.0.1`. They never appear readable in a URL, and the server doesn't keep them.",
           "**Dashboard sign-in** (Connect in your DotSuite dashboard): the tokens are stored for cloud scheduling as described in section 6, but only if the same signed-in DotSuite user started and finished the sign-in.",
           "**X token refresh:** X access tokens last about two hours. To renew one, the extension or CLI sends its refresh token to `dotsuite.dev/api/connect/refresh/x` and receives a new pair. Neither is stored.",
+          "**X from DotShare 3.8:** X tokens are saved to your DotSuite account as described in section 7 and never sent to your device, however you sign in.",
           "Your IP address is used to rate-limit sign-in and refresh attempts. Errors are logged without tokens.",
           "Sign-in pages load no analytics or third-party scripts.",
         ] },
@@ -150,8 +152,24 @@ const en: DotSharePrivacyCopy = {
       ],
     },
     {
+      id: "x-budget",
+      title: "7. X posts and your X budget",
+      blocks: [
+        { p: "X charges DotSuite for every post made through DotShare's X app: at X's current prices, $0.015 per post and $0.20 for a post with a link. To keep that fair and predictable, X posts made through DotShare's app are published by DotSuite and counted against a monthly X budget included in your plan. Scheduled X posts already work this way, and from DotShare 3.8 so do X posts you publish right away." },
+        { list: [
+          "**Your X connection.** Once X posting goes through DotSuite, signing in to X saves the connection to your DotSuite account. The X tokens are encrypted on DotSuite's servers and never sent to your device; your editor and the CLI only learn that X is connected.",
+          "**What is recorded for each X post:** when it was posted, whether it counted as a post with a link, how many images it had, the price-table estimate, the amount X actually deducted when that could be measured, what you were charged, its status and its X post ID. These records contain no post text. Your recent charges and remaining budget are shown in the DotSuite dashboard.",
+          "**How each charge is calculated.** Every post is priced from X's published prices before it is sent, and anything that might be a link is priced as one. DotSuite publishes X posts one at a time and reads its own X credit balance before and after each post. If X deducted more than the estimate, you're charged what X actually took. That balance belongs to DotSuite's X account and contains no information about you.",
+          "**Limits.** Each plan has a monthly X budget that resets on the 1st (UTC) and a daily limit on X posts per user, and DotSuite applies an overall daily limit to protect the service. A post that would go over a limit is refused before anything is sent.",
+          "**If something goes wrong.** A post X rejects isn't charged, apart from images X had already accepted. If X doesn't answer, the post is charged and never resent automatically, because X may have published it.",
+          "**Retention.** X budget records are kept while your DotSuite account exists and are deleted with it.",
+          "**Your own X app instead.** You can use an access token from your own X developer app with the DotShare CLI (`dotshare-agent accounts add`). Posts then go from your device to X, X bills your own developer account, and DotSuite isn't involved.",
+        ] },
+      ],
+    },
+    {
       id: "choices",
-      title: "7. Your choices, and how to delete your data",
+      title: "8. Your choices, and how to delete your data",
       blocks: [
         { list: [
           "**Remove credentials from the extension.** Use **Clear all credentials** at the bottom of DotShare's Settings, or run **DotShare: Clear All Credentials** from the Command Palette (DotShare 3.7.0 and later). Either way, you confirm first. It deletes every platform token and key, your AI provider keys, the GitHub token, your DotSuite key and your cloud-sync consent from this device. You can also disconnect LinkedIn, X or GitHub one at a time in Settings, or sign out of DotSuite with **DotShare: Logout / Clear Token**.",
@@ -166,7 +184,7 @@ const en: DotSharePrivacyCopy = {
     },
     {
       id: "security",
-      title: "8. Security",
+      title: "9. Security",
       blocks: [
         { list: [
           "Every connection to platforms, AI providers and DotSuite uses HTTPS. Credential requests are refused if TLS verification has been disabled.",
@@ -179,7 +197,7 @@ const en: DotSharePrivacyCopy = {
     },
     {
       id: "changes",
-      title: "9. Changes and contact",
+      title: "10. Changes and contact",
       blocks: [
         { p: "When DotShare's data handling changes, we update this page and the date at the top, and note the change in DotShare's CHANGELOG. For questions, requests or concerns, email support@dotsuite.dev." },
       ],
@@ -206,6 +224,7 @@ const ar: DotSharePrivacyCopy = {
       ["المسودات وسجل المنشورات والإيصالات", "على جهازك، وسجلات سطر الأوامر و MCP مشفّرة (AES-256-GCM)", "لا أحد، حتى تنشر"],
       ["سياق المستودع لمسودات الذكاء الاصطناعي", "لا يحفظه DotShare", "مزوّد الذكاء الاصطناعي الذي تختاره، بمفتاحك أنت، عند طلب مسودة"],
       ["توكنات تسجيل الدخول من LinkedIn و X", "تُمرَّر إلى محررك أو سطر الأوامر. لا يحفظها dotsuite.dev إلا عند ربط حساب للجدولة السحابية.", "محررك أو سطر الأوامر، و DotSuite للجدولة السحابية"],
+      ["منشورات X عبر تطبيق DotShare على X", "DotSuite: توكن X (مشفّرًا) وسجل بتكلفة كل منشور، دون نص المنشور", "X، تنشرها DotSuite وتُحسب من ميزانية X في خطتك"],
       ["المنشورات المجدولة وصورها", "خوادم DotSuite (فقط إذا جدولت في السحابة)", "مجدول DotSuite الذي ينشرها على المنصات التي اخترتها"],
     ],
   },
@@ -276,6 +295,7 @@ const ar: DotSharePrivacyCopy = {
           "**الدخول من سطر الأوامر** (`dotshare-agent accounts connect`): تُشفَّر التوكنات بمفتاح يُستخدم مرة واحدة ولا يوجد إلا داخل عملية سطر الأوامر المنتظرة، وتُرسل إليها على `127.0.0.1`. لا تظهر مقروءة في أي رابط أبدًا، ولا يحتفظ الخادم بها.",
           "**الدخول من لوحة التحكم** (زر Connect في لوحة DotSuite): تُحفظ التوكنات للجدولة السحابية كما في القسم ٦، بشرط أن يكون مستخدم DotSuite نفسه المسجّل هو من بدأ تسجيل الدخول وأنهاه.",
           "**تجديد توكن X:** يدوم توكن الوصول في X نحو ساعتين. لتجديده، ترسل الإضافة أو سطر الأوامر توكن التجديد إلى `dotsuite.dev/api/connect/refresh/x` وتستلم زوجًا جديدًا، ولا يُحفظ أيٌّ منهما.",
+          "**X ابتداءً من DotShare 3.8:** تُحفظ توكنات X في حسابك على DotSuite كما في القسم ٧ ولا تُرسل إلى جهازك أبدًا، أيًّا كانت طريقة تسجيل الدخول.",
           "يُستخدم عنوان IP الخاص بك لتحديد عدد محاولات تسجيل الدخول والتجديد. وتُسجَّل الأخطاء دون أي توكنات.",
           "لا تحمّل صفحات تسجيل الدخول أي أدوات تحليلات أو سكربتات من أطراف أخرى.",
         ] },
@@ -308,8 +328,24 @@ const ar: DotSharePrivacyCopy = {
       ],
     },
     {
+      id: "x-budget",
+      title: "٧. منشورات X وميزانية X الخاصة بك",
+      blocks: [
+        { p: "يحاسب X شركة DotSuite على كل منشور يُنشر عبر تطبيق DotShare على X: بأسعار X الحالية، ٠٫٠١٥ دولار للمنشور و٠٫٢٠ دولار للمنشور الذي يحتوي على رابط. ولكي يبقى ذلك عادلًا ومتوقعًا، تنشر DotSuite منشورات X التي تمر عبر تطبيق DotShare، وتُحسب من ميزانية شهرية لـ X ضمن خطتك. المنشورات المجدولة على X تعمل بهذه الطريقة بالفعل، وابتداءً من DotShare 3.8 تعمل بها أيضًا المنشورات التي تنشرها فورًا." },
+        { list: [
+          "**اتصالك بـ X.** عندما يصبح النشر على X عبر DotSuite، يحفظ تسجيل الدخول إلى X الاتصال في حسابك على DotSuite. تُشفَّر توكنات X على خوادم DotSuite ولا تُرسل إلى جهازك أبدًا؛ لا يعرف محررك وسطر الأوامر إلا أن X متصل.",
+          "**ما يُسجَّل لكل منشور على X:** وقت نشره، وهل احتُسب منشورًا برابط، وعدد صوره، وتقدير جدول الأسعار، والمبلغ الذي خصمه X فعلًا عندما أمكن قياسه، وما احتُسب عليك، وحالته، ومعرّف المنشور على X. لا تحتوي هذه السجلات على نص المنشور. وتظهر آخر الرسوم والميزانية المتبقية في لوحة تحكم DotSuite.",
+          "**كيف تُحسب كل رسوم.** يُسعَّر كل منشور من أسعار X المعلنة قبل إرساله، وأي شيء قد يكون رابطًا يُسعَّر كرابط. تنشر DotSuite منشورات X واحدًا تلو الآخر، وتقرأ رصيدها على X قبل كل منشور وبعده. إذا خصم X أكثر من التقدير، تُحاسب على ما خصمه X فعلًا. هذا الرصيد يخص حساب DotSuite على X ولا يحتوي على أي معلومات عنك.",
+          "**الحدود.** لكل خطة ميزانية شهرية لـ X تُعاد في اليوم الأول من الشهر (UTC) وحد يومي لعدد منشورات X لكل مستخدم، كما تطبق DotSuite حدًا يوميًا عامًا لحماية الخدمة. يُرفض أي منشور قد يتجاوز حدًا قبل إرسال أي شيء.",
+          "**إذا حدث خطأ.** المنشور الذي يرفضه X لا يُحاسب عليه، باستثناء الصور التي كان X قد قبلها. وإذا لم يرد X، يُحاسب المنشور ولا يُعاد إرساله تلقائيًا أبدًا، لأن X ربما يكون قد نشره.",
+          "**مدة الاحتفاظ.** تُحفظ سجلات ميزانية X ما دام حسابك في DotSuite موجودًا، وتُحذف معه.",
+          "**تطبيقك الخاص على X بدلًا من ذلك.** يمكنك استخدام توكن وصول من تطبيقك الخاص على X Developer مع سطر أوامر DotShare (`dotshare-agent accounts add`). عندها تذهب المنشورات من جهازك إلى X مباشرة، ويحاسب X حسابك أنت كمطور، ولا تشارك DotSuite في ذلك.",
+        ] },
+      ],
+    },
+    {
       id: "choices",
-      title: "٧. اختياراتك وطريقة حذف بياناتك",
+      title: "٨. اختياراتك وطريقة حذف بياناتك",
       blocks: [
         { list: [
           "**إزالة بيانات الدخول من الإضافة.** استخدم زر **Clear all credentials** في أسفل إعدادات DotShare، أو نفّذ أمر **DotShare: Clear All Credentials** من لوحة الأوامر (DotShare 3.7.0 وما بعده). في الحالتين تؤكد أولًا. يحذف كل توكنات المنصات ومفاتيحها، ومفاتيح مزوّدي الذكاء الاصطناعي، وتوكن GitHub، ومفتاح DotSuite، وموافقتك على المزامنة السحابية من هذا الجهاز. ويمكنك أيضًا فصل LinkedIn أو X أو GitHub كلٌّ على حدة من الإعدادات، أو تسجيل الخروج من DotSuite بأمر **DotShare: Logout / Clear Token**.",
@@ -324,7 +360,7 @@ const ar: DotSharePrivacyCopy = {
     },
     {
       id: "security",
-      title: "٨. الأمان",
+      title: "٩. الأمان",
       blocks: [
         { list: [
           "كل اتصال بالمنصات ومزوّدي الذكاء الاصطناعي و DotSuite يتم عبر HTTPS، وتُرفض طلبات بيانات الدخول إذا عُطّل التحقق من TLS.",
@@ -337,7 +373,7 @@ const ar: DotSharePrivacyCopy = {
     },
     {
       id: "changes",
-      title: "٩. التغييرات والتواصل",
+      title: "١٠. التغييرات والتواصل",
       blocks: [
         { p: "عندما تتغير طريقة تعامل DotShare مع البيانات، نحدّث هذه الصفحة والتاريخ في أعلاها، ونذكر التغيير في سجل تغييرات DotShare (CHANGELOG). للأسئلة أو الطلبات أو المخاوف، راسل support@dotsuite.dev." },
       ],

@@ -12,7 +12,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { rustInternal } from "@/lib/rust-api";
 import {
-  ConnectPlatform, PAGE_HEADERS, PROVIDERS, STATE_COOKIE_PATH, cliFailure, cliRedirect, connectPlatform, editorLink,
+  ConnectPlatform, PAGE_HEADERS, PROVIDERS, STATE_COOKIE_PATH, cliFailure, cliRedirect, connectPlatform, editorConnectedLink, editorLink, xServerOnly,
   exchangeCode, openState, redirectUri, resultPage, sameState, stateCookieName,
 } from "@/lib/social-connect";
 
@@ -87,13 +87,17 @@ export async function GET(req: NextRequest, { params }: Context) {
     return state.target === "cloud" ? backTo(req, state.returnTo, platform, "error", "exchange") : failure(platform, message, 502, retry);
   }
 
-  if (state.target === "cli" && state.cli) return toCli(cliRedirect(state.cli, platform, token), platform);
-
-  if (state.target === "editor") {
-    return page(resultPage({ ok: true, platform, scheme: state.scheme, link: editorLink(platform, state.scheme, token) }), 200, platform);
+  // With X_SERVER_ONLY, X tokens are saved to DotSuite whatever the destination,
+  // and the editor or CLI only learns that the account is connected there.
+  const keepOnServer = platform === "x" && xServerOnly();
+  if (!keepOnServer) {
+    if (state.target === "cli" && state.cli) return toCli(cliRedirect(state.cli, platform, token), platform);
+    if (state.target === "editor") {
+      return page(resultPage({ ok: true, platform, scheme: state.scheme, link: editorLink(platform, state.scheme, token) }), 200, platform);
+    }
   }
 
-  // Cloud: only the DotSuite user who started this connection can receive it.
+  // Saved to DotSuite: only the DotSuite user who started this connection can receive it.
   const session = await getServerSession(authOptions);
   if (!session?.user?.id || session.user.id !== state.userId) {
     return failure(platform, "You were signed out of DotSuite, or switched accounts, during the sign-in. Sign in and connect again.", 401);
@@ -111,7 +115,13 @@ export async function GET(req: NextRequest, { params }: Context) {
 
   if (!saved?.ok) {
     console.error(`[connect] saving ${platform} for cloud failed: ${saved?.status ?? "unreachable"}`);
-    return backTo(req, state.returnTo, platform, "error", "save");
+    const message = `${PROVIDERS[platform].label} signed in, but saving it to DotSuite failed. Please try again.`;
+    if (state.cli) return toCli(cliFailure(state.cli, message), platform);
+    return state.target === "editor" ? failure(platform, message, 502, retry) : backTo(req, state.returnTo, platform, "error", "save");
+  }
+  if (state.target === "cli" && state.cli) return toCli(cliRedirect(state.cli, platform, null), platform);
+  if (state.target === "editor") {
+    return page(resultPage({ ok: true, platform, scheme: state.scheme, link: editorConnectedLink(platform, state.scheme) }), 200, platform);
   }
   return backTo(req, state.returnTo, platform, "connected");
 }
