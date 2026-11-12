@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, startTransition } from "react";
+import { useParams } from "next/navigation";
 
 // ── Platform Definitions ───────────────────────────────────────────────────────
 
@@ -154,9 +155,26 @@ interface PlatformCardProps {
   connected: boolean;
   authMethod?: AuthMethod;
   isLoading: boolean;
+  /** Starts the server-side sign-in that saves this account for cloud scheduling. */
+  connectHref?: string;
 }
 
-function PlatformCard({ platform, connected, authMethod, isLoading }: PlatformCardProps) {
+function ConnectButton({ href, connected, label }: { href: string; connected: boolean; label: string }) {
+  return (
+    <a
+      href={href}
+      title={connected ? `Sign in to ${label} again (for example after it expired)` : `Sign in to ${label} so DotSuite can publish scheduled posts`}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-semibold transition-colors"
+      style={connected
+        ? { backgroundColor: "rgba(39,39,42,0.6)", border: "1px solid rgba(63,63,70,1)", color: "#a1a1aa" }
+        : { backgroundColor: "rgba(99,102,241,0.9)", border: "1px solid rgba(129,140,248,0.6)", color: "#fff" }}
+    >
+      {connected ? "Reconnect" : "Connect"}
+    </a>
+  );
+}
+
+function PlatformCard({ platform, connected, authMethod, isLoading, connectHref }: PlatformCardProps) {
   return (
     <div
       className="relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300"
@@ -202,8 +220,9 @@ function PlatformCard({ platform, connected, authMethod, isLoading }: PlatformCa
         <p className="text-xs text-zinc-500 mt-0.5">{platform.description}</p>
       </div>
 
-      {/* Status indicator (no action button) */}
-      <div className="shrink-0">
+      {/* Status, plus a one-click sign-in where DotSuite can connect the account itself */}
+      <div className="shrink-0 flex items-center gap-2">
+        {!isLoading && connectHref && <ConnectButton href={connectHref} connected={connected} label={platform.label} />}
         {isLoading ? (
           <div className="w-8 h-8 flex items-center justify-center">
             <svg className="animate-spin w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24">
@@ -211,7 +230,7 @@ function PlatformCard({ platform, connected, authMethod, isLoading }: PlatformCa
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
           </div>
-        ) : connected ? (
+        ) : connectHref && !connected ? null : connected ? (
           <div
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-semibold"
             style={{
@@ -257,7 +276,16 @@ interface AuthMethodState {
   [platform: string]: AuthMethod | undefined;
 }
 
+const CONNECT_ERRORS: Record<string, string> = {
+  cancelled: "The sign-in was cancelled. Nothing was changed.",
+  exchange: "The platform didn't accept the sign-in. Please try again.",
+  save: "Signed in, but saving the account failed. Please try again in a moment.",
+};
+
 export default function ConnectedAccounts() {
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null);
   const [connections, setConnections] = useState<ConnectionState>({});
   const [authMethods, setAuthMethods] = useState<AuthMethodState>({});
   const [syncing, setSyncing] = useState(false);
@@ -294,6 +322,26 @@ export default function ConnectedAccounts() {
       if (!quiet) setSyncing(false);
     }
   }, []);
+
+  // Result of a sign-in that just returned here (?connected=x or ?error=x&reason=...).
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const connected = url.searchParams.get("connected");
+    const failed = url.searchParams.get("error");
+    const label = (id: string | null) => PLATFORMS.find(p => p.id === id)?.label;
+    const result = label(connected)
+      ? { ok: true, text: `${label(connected)} is connected. Scheduled posts can now publish to it.` }
+      : label(failed)
+        ? { ok: false, text: `${label(failed)}: ${CONNECT_ERRORS[url.searchParams.get("reason") ?? ""] ?? "The sign-in didn't finish. Please try again."}` }
+        : null;
+    if (!result) return;
+    startTransition(() => setNotice(result));
+    ["connected", "error", "reason"].forEach(key => url.searchParams.delete(key));
+    window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+  }, []);
+
+  const connectHref = (id: PlatformId) =>
+    `/api/connect/${id}?${new URLSearchParams({ target: "cloud", returnTo: `/${locale}/dashboard/dotshare` })}`;
 
   useEffect(() => {
     startTransition(() => {
@@ -355,7 +403,20 @@ export default function ConnectedAccounts() {
         </button>
       </div>
 
-      {/* Platform list — status only, no actions */}
+      {notice && (
+        <div
+          role="status"
+          className="mx-4 mt-4 flex items-start justify-between gap-3 rounded-lg border px-3 py-2 text-xs"
+          style={notice.ok
+            ? { backgroundColor: "rgba(16,185,129,0.08)", borderColor: "rgba(16,185,129,0.3)", color: "#34d399" }
+            : { backgroundColor: "rgba(239,68,68,0.08)", borderColor: "rgba(239,68,68,0.3)", color: "#f87171" }}
+        >
+          <span>{notice.text}</span>
+          <button onClick={() => setNotice(null)} aria-label="Dismiss" className="opacity-70 hover:opacity-100">✕</button>
+        </div>
+      )}
+
+      {/* Platform list */}
       <div className="p-4 space-y-3">
         {PLATFORMS.map((platform) => (
           <PlatformCard
@@ -364,6 +425,7 @@ export default function ConnectedAccounts() {
             connected={!!connections[platform.id]}
             authMethod={authMethods[platform.id]}
             isLoading={false}
+            connectHref={platform.oauthSupported ? connectHref(platform.id) : undefined}
           />
         ))}
       </div>
@@ -377,9 +439,10 @@ export default function ConnectedAccounts() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <p className="text-xs text-zinc-600 leading-relaxed">
-          Connections are managed exclusively from the{" "}
-          <span className="text-zinc-400 font-medium">DotShare VS Code extension</span>.
-          Tokens are encrypted in VS Code&apos;s secure storage and synced to the server — nothing is entered here.
+          Connect X and LinkedIn here so scheduled posts can publish while your editor is closed.
+          Other platforms use your own keys, added in the{" "}
+          <span className="text-zinc-400 font-medium">DotShare extension</span>. Tokens are stored
+          encrypted and never shown on this page.
         </p>
       </div>
     </div>
