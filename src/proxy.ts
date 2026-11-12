@@ -18,6 +18,7 @@ const publicPages = [
   "/terms",
   ...mobileAppIds.flatMap(app => appDocuments.map(document => `/${app}/${document}`)),
   "/privacy",
+  "/dotshare/privacy",
   "/banned",
 ];
 

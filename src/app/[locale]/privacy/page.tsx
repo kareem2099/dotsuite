@@ -4,6 +4,7 @@ import LegacyAppPrivacyLinks from "@/components/privacy/LegacyAppPrivacyLinks";
 import { generalPrivacyCopy, privacyPageCopy } from "@/components/privacy/general-privacy-copy";
 import { getPrivacyLanguage, privacyLanguages, privacyLanguageNames } from "@/components/privacy/privacy-language";
 import { SUPPORT_EMAIL } from "@/lib/support";
+import { dotSharePrivacyCopy } from "@/components/privacy/dotshare-privacy-copy";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -48,6 +49,11 @@ export default async function PrivacyPage({ params }: Props) {
             </section>
           ))}
         </div>
+        <Link href={`/${language}/dotshare/privacy`}
+          className="mt-10 block rounded-xl border border-(--card-border) bg-(--card-bg) p-5 hover:border-(--primary) transition-colors">
+          <span className="font-semibold">{dotSharePrivacyCopy[language].title}</span>
+          <span className="block text-sm text-(--text-muted) mt-1">{dotSharePrivacyCopy[language].description}</span>
+        </Link>
         <LegacyAppPrivacyLinks language={language} />
         <div className="mt-12 text-center">
           <Link href={`/${language}`} className="text-(--primary) hover:text-(--primary-hover) transition-colors">{t.back}</Link>
