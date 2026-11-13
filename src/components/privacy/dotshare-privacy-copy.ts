@@ -34,7 +34,7 @@ const en: DotSharePrivacyCopy = {
   eyebrow: "DotSuite · DotShare",
   title: "DotShare Privacy Policy",
   description: "What the DotShare VS Code extension, the dotshare-cli MCP server and DotShare sign-in on dotsuite.dev store, where it goes, and how to remove it.",
-  updated: "Last updated: November 12, 2026 (DotShare 3.7.0, dotshare-cli 3.1.0)",
+  updated: "Last updated: November 13, 2026 (DotShare 3.8.0, dotshare-cli 3.2.0)",
   intro: [
     "DotShare is an open-source developer tool from DotSuite. It turns your commits, release notes and code into posts and publishes them to the social accounts you connect. This policy covers the DotShare VS Code extension, the `dotshare-cli` package (its CLI and local MCP server for AI agents), DotShare sign-in on dotsuite.dev, and DotSuite cloud scheduling when you use it with DotShare.",
     "DotShare is local-first. Your credentials, drafts and history stay on your device, and posts go from your device straight to each platform, unless you choose to schedule them in DotSuite's cloud. Your DotSuite account, billing and the dotsuite.dev website itself are covered by the general DotSuite privacy policy.",
@@ -159,7 +159,7 @@ const en: DotSharePrivacyCopy = {
         { list: [
           "**Your X connection.** Once X posting goes through DotSuite, signing in to X saves the connection to your DotSuite account. The X tokens are encrypted on DotSuite's servers and never sent to your device; your editor and the CLI only learn that X is connected.",
           "**What is recorded for each X post:** when it was posted, whether it counted as a post with a link, how many images it had, the price-table estimate, the amount X actually deducted when that could be measured, what you were charged, its status and its X post ID. These records contain no post text. Your recent charges and remaining budget are shown in the DotSuite dashboard.",
-          "**How each charge is calculated.** Every post is priced from X's published prices before it is sent, and anything that might be a link is priced as one. DotSuite publishes X posts one at a time and reads its own X credit balance before and after each post. If X deducted more than the estimate, you're charged what X actually took. That balance belongs to DotSuite's X account and contains no information about you.",
+          "**How each charge is calculated.** Before a post is sent, DotSuite holds the most X could charge for it from your monthly X budget, using X's published prices; anything that might be a link is held at the link price. DotSuite publishes X posts one at a time and reads its own X credit balance before and after each post. The post stays pending until X's deduction shows up. You're then charged exactly what X deducted, and the rest of the hold returns to your budget, like a card payment. If X's deduction can't be confirmed, the held amount is charged. Nothing is added after a post has settled. That balance belongs to DotSuite's X account and contains no information about you.",
           "**Limits.** Each plan has a monthly X budget that resets on the 1st (UTC) and a daily limit on X posts per user, and DotSuite applies an overall daily limit to protect the service. A post that would go over a limit is refused before anything is sent.",
           "**If something goes wrong.** A post X rejects isn't charged, apart from images X had already accepted. If X doesn't answer, the post is charged and never resent automatically, because X may have published it.",
           "**Retention.** X budget records are kept while your DotSuite account exists and are deleted with it.",
@@ -210,7 +210,7 @@ const ar: DotSharePrivacyCopy = {
   eyebrow: "DotSuite · DotShare",
   title: "سياسة الخصوصية لـ DotShare",
   description: "ما الذي تحفظه إضافة DotShare لـ VS Code وخادم MCP في dotshare-cli وتسجيل الدخول عبر dotsuite.dev، وإلى أين يذهب، وكيف تحذفه.",
-  updated: "آخر تحديث: ١٢ نوفمبر ٢٠٢٦ (DotShare 3.7.0 و dotshare-cli 3.1.0)",
+  updated: "آخر تحديث: ١٣ نوفمبر ٢٠٢٦ (DotShare 3.8.0 و dotshare-cli 3.2.0)",
   intro: [
     "DotShare أداة مفتوحة المصدر للمطورين من DotSuite. تحوّل الـ commits وملاحظات الإصدار والكود إلى منشورات، وتنشرها على الحسابات التي تربطها. تغطي هذه السياسة إضافة DotShare لـ VS Code، وحزمة `dotshare-cli` (سطر الأوامر وخادم MCP المحلي لوكلاء الذكاء الاصطناعي)، وتسجيل الدخول إلى DotShare عبر dotsuite.dev، والجدولة السحابية في DotSuite عند استخدامها مع DotShare.",
     "يعمل DotShare محليًا أولًا. تبقى بيانات الدخول والمسودات والسجل على جهازك، وتذهب المنشورات من جهازك مباشرةً إلى كل منصة، إلا إذا اخترت جدولتها في سحابة DotSuite. أما حسابك في DotSuite والفوترة وموقع dotsuite.dev نفسه فتغطيها سياسة الخصوصية العامة لـ DotSuite.",
@@ -335,7 +335,7 @@ const ar: DotSharePrivacyCopy = {
         { list: [
           "**اتصالك بـ X.** عندما يصبح النشر على X عبر DotSuite، يحفظ تسجيل الدخول إلى X الاتصال في حسابك على DotSuite. تُشفَّر توكنات X على خوادم DotSuite ولا تُرسل إلى جهازك أبدًا؛ لا يعرف محررك وسطر الأوامر إلا أن X متصل.",
           "**ما يُسجَّل لكل منشور على X:** وقت نشره، وهل احتُسب منشورًا برابط، وعدد صوره، وتقدير جدول الأسعار، والمبلغ الذي خصمه X فعلًا عندما أمكن قياسه، وما احتُسب عليك، وحالته، ومعرّف المنشور على X. لا تحتوي هذه السجلات على نص المنشور. وتظهر آخر الرسوم والميزانية المتبقية في لوحة تحكم DotSuite.",
-          "**كيف تُحسب كل رسوم.** يُسعَّر كل منشور من أسعار X المعلنة قبل إرساله، وأي شيء قد يكون رابطًا يُسعَّر كرابط. تنشر DotSuite منشورات X واحدًا تلو الآخر، وتقرأ رصيدها على X قبل كل منشور وبعده. إذا خصم X أكثر من التقدير، تُحاسب على ما خصمه X فعلًا. هذا الرصيد يخص حساب DotSuite على X ولا يحتوي على أي معلومات عنك.",
+          "**كيف تُحسب كل رسوم.** قبل إرسال أي منشور، تحجز DotSuite من ميزانيتك الشهرية لـ X أعلى مبلغ قد يخصمه X عليه وفق أسعاره المعلنة، وأي شيء قد يكون رابطًا يُحجز بسعر الرابط. تنشر DotSuite منشورات X واحدًا تلو الآخر، وتقرأ رصيدها على X قبل كل منشور وبعده. يبقى المنشور معلّقًا إلى أن يظهر خصم X، ثم تُحاسب على ما خصمه X بالضبط ويعود باقي المبلغ المحجوز إلى ميزانيتك، كما يحدث في الدفع بالبطاقة. إذا تعذّر التأكد من خصم X، يُحتسب المبلغ المحجوز. لا يُضاف أي خصم بعد تسوية المنشور. هذا الرصيد يخص حساب DotSuite على X ولا يحتوي على أي معلومات عنك.",
           "**الحدود.** لكل خطة ميزانية شهرية لـ X تُعاد في اليوم الأول من الشهر (UTC) وحد يومي لعدد منشورات X لكل مستخدم، كما تطبق DotSuite حدًا يوميًا عامًا لحماية الخدمة. يُرفض أي منشور قد يتجاوز حدًا قبل إرسال أي شيء.",
           "**إذا حدث خطأ.** المنشور الذي يرفضه X لا يُحاسب عليه، باستثناء الصور التي كان X قد قبلها. وإذا لم يرد X، يُحاسب المنشور ولا يُعاد إرساله تلقائيًا أبدًا، لأن X ربما يكون قد نشره.",
           "**مدة الاحتفاظ.** تُحفظ سجلات ميزانية X ما دام حسابك في DotSuite موجودًا، وتُحذف معه.",
