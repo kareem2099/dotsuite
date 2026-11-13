@@ -80,6 +80,7 @@ export const products: IProduct[] = [
     extensionId: "dotfetch",
     category: "vscode",
     githubRepo: "kareem2099/DotFetch",
+    docsBranch: "main",
     hasLicense: false,
     price: 0,
     order: 4,
