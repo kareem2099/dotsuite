@@ -6,6 +6,9 @@ import { getPool, encode, type Data } from "@/lib/postgres";
 export default class User extends RecordBase {
   static collection = "users";
   static hidden = ["password", "passwordHistory"];
+  /** Token lifetimes, also shown to the user in the emails that carry the tokens */
+  static RESET_TOKEN_MINUTES = 10;
+  static VERIFY_TOKEN_HOURS = 24;
   declare email: string;
   declare name: string;
   declare password?: string;
@@ -25,6 +28,8 @@ export default class User extends RecordBase {
   declare passwordHistory?: string[];
   declare sessionVersion: number;
   declare referral_code?: string;
+  /** Preferred language for emails (one of routing.locales) */
+  declare locale?: string;
   constructor(data: Data, stored = false) {
     super(stored ? data : { bio: "", location: "", website: "", twitter: "", github: "", isEmailVerified: false,
       failedLoginAttempts: 0, passwordHistory: [], sessionVersion: 1, ...data }, stored);
@@ -50,11 +55,11 @@ export default class User extends RecordBase {
   getResetPasswordToken() {
     const token = crypto.randomBytes(20).toString("hex");
     this.resetPasswordToken = crypto.createHash("sha256").update(token).digest("hex");
-    this.resetPasswordExpire = new Date(Date.now() + 10 * 60_000); return token;
+    this.resetPasswordExpire = new Date(Date.now() + User.RESET_TOKEN_MINUTES * 60_000); return token;
   }
   static generateVerificationToken() {
     const token = crypto.randomBytes(32).toString("hex");
-    return { token, hashedToken: crypto.createHash("sha256").update(token).digest("hex"), expires: new Date(Date.now() + 24 * 3600_000) };
+    return { token, hashedToken: crypto.createHash("sha256").update(token).digest("hex"), expires: new Date(Date.now() + User.VERIFY_TOKEN_HOURS * 3600_000) };
   }
   getVerificationToken() {
     const token = User.generateVerificationToken(); this.verificationToken = token.hashedToken; this.verificationTokenExpire = token.expires; return token.token;

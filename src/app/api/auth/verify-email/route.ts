@@ -1,8 +1,7 @@
 import { NextResponse, after } from "next/server";
 import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
-import { sendEmail } from "@/lib/email";
-import { getWelcomeEmailTemplate } from "@/lib/emailTemplates";
+import { sendTemplateEmail } from "@/lib/email";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { logAudit } from "@/lib/audit";
 import { z } from "zod";
@@ -78,10 +77,11 @@ export async function POST(request: Request) {
     });
 
     //  Send welcome email (fire and forget)
-    const { subject, html, message } = getWelcomeEmailTemplate(user.name);
     // after() keeps the serverless function alive until the email is sent; a bare
-    // promise is cut off once the response goes out (sendEmail logs its own errors)
-    after(() => sendEmail({ to: user.email, subject, html, text: message }));
+    // promise is cut off once the response goes out (sendTemplateEmail logs its own errors)
+    after(() =>
+      sendTemplateEmail({ to: user.email, kind: "welcome", locale: user.locale, data: { name: user.name } })
+    );
 
     return NextResponse.json(
       { message: "Email verified successfully" },

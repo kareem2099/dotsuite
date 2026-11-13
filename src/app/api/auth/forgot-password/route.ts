@@ -1,16 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
-import { sendEmail } from "@/lib/email";
-import { getPasswordResetEmailTemplate } from "@/lib/emailTemplates";
+import { sendTemplateEmail } from "@/lib/email";
+import { routing } from "@/i18n/routing";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 
 // Zod Schema for email + locale validation
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  locale: z.string().min(2).max(5).optional().default("en"),
+  locale: z.enum(routing.locales).catch(routing.defaultLocale),
 });
+
+// One answer for every case (no account, social-login account, email sent) so the
+// endpoint can't be used to find out who has an account or how they sign in.
+const GENERIC_RESPONSE = { message: "If an account exists, a reset link has been sent to your email" };
 
 export async function POST(request: Request) {
   try {
@@ -46,20 +50,17 @@ export async function POST(request: Request) {
     // Check if user exists with that email and has a password (not OAuth-only)
     const user = await User.findOne({ email }).select("+password");
 
+    // 🏆 Prevent User Enumeration
     if (!user) {
-      // 🏆 Prevent User Enumeration
-      return NextResponse.json(
-        { message: "If an account exists, a reset link has been sent to your email" },
-        { status: 200 }
-      );
+      return NextResponse.json(GENERIC_RESPONSE, { status: 200 });
     }
 
-    // 2. 🛡️ OAuth Users Protection
+    // 2. 🛡️ OAuth users have no password to reset: tell them by email how they sign in
     if (!user.password) {
-      return NextResponse.json(
-        { message: "This email is registered with a social provider (Google/GitHub). Password reset is not available." },
-        { status: 400 }
+      after(() =>
+        sendTemplateEmail({ to: user.email, kind: "socialAccountReset", locale: user.locale ?? locale, data: {} })
       );
+      return NextResponse.json(GENERIC_RESPONSE, { status: 200 });
     }
 
     // Generate reset token
@@ -69,26 +70,23 @@ export async function POST(request: Request) {
     // Build locale-aware reset URL
     const resetUrl = `${process.env.NEXTAUTH_URL}/${locale}/reset-password?token=${resetToken}`;
 
-    // Use email template
-    const { subject, html, message } = getPasswordResetEmailTemplate(resetUrl);
+    // Sent after the response so an existing account doesn't answer slower than a
+    // missing one. A token whose email never went out is cleared again.
+    after(async () => {
+      const emailSent = await sendTemplateEmail({
+        to: user.email,
+        kind: "passwordReset",
+        locale,
+        data: { resetUrl, expiresMinutes: User.RESET_TOKEN_MINUTES },
+      });
+      if (!emailSent) {
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save();
+      }
+    });
 
-    const emailSent = await sendEmail({ to: user.email, subject, html, text: message });
-
-    if (!emailSent) {
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-      await user.save();
-
-      return NextResponse.json(
-        { message: "Email could not be sent. Please try again later." },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(
-      { message: "If an account exists, a reset link has been sent to your email" },
-      { status: 200 }
-    );
+    return NextResponse.json(GENERIC_RESPONSE, { status: 200 });
   } catch (error) {
     console.error("Forgot password error:", error);
     return NextResponse.json(

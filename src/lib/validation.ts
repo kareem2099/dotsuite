@@ -1,8 +1,18 @@
 import { z } from "zod";
 
+// Display names end up inside emails sent from our domain, so keep them short and
+// free of markup or links that could be used to phish whoever receives them.
+export const NAME_MAX_LENGTH = 50;
+export const nameSchema = z
+  .string()
+  .trim()
+  .min(2, "Name must be at least 2 characters")
+  .max(NAME_MAX_LENGTH, `Name must be at most ${NAME_MAX_LENGTH} characters`)
+  .refine((v) => !/[<>]|:\/\/|www\./i.test(v), "Name can't contain links or < > characters");
+
 // Zod Validation Schema
 export const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  name: nameSchema,
   email: z.string().email("Please enter a valid email address"),
   password: z.string()
     .min(8, "Password must be at least 8 characters")

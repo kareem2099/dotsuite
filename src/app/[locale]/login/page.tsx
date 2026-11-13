@@ -37,6 +37,7 @@ export default function Login() {
     return value && value.startsWith("/") && !value.startsWith("//") && !value.includes("\\") ? value : `/${locale}/dashboard`;
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showCredentialsHint, setShowCredentialsHint] = useState(false);
 
   // Magic link auth intent and auto-redirect
   useEffect(() => {
@@ -67,6 +68,7 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
+    setShowCredentialsHint(false);
 
     try {
       const result = await signIn("credentials", {
@@ -76,8 +78,9 @@ export default function Login() {
       });
 
       if (result?.error) {
-        if (result.error === "CredentialsSignin") {
+        if (result.error === "InvalidCredentials" || result.error === "CredentialsSignin") {
           toast.error(t("invalidCredentials"));
+          setShowCredentialsHint(true);
         } else if (result.error === "EmailNotVerified") {
           toast.error(t("emailNotVerified") || "Please verify your email before logging in.");
         } else {
@@ -186,6 +189,12 @@ export default function Login() {
             >
               {isLoading ? t("signingIn") : t("signIn")}
             </button>
+
+            {showCredentialsHint && (
+              <p className="text-sm text-(--text-muted) text-center" role="status">
+                {t("invalidCredentialsHint")}
+              </p>
+            )}
           </form>
 
           <div className="mt-6 text-center">

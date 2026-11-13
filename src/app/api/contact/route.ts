@@ -2,8 +2,7 @@ import { SUPPORT_EMAIL } from "@/lib/support";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/postgres";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
-import { sendEmail } from "@/lib/email";
-import { getContactNotificationTemplate } from "@/lib/emailTemplates";
+import { sendTemplateEmail } from "@/lib/email";
 import Contact from "@/models/Contact";
 import { z } from "zod";
 
@@ -46,18 +45,14 @@ export async function POST(req: Request) {
 
     await connectDB();
 
-    // Save to DB + Send email in parallel
-    const { subject: emailSubject, html, message: emailText } = getContactNotificationTemplate(
-      name, email, subject, message
-    );
-
+    // Save to DB + Send email in parallel. Reply-To is the sender, so support can just hit Reply.
     const [, delivered] = await Promise.all([
       Contact.create({ name, email, subject, message }),
-      sendEmail({
+      sendTemplateEmail({
         to: SUPPORT_EMAIL,
-        subject: emailSubject,
-        html,
-        text: emailText,
+        kind: "contactNotification",
+        data: { name, email, subject, message },
+        replyTo: email,
       }),
     ]);
 

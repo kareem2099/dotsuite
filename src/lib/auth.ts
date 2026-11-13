@@ -6,6 +6,44 @@ import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { logAudit } from "@/lib/audit";
+import { sendTemplateEmail } from "@/lib/email";
+import { after } from "next/server";
+import { cookies } from "next/headers";
+import { routing } from "@/i18n/routing";
+import bcrypt from "bcryptjs";
+
+// 🛡️ Anti-Enumeration: every credentials failure before a correct password is proven
+// (no account, social-login account, locked account, wrong password) throws this same
+// error, so the login form can't be used to find out who has an account.
+const INVALID_CREDENTIALS = "InvalidCredentials";
+
+const LOCKOUT_MINUTES = 15;
+const MAX_FAILED_ATTEMPTS = 5;
+
+// Compared against when there is no real hash, so a missing account costs the same
+// bcrypt time as an existing one. Built once, on first use.
+let dummyHash: Promise<string> | undefined;
+const getDummyHash = () => (dummyHash ??= bcrypt.hash("dotsuite-timing-equalizer", 10));
+
+// Sends after the response when a request scope exists; falls back to a detached send
+// Language the visitor was browsing in (next-intl's cookie), stored on new OAuth users
+// so their emails match it. Undefined when unknown; emails then use the default locale.
+const getBrowsingLocale = async (): Promise<string | undefined> => {
+  try {
+    const value = (await cookies()).get("NEXT_LOCALE")?.value;
+    return value && (routing.locales as readonly string[]).includes(value) ? value : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const sendAfterResponse = (task: () => Promise<unknown>) => {
+  try {
+    after(task);
+  } catch {
+    void task();
+  }
+};
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -47,104 +85,68 @@ export const authOptions: NextAuthOptions = {
 
         await connectDB();
 
-        // 2. Fetch user
+        // 2. Fetch user and check the password before revealing anything about the account
         const user = await User.findOne({ email: credentials.email }).select("+password");
+        const isValid = user?.password
+          ? await user.comparePassword(credentials.password)
+          : (await bcrypt.compare(credentials.password, await getDummyHash()), false);
 
-        // 3. Smart error handling for better UX
+        const audit = (details: string) =>
+          logAudit({
+            userId: user?._id.toString(),
+            email: user?.email ?? credentials.email,
+            action: "LOGIN_FAILED",
+            status: "FAILED",
+            ip,
+            userAgent,
+            details,
+          });
+
         if (!user) {
-          // 📝 Log failed login (user not found)
-          await logAudit({
-            email: credentials.email,
-            action: "LOGIN_FAILED",
-            status: "FAILED",
-            ip,
-            userAgent,
-            details: "User not found",
-          });
-          throw new Error("No user found with this email");
-        }
-
-        // 3a. Check account lockout
-        if (user.isLockedOut()) {
-          // 📝 Log failed login (account locked)
-          await logAudit({
-            userId: user._id.toString(),
-            email: user.email,
-            action: "LOGIN_FAILED",
-            status: "FAILED",
-            ip,
-            userAgent,
-            details: `Account locked for ${user.getLockoutTimeRemaining()} minutes`,
-          });
-          throw new Error(`Account locked. Please try again in ${user.getLockoutTimeRemaining()} minutes.`);
+          await audit("User not found");
+          throw new Error(INVALID_CREDENTIALS);
         }
 
         if (!user.password) {
-          // 📝 Log failed login (OAuth user trying credentials)
-          await logAudit({
-            userId: user._id.toString(),
-            email: user.email,
-            action: "LOGIN_FAILED",
-            status: "FAILED",
-            ip,
-            userAgent,
-            details: "OAuth user attempted credentials login",
-          });
-          throw new Error("This email is registered with Google or GitHub. Please sign in with that provider.");
+          await audit("OAuth user attempted credentials login");
+          throw new Error(INVALID_CREDENTIALS);
         }
 
-        if (!user.isEmailVerified) {
-          // 📝 Log failed login (email not verified)
-          await logAudit({
-            userId: user._id.toString(),
-            email: user.email,
-            action: "LOGIN_FAILED",
-            status: "FAILED",
-            ip,
-            userAgent,
-            details: "Email not verified",
-          });
-          throw new Error("EmailNotVerified");
+        // 3. Locked accounts get the generic error too; the owner was told by email
+        if (user.isLockedOut()) {
+          await audit(`Account locked for ${user.getLockoutTimeRemaining()} minutes`);
+          throw new Error(INVALID_CREDENTIALS);
         }
 
-        const isValid = await user.comparePassword(credentials.password);
         if (!isValid) {
-          // Increment failed login attempts
           user.failedLoginAttempts += 1;
-          
-          // Lock account after 5 failed attempts (15 minutes lockout)
-          if (user.failedLoginAttempts >= 5) {
-            user.lockoutUntil = new Date(Date.now() + 15 * 60 * 1000);
+
+          if (user.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
+            user.lockoutUntil = new Date(Date.now() + LOCKOUT_MINUTES * 60 * 1000);
             await user.save();
-            
-            // 📝 Log account lockout
-            await logAudit({
-              userId: user._id.toString(),
-              email: user.email,
-              action: "LOGIN_FAILED",
-              status: "FAILED",
-              ip,
-              userAgent,
-              details: "Account locked after 5 failed attempts",
-            });
-            
-            throw new Error(`Too many failed attempts. Account locked for 15 minutes.`);
+            await audit(`Account locked after ${MAX_FAILED_ATTEMPTS} failed attempts`);
+
+            // 📧 Tell the owner, since the login form no longer says the account is locked
+            sendAfterResponse(() =>
+              sendTemplateEmail({
+                to: user.email,
+                kind: "accountLocked",
+                locale: user.locale,
+                data: { lockoutMinutes: LOCKOUT_MINUTES },
+              })
+            );
+          } else {
+            await user.save();
+            await audit("Invalid password");
           }
-          
-          await user.save();
-          
-          // 📝 Log failed login (wrong password)
-          await logAudit({
-            userId: user._id.toString(),
-            email: user.email,
-            action: "LOGIN_FAILED",
-            status: "FAILED",
-            ip,
-            userAgent,
-            details: "Invalid password",
-          });
-          
-          throw new Error("Invalid password");
+
+          throw new Error(INVALID_CREDENTIALS);
+        }
+
+        // 4. The password is correct, so it's safe to say the email still needs verifying
+        if (!user.isEmailVerified) {
+          await audit("Email not verified");
+          throw new Error("EmailNotVerified");
         }
 
         // Reset failed attempts on successful login
@@ -196,6 +198,7 @@ export const authOptions: NextAuthOptions = {
             name: user.name || "No Name",
             image: user.image || "",
             isEmailVerified: true,
+            locale: await getBrowsingLocale(),
           });
 
           // 📝 Log new user registration via OAuth

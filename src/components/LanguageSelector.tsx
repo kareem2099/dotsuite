@@ -7,9 +7,11 @@ import { useTransition } from "react";
 interface LanguageSelectorProps {
   label?: string;
   className?: string;
+  /** Also save the choice on the signed-in user's profile, so emails use it */
+  persist?: boolean;
 }
 
-export default function LanguageSelector({ label, className = "" }: LanguageSelectorProps) {
+export default function LanguageSelector({ label, className = "", persist = false }: LanguageSelectorProps) {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -35,6 +37,15 @@ export default function LanguageSelector({ label, className = "" }: LanguageSele
     }
     
     const newPath = segments.join("/");
+
+    if (persist) {
+      // Best effort: the page language changes even if saving the preference fails
+      fetch("/api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale: nextLocale }),
+      }).catch(() => {});
+    }
     
     startTransition(() => {
       router.replace(newPath);

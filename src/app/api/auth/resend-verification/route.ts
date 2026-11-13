@@ -1,16 +1,22 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
-import { sendEmail } from "@/lib/email";
-import { getVerifyEmailTemplate } from "@/lib/emailTemplates";
+import { sendTemplateEmail } from "@/lib/email";
+import { routing } from "@/i18n/routing";
 import { checkRateLimit, getClientIP } from "@/lib/rateLimit";
 import { z } from "zod";
 
 // Zod Schema for resend verification
 const resendVerificationSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  locale: z.string().min(2).max(5).optional().default("en"),
+  locale: z.enum(routing.locales).catch(routing.defaultLocale),
 });
+
+// One answer for every case (no account, already verified, email sent) so the
+// endpoint can't be used to find out who has an account.
+const GENERIC_RESPONSE = {
+  message: "If an account exists and is not verified, a verification email has been sent.",
+};
 
 export async function POST(req: Request) {
   try {
@@ -53,20 +59,9 @@ export async function POST(req: Request) {
     await connectDB();
     const user = await User.findOne({ email });
 
-    // Prevent user enumeration - same message as success
-    if (!user) {
-      return NextResponse.json(
-        { message: "If an account exists and is not verified, a verification email has been sent." },
-        { status: 200 }
-      );
-    }
-
-    // Check if already verified
-    if (user.isEmailVerified) {
-      return NextResponse.json(
-        { message: "Email is already verified." },
-        { status: 200 }
-      );
+    // Prevent user enumeration - same message as success, whether missing or already verified
+    if (!user || user.isEmailVerified) {
+      return NextResponse.json(GENERIC_RESPONSE, { status: 200 });
     }
 
     // 5. Generate new token and save
@@ -75,13 +70,17 @@ export async function POST(req: Request) {
 
     // 6. Send Email with locale-aware URL
     const verifyUrl = `${process.env.NEXTAUTH_URL}/${locale}/verify-email?token=${rawToken}`;
-    const { subject, html, message } = getVerifyEmailTemplate(user.name, verifyUrl);
-    await sendEmail({ to: email, subject, html, text: message });
-
-    return NextResponse.json(
-      { message: "If an account exists and is not verified, a verification email has been sent." },
-      { status: 200 }
+    // Sent after the response so an existing account doesn't answer slower than a missing one
+    after(() =>
+      sendTemplateEmail({
+        to: email,
+        kind: "verify",
+        locale,
+        data: { name: user.name, verifyUrl, expiresHours: User.VERIFY_TOKEN_HOURS },
+      })
     );
+
+    return NextResponse.json(GENERIC_RESPONSE, { status: 200 });
   } catch (error) {
     console.error("Resend verification error:", error);
     return NextResponse.json(

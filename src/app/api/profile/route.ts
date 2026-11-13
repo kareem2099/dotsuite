@@ -3,18 +3,23 @@ import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/postgres";
 import User from "@/models/User";
+import EmailLog from "@/models/EmailLog";
 import { z } from "zod";
+import { nameSchema } from "@/lib/validation";
+import { routing } from "@/i18n/routing";
 import { checkRateLimit } from "@/lib/rateLimit"; 
 import { rustInternal } from "@/lib/rust-api";
 
 // Zod Schema for profile update
 const profileUpdateSchema = z.object({
-  displayName: z.string().min(2, "Name must be at least 2 characters").optional().or(z.literal("")),
+  displayName: nameSchema.optional().or(z.literal("")),
   bio: z.string().optional().or(z.literal("")),
   location: z.string().optional().or(z.literal("")),
   website: z.string().url("Invalid URL").optional().or(z.literal("")),
   twitter: z.string().optional().or(z.literal("")),
   github: z.string().optional().or(z.literal("")),
+  // Language for emails we send this user
+  locale: z.enum(routing.locales).optional(),
 });
 
 // Zod Schema for account deletion (requires password confirmation)
@@ -162,6 +167,10 @@ export async function DELETE(req: Request) {
     }
 
     await User.findOneAndDelete({ email: session.user.email });
+    // Delivery history is keyed by a hash of the address; drop it with the account
+    await EmailLog.deleteForRecipient(session.user.email).catch((error) =>
+      console.error("Failed to delete email log:", error)
+    );
 
     return NextResponse.json({ success: true, message: "Account deleted successfully" });
   } catch (error) {

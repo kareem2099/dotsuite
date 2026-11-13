@@ -91,7 +91,7 @@ export default function Settings() {
               </div>
 
               {/* Language */}
-              <LanguageSelector label={t("language")} />
+              <LanguageSelector label={t("language")} persist />
 
               {/* Timezone */}
               <div>

@@ -201,13 +201,19 @@ GITHUB_TOKEN=ghp_your_personal_access_token_for_rate_limits
 GITHUB_WEBHOOK_SECRET=your_github_webhook_secret_key
 
 # ==============================================================================
-# Transactional Email (Nodemailer SMTP)
+# Transactional Email
 # ==============================================================================
-EMAIL_HOST=smtp.gmail.com
+# Resend is used when RESEND_API_KEY is set (create a "Sending access" key limited
+# to dotsuite.dev; never expose it as NEXT_PUBLIC_). Without it, the EMAIL_* SMTP
+# settings are used; in development with neither, emails are printed to the console.
+RESEND_API_KEY=re_your_sending_access_key
+EMAIL_FROM="dotsuite <support@dotsuite.dev>"
+# Optional SMTP fallback
+EMAIL_HOST=
 EMAIL_PORT=587
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_gmail_app_password
-EMAIL_FROM="DotSuite <no-reply@dotsuite.dev>"
+EMAIL_SECURE=false
+EMAIL_USER=
+EMAIL_PASS=
 
 # ==============================================================================
 # Rust Core Microservice (dotsuite-core — https://core.dotsuite.dev)
