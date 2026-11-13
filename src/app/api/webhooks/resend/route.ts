@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { applyResendEvent, verifySvixSignature, type ResendEvent } from "@/lib/resendWebhook";
 
-// Resend → delivery events (delivered, delayed, bounced, complained, failed) → EmailLog.
+// Resend → delivery events (delivered, delayed, bounced, suppressed, complained, failed) → EmailLog.
 // Configure in Resend: Webhooks → https://dotsuite.dev/api/webhooks/resend, then put the
 // signing secret in RESEND_WEBHOOK_SECRET.
 export async function POST(req: Request) {

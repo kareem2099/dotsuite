@@ -45,6 +45,7 @@ const EVENT_STATUS: Record<string, DeliveryStatus> = {
   "email.delivered": "DELIVERED",
   "email.failed": "FAILED",
   "email.bounced": "BOUNCED",
+  "email.suppressed": "SUPPRESSED",
   "email.complained": "COMPLAINED",
 };
 
@@ -55,6 +56,7 @@ export interface ResendEvent {
     email_id?: string;
     bounce?: { type?: string; subType?: string; message?: string };
     failed?: { reason?: string };
+    suppressed?: { type?: string; message?: string };
   };
 }
 
@@ -74,7 +76,7 @@ export async function applyResendEvent(event: ResendEvent): Promise<ApplyResult>
 
   if (log.deliveryStatus && DELIVERY_RANK[log.deliveryStatus] > DELIVERY_RANK[status]) return "stale";
 
-  const detail = event.data?.bounce?.message ?? event.data?.failed?.reason;
+  const detail = event.data?.bounce?.message ?? event.data?.failed?.reason ?? event.data?.suppressed?.message;
   log.deliveryStatus = status;
   log.deliveryUpdatedAt = event.created_at ? new Date(event.created_at) : new Date();
   if (event.data?.bounce?.type) {

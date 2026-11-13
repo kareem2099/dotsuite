@@ -8,7 +8,7 @@ import { getPool } from "@/lib/postgres";
  * The address itself is never stored: only a SHA-256 of it (to look up "did user X get
  * the email?") and its domain (to spot one provider rejecting us).
  */
-export type DeliveryStatus = "DELAYED" | "DELIVERED" | "FAILED" | "BOUNCED" | "COMPLAINED";
+export type DeliveryStatus = "DELAYED" | "DELIVERED" | "FAILED" | "BOUNCED" | "SUPPRESSED" | "COMPLAINED";
 
 /** Later events never overwrite more important ones (a bounce stays a bounce) */
 export const DELIVERY_RANK: Record<DeliveryStatus, number> = {
@@ -16,6 +16,8 @@ export const DELIVERY_RANK: Record<DeliveryStatus, number> = {
   DELIVERED: 2,
   FAILED: 3,
   BOUNCED: 3,
+  // Not sent: the address is on Resend's suppression list after an earlier hard bounce or complaint
+  SUPPRESSED: 3,
   COMPLAINED: 4,
 };
 
