@@ -39,6 +39,15 @@ const getTransporter = (): Transporter | null => {
 export const redactAddresses = (message: string) =>
   message.replace(/[^\s<>"'@]+@[^\s<>"'@]+/g, "[address]").slice(0, 500);
 
+const DEFAULT_FROM = `dotsuite <${SUPPORT_EMAIL}>`;
+
+/**
+ * Sender for every email. Hosting dashboards (Vercel) keep quotes that a .env file would
+ * strip, so `"dotsuite <support@dotsuite.dev>"` pasted from the README must still work.
+ */
+export const getFromAddress = (): string =>
+  process.env.EMAIL_FROM?.trim().replace(/^(["'])(.*)\1$/, "$2").trim() || DEFAULT_FROM;
+
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const SEND_TIMEOUT_MS = 10_000;
 
@@ -49,7 +58,7 @@ async function deliverViaResend(apiKey: string, { to, subject, html, text, reply
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: process.env.EMAIL_FROM,
+        from: getFromAddress(),
         to: [to],
         subject,
         html,
@@ -91,7 +100,7 @@ async function deliver(options: SendEmailOptions): Promise<DeliveryResult> {
 
   try {
     const info = await smtp.sendMail({
-      from: process.env.EMAIL_FROM,
+      from: getFromAddress(),
       to,
       subject,
       html,
