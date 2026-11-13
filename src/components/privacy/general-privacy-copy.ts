@@ -62,25 +62,38 @@ export const generalPrivacyCopy: Record<PrivacyLanguage, GeneralPrivacySection[]
       "closing": "We use this to run the license, to show your devices, and to review refund requests, which are judged on whether Pro was used. Only DotSuite staff handling your account can see it. The Free plan sends nothing."
     },
     {
-      "title": "4. Information Sharing",
+      "title": "4. Emails We Send",
+      "paragraphs": [
+        "Account emails, such as email verification, password resets, welcome emails and security notices, are sent from support@dotsuite.dev through Resend, our email delivery provider. To deliver them, Resend receives your email address and the content of the email. We don't track whether you open our emails or click their links. Replies and emails to our addresses are received through Cloudflare Email Routing.",
+        "For each email, we keep a short delivery record so we can look into emails that don't arrive:"
+      ],
+      "bullets": [
+        "the type of email, its language, when it was sent and whether sending succeeded;",
+        "the delivery result Resend reports afterwards (delivered, delayed, bounced or marked as spam), with email addresses removed from any bounce reason;",
+        "instead of your email address, a one-way hash of it and its domain (for example gmail.com). We use the hash only to find the records for an address we already know."
+      ],
+      "closing": "These records are deleted automatically after 90 days, or earlier when you delete your account. Resend keeps its own records of the emails it delivers, as described in its privacy policy."
+    },
+    {
+      "title": "5. Information Sharing",
       "paragraphs": [
         "We do not share your personal information with third parties except as described in this policy. We may share information with service providers who assist us in operating our platform."
       ]
     },
     {
-      "title": "5. Data Security",
+      "title": "6. Data Security",
       "paragraphs": [
         "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction."
       ]
     },
     {
-      "title": "6. Your Rights",
+      "title": "7. Your Rights",
       "paragraphs": [
         "You have the right to access, update, or delete your personal information at any time. You can manage your account settings or contact us for assistance."
       ]
     },
     {
-      "title": "7. Contact Us",
+      "title": "8. Contact Us",
       "paragraphs": [
         "For questions about this privacy policy or to exercise your privacy rights, email:"
       ]
@@ -112,25 +125,38 @@ export const generalPrivacyCopy: Record<PrivacyLanguage, GeneralPrivacySection[]
       "closing": "نستخدم ذلك لتشغيل الترخيص وعرض أجهزتك ومراجعة طلبات الاسترداد، التي نقيّمها بناءً على استخدام Pro. يطّلع على هذه البيانات فقط موظفو DotSuite المعنيون بحسابك. لا ترسل الخطة المجانية شيئًا."
     },
     {
-      "title": "٤. مشاركة المعلومات",
+      "title": "٤. الرسائل التي نرسلها بالبريد الإلكتروني",
+      "paragraphs": [
+        "تُرسل رسائل الحساب، مثل تأكيد البريد الإلكتروني وإعادة تعيين كلمة المرور ورسائل الترحيب والتنبيهات الأمنية، من support@dotsuite.dev عبر Resend، مزوّد خدمة إرسال البريد لدينا. ولتوصيلها، يتلقى Resend عنوان بريدك ومحتوى الرسالة. لا نتتبع فتحك لرسائلنا أو نقرك على روابطها. ونستقبل الردود والرسائل الواردة إلى عناويننا عبر Cloudflare Email Routing.",
+        "ولكل رسالة نحتفظ بسجل توصيل مختصر لنتمكن من التحقق من الرسائل التي لا تصل:"
+      ],
+      "bullets": [
+        "نوع الرسالة ولغتها ووقت إرسالها وهل نجح الإرسال؛",
+        "نتيجة التوصيل التي يبلغنا بها Resend لاحقًا (وصلت، أو تأخرت، أو ارتدّت، أو صُنّفت رسالة مزعجة)، مع حذف أي عناوين بريد من سبب الارتداد؛",
+        "بدلًا من عنوان بريدك: تجزئة أحادية الاتجاه له ونطاقه (مثل gmail.com). نستخدم التجزئة فقط للعثور على سجلات عنوان نعرفه مسبقًا."
+      ],
+      "closing": "تُحذف هذه السجلات تلقائيًا بعد ٩٠ يومًا، أو قبل ذلك عند حذف حسابك. ويحتفظ Resend بسجلاته الخاصة للرسائل التي يوصلها وفق سياسة الخصوصية الخاصة به."
+    },
+    {
+      "title": "٥. مشاركة المعلومات",
       "paragraphs": [
         "لا نشارك معلوماتك الشخصية مع جهات خارجية إلا كما هو موضح في هذه السياسة. قد نشارك المعلومات مع مزوّدي الخدمات الذين يساعدوننا في تشغيل منصتنا."
       ]
     },
     {
-      "title": "٥. أمن البيانات",
+      "title": "٦. أمن البيانات",
       "paragraphs": [
         "نطبق تدابير تقنية وتنظيمية مناسبة لحماية معلوماتك الشخصية من الوصول غير المصرح به أو التغيير أو الإفصاح أو الإتلاف."
       ]
     },
     {
-      "title": "٦. حقوقك",
+      "title": "٧. حقوقك",
       "paragraphs": [
         "يمكنك الوصول إلى معلوماتك الشخصية وتحديثها أو طلب حذفها في أي وقت. يمكنك إدارة إعدادات حسابك أو التواصل معنا للمساعدة."
       ]
     },
     {
-      "title": "٧. التواصل معنا",
+      "title": "٨. التواصل معنا",
       "paragraphs": [
         "للاستفسار عن سياسة الخصوصية أو ممارسة حقوقك المتعلقة بالخصوصية، راسل:"
       ]
@@ -162,25 +188,38 @@ export const generalPrivacyCopy: Record<PrivacyLanguage, GeneralPrivacySection[]
       "closing": "Wir verwenden diese Angaben zur Lizenzverwaltung, zur Anzeige Ihrer Geräte und zur Prüfung von Erstattungsanträgen, die anhand der Pro-Nutzung beurteilt werden. Nur DotSuite-Mitarbeiter, die Ihr Konto betreuen, können sie einsehen. Der kostenlose Tarif übermittelt nichts."
     },
     {
-      "title": "4. Weitergabe von Informationen",
+      "title": "4. E-Mails, die wir senden",
+      "paragraphs": [
+        "Konto-E-Mails wie die Bestätigung Ihrer E-Mail-Adresse, das Zurücksetzen des Passworts, Willkommens-E-Mails und Sicherheitshinweise werden von support@dotsuite.dev über Resend, unseren Dienstleister für den E-Mail-Versand, verschickt. Für die Zustellung erhält Resend Ihre E-Mail-Adresse und den Inhalt der E-Mail. Wir verfolgen nicht, ob Sie unsere E-Mails öffnen oder deren Links anklicken. Antworten und E-Mails an unsere Adressen empfangen wir über Cloudflare Email Routing.",
+        "Zu jeder E-Mail speichern wir einen kurzen Zustellungseintrag, damit wir E-Mails nachgehen können, die nicht ankommen:"
+      ],
+      "bullets": [
+        "Art der E-Mail, Sprache, Versandzeitpunkt und ob der Versand erfolgreich war;",
+        "das Zustellungsergebnis, das Resend anschließend meldet (zugestellt, verzögert, unzustellbar oder als Spam markiert), wobei E-Mail-Adressen aus dem Grund einer Unzustellbarkeit entfernt werden;",
+        "statt Ihrer E-Mail-Adresse einen Einweg-Hash davon und ihre Domain (zum Beispiel gmail.com). Den Hash verwenden wir nur, um die Einträge zu einer uns bereits bekannten Adresse zu finden."
+      ],
+      "closing": "Diese Einträge werden nach 90 Tagen automatisch gelöscht, bei Löschung Ihres Kontos schon früher. Resend speichert eigene Aufzeichnungen über die zugestellten E-Mails gemäß seiner Datenschutzerklärung."
+    },
+    {
+      "title": "5. Weitergabe von Informationen",
       "paragraphs": [
         "Wir geben personenbezogene Daten nur so an Dritte weiter, wie es in dieser Richtlinie beschrieben ist. Wir können Informationen mit Dienstleistern teilen, die uns beim Betrieb unserer Plattform unterstützen."
       ]
     },
     {
-      "title": "5. Datensicherheit",
+      "title": "6. Datensicherheit",
       "paragraphs": [
         "Wir setzen angemessene technische und organisatorische Maßnahmen ein, um personenbezogene Daten vor unbefugtem Zugriff, Veränderung, Offenlegung oder Vernichtung zu schützen."
       ]
     },
     {
-      "title": "6. Ihre Rechte",
+      "title": "7. Ihre Rechte",
       "paragraphs": [
         "Sie können jederzeit auf Ihre personenbezogenen Informationen zugreifen, sie aktualisieren oder ihre Löschung beantragen. Verwalten Sie Ihre Kontoeinstellungen oder kontaktieren Sie uns für Unterstützung."
       ]
     },
     {
-      "title": "7. Kontakt",
+      "title": "8. Kontakt",
       "paragraphs": [
         "Bei Fragen zu dieser Datenschutzerklärung oder zur Ausübung Ihrer Datenschutzrechte schreiben Sie an:"
       ]
@@ -212,25 +251,38 @@ export const generalPrivacyCopy: Record<PrivacyLanguage, GeneralPrivacySection[]
       "closing": "Ces informations servent à gérer la licence, afficher vos appareils et examiner les demandes de remboursement, évaluées selon l’utilisation de Pro. Seul le personnel DotSuite chargé de votre compte peut les consulter. L’offre gratuite n’envoie rien."
     },
     {
-      "title": "4. Partage des informations",
+      "title": "4. E-mails que nous envoyons",
+      "paragraphs": [
+        "Les e-mails liés à votre compte, comme la vérification de votre adresse, la réinitialisation du mot de passe, les e-mails de bienvenue et les alertes de sécurité, sont envoyés depuis support@dotsuite.dev via Resend, notre prestataire d’envoi d’e-mails. Pour les distribuer, Resend reçoit votre adresse e-mail et le contenu du message. Nous ne suivons ni l’ouverture de nos e-mails ni les clics sur leurs liens. Les réponses et les e-mails adressés à nos adresses sont reçus via Cloudflare Email Routing.",
+        "Pour chaque e-mail, nous conservons un bref enregistrement de distribution afin d’examiner les e-mails qui n’arrivent pas :"
+      ],
+      "bullets": [
+        "le type d’e-mail, sa langue, sa date d’envoi et la réussite ou non de l’envoi ;",
+        "le résultat de distribution signalé ensuite par Resend (distribué, retardé, rejeté ou signalé comme spam), les adresses e-mail étant retirées de toute raison de rejet ;",
+        "à la place de votre adresse e-mail, un hachage à sens unique de celle-ci et son domaine (par exemple gmail.com). Le hachage sert uniquement à retrouver les enregistrements d’une adresse que nous connaissons déjà."
+      ],
+      "closing": "Ces enregistrements sont supprimés automatiquement après 90 jours, ou plus tôt lorsque vous supprimez votre compte. Resend conserve ses propres enregistrements des e-mails qu’il distribue, conformément à sa politique de confidentialité."
+    },
+    {
+      "title": "5. Partage des informations",
       "paragraphs": [
         "Nous ne partageons vos informations personnelles avec des tiers que dans les conditions décrites dans cette politique. Nous pouvons partager des informations avec les prestataires qui nous aident à exploiter notre plateforme."
       ]
     },
     {
-      "title": "5. Sécurité des données",
+      "title": "6. Sécurité des données",
       "paragraphs": [
         "Nous appliquons des mesures techniques et organisationnelles appropriées pour protéger vos informations personnelles contre les accès, modifications, divulgations ou destructions non autorisés."
       ]
     },
     {
-      "title": "6. Vos droits",
+      "title": "7. Vos droits",
       "paragraphs": [
         "Vous pouvez accéder à vos informations personnelles, les mettre à jour ou demander leur suppression à tout moment. Vous pouvez gérer les paramètres de votre compte ou nous contacter pour obtenir de l’aide."
       ]
     },
     {
-      "title": "7. Nous contacter",
+      "title": "8. Nous contacter",
       "paragraphs": [
         "Pour toute question sur cette politique ou pour exercer vos droits relatifs à la confidentialité, écrivez à :"
       ]
@@ -262,25 +314,38 @@ export const generalPrivacyCopy: Record<PrivacyLanguage, GeneralPrivacySection[]
       "closing": "Эти сведения нужны для работы лицензии, отображения устройств и рассмотрения запросов на возврат средств, оцениваемых с учётом использования Pro. Их видят только сотрудники DotSuite, обслуживающие ваш аккаунт. Бесплатный тариф ничего не отправляет."
     },
     {
-      "title": "4. Передача сведений",
+      "title": "4. Письма, которые мы отправляем",
+      "paragraphs": [
+        "Письма, связанные с аккаунтом, — подтверждение адреса электронной почты, сброс пароля, приветственные письма и уведомления безопасности — отправляются с адреса support@dotsuite.dev через Resend, нашего поставщика услуг доставки почты. Для доставки Resend получает ваш адрес электронной почты и содержание письма. Мы не отслеживаем, открываете ли вы наши письма и переходите ли по ссылкам в них. Ответы и письма на наши адреса принимаются через Cloudflare Email Routing.",
+        "Для каждого письма мы храним краткую запись о доставке, чтобы разбираться с письмами, которые не дошли:"
+      ],
+      "bullets": [
+        "тип письма, его язык, время отправки и успешность отправки;",
+        "результат доставки, который Resend сообщает позже (доставлено, задержано, возвращено или отмечено как спам); из причины возврата удаляются адреса электронной почты;",
+        "вместо вашего адреса — его одностороннее хеш-значение и домен (например, gmail.com). Хеш используется только для поиска записей по уже известному нам адресу."
+      ],
+      "closing": "Эти записи автоматически удаляются через 90 дней или раньше — при удалении аккаунта. Resend хранит собственные записи о доставленных письмах в соответствии со своей политикой конфиденциальности."
+    },
+    {
+      "title": "5. Передача сведений",
       "paragraphs": [
         "Мы передаём персональные сведения третьим лицам только в случаях, описанных в этой политике. Сведения могут передаваться поставщикам услуг, помогающим обеспечивать работу нашей платформы."
       ]
     },
     {
-      "title": "5. Безопасность данных",
+      "title": "6. Безопасность данных",
       "paragraphs": [
         "Мы применяем надлежащие технические и организационные меры для защиты персональных сведений от несанкционированного доступа, изменения, раскрытия или уничтожения."
       ]
     },
     {
-      "title": "6. Ваши права",
+      "title": "7. Ваши права",
       "paragraphs": [
         "Вы можете в любое время получить доступ к персональным сведениям, обновить их или запросить их удаление. Управляйте настройками аккаунта или обратитесь к нам за помощью."
       ]
     },
     {
-      "title": "7. Связь с нами",
+      "title": "8. Связь с нами",
       "paragraphs": [
         "По вопросам этой политики или для осуществления прав в отношении персональных данных напишите по адресу:"
       ]
