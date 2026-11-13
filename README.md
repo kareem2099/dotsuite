@@ -208,6 +208,9 @@ GITHUB_WEBHOOK_SECRET=your_github_webhook_secret_key
 # settings are used; in development with neither, emails are printed to the console.
 RESEND_API_KEY=re_your_sending_access_key
 EMAIL_FROM="dotsuite <support@dotsuite.dev>"
+# Signing secret of the Resend webhook (https://dotsuite.dev/api/webhooks/resend,
+# events: delivered, delivery_delayed, bounced, complained, failed) → EmailLog
+RESEND_WEBHOOK_SECRET=whsec_your_resend_webhook_secret
 # Optional SMTP fallback
 EMAIL_HOST=
 EMAIL_PORT=587

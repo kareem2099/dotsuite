@@ -36,7 +36,7 @@ const getTransporter = (): Transporter | null => {
 };
 
 /** SMTP errors often quote the recipient; keep addresses out of the log */
-const redactAddresses = (message: string) =>
+export const redactAddresses = (message: string) =>
   message.replace(/[^\s<>"'@]+@[^\s<>"'@]+/g, "[address]").slice(0, 500);
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";

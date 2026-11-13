@@ -8,6 +8,17 @@ import { getPool } from "@/lib/postgres";
  * The address itself is never stored: only a SHA-256 of it (to look up "did user X get
  * the email?") and its domain (to spot one provider rejecting us).
  */
+export type DeliveryStatus = "DELAYED" | "DELIVERED" | "FAILED" | "BOUNCED" | "COMPLAINED";
+
+/** Later events never overwrite more important ones (a bounce stays a bounce) */
+export const DELIVERY_RANK: Record<DeliveryStatus, number> = {
+  DELAYED: 1,
+  DELIVERED: 2,
+  FAILED: 3,
+  BOUNCED: 3,
+  COMPLAINED: 4,
+};
+
 export default class EmailLog extends RecordBase {
   static collection = "emaillogs";
   static updatedTimestamp = false;
@@ -21,6 +32,13 @@ export default class EmailLog extends RecordBase {
   declare messageId?: string;
   declare error?: string;
   declare durationMs: number;
+  /** Latest outcome reported by the provider's webhook (Resend), after the send itself */
+  declare deliveryStatus?: DeliveryStatus;
+  declare deliveryUpdatedAt?: Date;
+  /** e.g. "Permanent" / "Transient" for bounces */
+  declare bounceType?: string;
+  /** Provider's reason, with addresses removed */
+  declare deliveryDetail?: string;
 
   static hashRecipient(email: string): string {
     return crypto.createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
