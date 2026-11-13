@@ -11,7 +11,7 @@ export const de: DotSharePrivacyCopy = {
   eyebrow: "DotSuite · DotShare",
   title: "DotShare-Datenschutzrichtlinie",
   description: "Was die DotShare-Erweiterung für VS Code, der MCP-Server von dotshare-cli und die DotShare-Anmeldung über dotsuite.dev speichern, wohin Daten gehen und wie du sie löschst.",
-  updated: "Zuletzt aktualisiert: 13. November 2026 (DotShare 3.8.0, dotshare-cli 3.2.0)",
+  updated: "Zuletzt aktualisiert: 13. November 2026 (DotShare 3.8.1, dotshare-cli 3.2.1)",
   intro: [
     "DotShare ist ein Open-Source-Werkzeug für Entwickler von DotSuite. Es macht aus deinen Commits, Release Notes und deinem Code Beiträge und veröffentlicht sie in den sozialen Konten, die du verbindest. Diese Richtlinie gilt für die DotShare-Erweiterung für VS Code, das Paket `dotshare-cli` (die Kommandozeile und den lokalen MCP-Server für KI-Agenten), die DotShare-Anmeldung über dotsuite.dev und die Cloud-Planung von DotSuite, wenn du sie mit DotShare nutzt.",
     "DotShare arbeitet lokal. Zugangsdaten, Entwürfe und Verlauf bleiben auf deinem Gerät, und Beiträge gehen direkt von deinem Gerät an die jeweilige Plattform, außer du planst sie in der DotSuite-Cloud. Dein DotSuite-Konto, die Abrechnung und die Website dotsuite.dev selbst fallen unter die allgemeine Datenschutzrichtlinie von DotSuite.",
@@ -187,7 +187,7 @@ export const fr: DotSharePrivacyCopy = {
   eyebrow: "DotSuite · DotShare",
   title: "Politique de confidentialité de DotShare",
   description: "Ce que l'extension DotShare pour VS Code, le serveur MCP de dotshare-cli et la connexion DotShare via dotsuite.dev conservent, où vont les données et comment les supprimer.",
-  updated: "Dernière mise à jour : 13 novembre 2026 (DotShare 3.8.0, dotshare-cli 3.2.0)",
+  updated: "Dernière mise à jour : 13 novembre 2026 (DotShare 3.8.1, dotshare-cli 3.2.1)",
   intro: [
     "DotShare est un outil open source pour développeurs, édité par DotSuite. Il transforme vos commits, notes de version et votre code en publications et les publie sur les comptes sociaux que vous connectez. Cette politique couvre l'extension DotShare pour VS Code, le paquet `dotshare-cli` (sa ligne de commande et son serveur MCP local pour les agents d'IA), la connexion DotShare via dotsuite.dev, ainsi que la planification dans le cloud DotSuite lorsque vous l'utilisez avec DotShare.",
     "DotShare fonctionne en local d'abord. Vos identifiants, brouillons et historique restent sur votre appareil, et les publications partent directement de votre appareil vers chaque plateforme, sauf si vous choisissez de les planifier dans le cloud DotSuite. Votre compte DotSuite, la facturation et le site dotsuite.dev lui-même relèvent de la politique de confidentialité générale de DotSuite.",
@@ -363,7 +363,7 @@ export const ru: DotSharePrivacyCopy = {
   eyebrow: "DotSuite · DotShare",
   title: "Политика конфиденциальности DotShare",
   description: "Что хранят расширение DotShare для VS Code, MCP-сервер dotshare-cli и вход в DotShare через dotsuite.dev, куда передаются данные и как их удалить.",
-  updated: "Последнее обновление: 13 ноября 2026 г. (DotShare 3.8.0, dotshare-cli 3.2.0)",
+  updated: "Последнее обновление: 13 ноября 2026 г. (DotShare 3.8.1, dotshare-cli 3.2.1)",
   intro: [
     "DotShare — инструмент с открытым исходным кодом для разработчиков от DotSuite. Он превращает ваши коммиты, заметки о выпусках и код в публикации и размещает их в подключённых вами соцсетях. Эта политика распространяется на расширение DotShare для VS Code, пакет `dotshare-cli` (его командную строку и локальный MCP-сервер для ИИ-агентов), вход в DotShare через dotsuite.dev и облачное планирование DotSuite, если вы используете его вместе с DotShare.",
     "DotShare работает прежде всего локально. Учётные данные, черновики и история остаются на вашем устройстве, а публикации уходят с вашего устройства напрямую на каждую платформу, если только вы не решите запланировать их в облаке DotSuite. Ваш аккаунт DotSuite, оплата и сам сайт dotsuite.dev регулируются общей политикой конфиденциальности DotSuite.",

@@ -34,7 +34,7 @@ const en: DotSharePrivacyCopy = {
   eyebrow: "DotSuite · DotShare",
   title: "DotShare Privacy Policy",
   description: "What the DotShare VS Code extension, the dotshare-cli MCP server and DotShare sign-in on dotsuite.dev store, where it goes, and how to remove it.",
-  updated: "Last updated: November 13, 2026 (DotShare 3.8.0, dotshare-cli 3.2.0)",
+  updated: "Last updated: November 13, 2026 (DotShare 3.8.1, dotshare-cli 3.2.1)",
   intro: [
     "DotShare is an open-source developer tool from DotSuite. It turns your commits, release notes and code into posts and publishes them to the social accounts you connect. This policy covers the DotShare VS Code extension, the `dotshare-cli` package (its CLI and local MCP server for AI agents), DotShare sign-in on dotsuite.dev, and DotSuite cloud scheduling when you use it with DotShare.",
     "DotShare is local-first. Your credentials, drafts and history stay on your device, and posts go from your device straight to each platform, unless you choose to schedule them in DotSuite's cloud. Your DotSuite account, billing and the dotsuite.dev website itself are covered by the general DotSuite privacy policy.",
@@ -210,7 +210,7 @@ const ar: DotSharePrivacyCopy = {
   eyebrow: "DotSuite · DotShare",
   title: "سياسة الخصوصية لـ DotShare",
   description: "ما الذي تحفظه إضافة DotShare لـ VS Code وخادم MCP في dotshare-cli وتسجيل الدخول عبر dotsuite.dev، وإلى أين يذهب، وكيف تحذفه.",
-  updated: "آخر تحديث: ١٣ نوفمبر ٢٠٢٦ (DotShare 3.8.0 و dotshare-cli 3.2.0)",
+  updated: "آخر تحديث: ١٣ نوفمبر ٢٠٢٦ (DotShare 3.8.1 و dotshare-cli 3.2.1)",
   intro: [
     "DotShare أداة مفتوحة المصدر للمطورين من DotSuite. تحوّل الـ commits وملاحظات الإصدار والكود إلى منشورات، وتنشرها على الحسابات التي تربطها. تغطي هذه السياسة إضافة DotShare لـ VS Code، وحزمة `dotshare-cli` (سطر الأوامر وخادم MCP المحلي لوكلاء الذكاء الاصطناعي)، وتسجيل الدخول إلى DotShare عبر dotsuite.dev، والجدولة السحابية في DotSuite عند استخدامها مع DotShare.",
     "يعمل DotShare محليًا أولًا. تبقى بيانات الدخول والمسودات والسجل على جهازك، وتذهب المنشورات من جهازك مباشرةً إلى كل منصة، إلا إذا اخترت جدولتها في سحابة DotSuite. أما حسابك في DotSuite والفوترة وموقع dotsuite.dev نفسه فتغطيها سياسة الخصوصية العامة لـ DotSuite.",
